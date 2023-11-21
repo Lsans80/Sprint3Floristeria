@@ -1,62 +1,62 @@
 # Sprint3Floristeria
 
-## Nivell 1
+## Nivel 1
 
-### Exercici
+### Exercicio
 
-Hem de crear un programa per a gestionar el catàleg de productes d'una floristeria. En el nivell 1, gestiona la persistència en un fitxer TXT.
+Debemos crear un programa para gestionar el catálogo de productos de una floristería. En el nivel 1, gestiona la persistencia en un archivo TXT.
 
-#### Aquest programa ha de complir els següents  requisits:  
-     
-   En una floristeria, que té un nom, tenim arbres, flors i decoració.
-     
-   Cada arbre té una alçada. 
-     
-   Les flors tenen un color. 
-     
-   La decoració té un tipus de material: fusta o plàstic. 
-     
-   Tots tenen un preu.
-     
-   Una floristeria ha de tenir un stock de cada un dels productes (arbres, flors i decoració).
-     
-   La floristeria té un registre del valor total de l'stock que té.
-     
-   S’ha de crear una classe ticket, on poder registrar les compres en UNA sola llista.
+#### Este programa debe cumplir los siguientes requisitos:
 
-#### Quant a les funcionalitats del Main, com a mínim, ha d’incloure les següents:
+En una floristería, cuyo nombre, tenemos árboles, flores y decoración.
 
-  Crear Floristeria.
-     
-  Afegir Arbre.
-     
-  Afegir Flor.
-     
-  Afegir Decoració.
-     
-  Stock: Imprimeix per pantalla tots els arbres, flors i decoració que té la floristeria.
-     
-  Retirar arbre.
-     
-  Retirar flor.
-     
-  Retirar decoració.
-     
-  Printar per pantalla stock amb quantitats.
-     
-  Printar per pantalla valor total de la floristeria.
-     
-  Crear tickets de compra amb múltiples objectes.
-     
-  Mostrar una llista de compres antigues.
-     
-  Visualitzar el total de diners guanyats amb totes les vendes.
+Cada árbol tiene una altura.
 
-## Nivell 2
+Las flores tienen un color.
 
-Utilitza com a persistència MySQL.
+La decoración tiene un tipo de material: madera o plástico.
 
-## Nivell 3
+Todos tienen un precio.
 
-Usa com a persistència MongoDB.
+Una floristería debe tener un stock de cada uno de los productos (árboles, flores y decoración).
+
+La floristería tiene un registro del valor total del stock que tiene.
+
+Se debe crear una clase ticket, donde poder registrar las compras en UNA sola lista.
+
+#### En cuanto a las funcionalidades del Main, como mínimo, debe incluir las siguientes:
+
+Crear Floristería.
+
+Añadir Árbol.
+
+Añadir Flor.
+
+Añadir Decoración.
+
+Stock: Imprime por pantalla todos los árboles, flores y decoración que tiene la floristería.
+
+Retirar árbol.
+
+Retirar flor.
+
+Retirar decoración.
+
+Printar por pantalla stock con cantidades.
+
+Printar por pantalla valor total de la floristería.
+
+Crear tickets de compra con múltiples objetos.
+
+Mostrar una lista de compras antiguas.
+
+Visualizar el total de dinero ganado con todas las ventas.
+
+## Nivel 2
+
+Utiliza como persistencia MySQL.
+
+## Nivel 3
+
+Usa como persistencia MongoDB.
  
