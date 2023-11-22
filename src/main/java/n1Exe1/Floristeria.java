@@ -1,3 +1,11 @@
+package n1Exe1;
+
+import n1Exe1.entidad.Producto;
+import n1Exe1.entidad.Producto_Arbol;
+import n1Exe1.entidad.Ticket;
+import n1Exe1.herramienta.Input;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -62,33 +70,35 @@ public class Floristeria {
 
     //Métodos propios.
     
-    public Arbol buscarArbol (){ //Busqueda por nombre por ahora.
+    public Producto_Arbol buscarArbol (){ //Busqueda por nombre por ahora.
 
         System.out.println("Dime el nombre del arbol que quieres buscar:");
         String nombreArbol = sc.nextLine();
 
-        Arbol arbolBuscado = null;
+        //Input.inputString("Dime el nombre del arbol que quieres buscar:");
+
+        Producto_Arbol arbolBuscado = null;
 
         for (Producto p: productos){
 
-            if(p instanceof Arbol && p.getNombre().equalsIgnoreCase(nombreArbol)){
-                arbolBuscado = (Arbol) p;
+            if(p instanceof Producto_Arbol && p.getProductoNombre().equalsIgnoreCase(nombreArbol)){
+                arbolBuscado = (Producto_Arbol) p;
             }
         }
         return arbolBuscado;
     }
 
-    public Arbol agregarArbol (){
+    public Producto_Arbol agregarArbol (){
 
         System.out.println("Nombre del arbol:");
         String nombre = sc.nextLine();
         System.out.println("Precio del arbol:");
         float precio = sc.nextFloat();
-        System.out.println("Cantidad:");
-        int cantidad = sc.nextInt();
+        System.out.println("Altura del arbol:");
+        float altura = sc.nextInt();
         sc.nextLine();
 
-        Arbol arbol = new Arbol (nombre,precio,cantidad);
+        Producto_Arbol arbol = new Producto_Arbol (nombre,precio,altura);
         productos.add(arbol);
         System.out.println(arbol + " agregado a la floristeria.");
         //PersistanceManager.agregarTxt(arbol);
@@ -98,7 +108,7 @@ public class Floristeria {
 
     public void eliminarArbol (){
 
-        Arbol arbolBuscado = buscarArbol();
+        Producto_Arbol arbolBuscado = buscarArbol();
 
         if (arbolBuscado == null){
             System.out.println("El arbol no se ha encontrado.");
