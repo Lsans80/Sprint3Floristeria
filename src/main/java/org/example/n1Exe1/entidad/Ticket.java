@@ -1,4 +1,4 @@
-package n1Exe1.entidad;
+package org.example.n1Exe1.entidad;
 
 import java.util.ArrayList;
 import java.util.List;

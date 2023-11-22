@@ -1,11 +1,11 @@
-package n1Exe1.entidad;
+package org.example.n1Exe1.entidad;
 
 public class Producto_Arbol extends Producto {
 	
 	private float arbolAltura;
 
-	public Producto_Arbol(String productoNombre, float productoPrecio, float arbolAltura) {
-		super(productoNombre, productoPrecio);
+	public Producto_Arbol(String productoNombre, float productoPrecio, float arbolAltura, int productoCantidad) {
+		super(productoNombre, productoPrecio, productoCantidad);
 		this.arbolAltura = arbolAltura;
 		super.setProductoTipo("Arbol");
 		

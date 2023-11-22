@@ -1,13 +1,13 @@
-package n1Exe1.entidad;
+package org.example.n1Exe1.entidad;
 
-import n1Exe1.herramienta.Material;
+import org.example.n1Exe1.herramienta.Material;
 
 public class Producto_Decoracion extends Producto {
 	
 	private Enum<Material> decoracionMaterial;
 	
-	public Producto_Decoracion(String productoNombre, float productoPrecio, Enum<Material> decoracionMaterial) {
-		super(productoNombre, productoPrecio);
+	public Producto_Decoracion(String productoNombre, float productoPrecio, Enum<Material> decoracionMaterial, int productoCantidad) {
+		super(productoNombre, productoPrecio, productoCantidad);
 		this.decoracionMaterial = decoracionMaterial;
 		super.setProductoTipo("Decoracion");
 	}

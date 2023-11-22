@@ -1,9 +1,4 @@
-package n1Exe1;
-
-import n1Exe1.entidad.Producto;
-import n1Exe1.entidad.Producto_Arbol;
-import n1Exe1.entidad.Ticket;
-import n1Exe1.herramienta.Input;
+package org.example.n1Exe1.entidad;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +93,7 @@ public class Floristeria {
         float altura = sc.nextInt();
         sc.nextLine();
 
-        Producto_Arbol arbol = new Producto_Arbol (nombre,precio,altura);
+        Producto_Arbol arbol = new Producto_Arbol (nombre,precio,altura, 1);
         productos.add(arbol);
         System.out.println(arbol + " agregado a la floristeria.");
         //PersistanceManager.agregarTxt(arbol);
