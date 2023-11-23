@@ -1,7 +1,7 @@
-package org.example.n1Exe1.persistencia;
+package n1Exe1.persistencia;
 
-import org.example.n1Exe1.entidad.Producto;
-import org.example.n1Exe1.entidad.Ticket;
+import n1Exe1.entidad.Producto;
+import n1Exe1.entidad.Ticket;
 
 import java.util.HashMap;
 

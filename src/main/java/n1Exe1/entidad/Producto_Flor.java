@@ -1,4 +1,4 @@
-package org.example.n1Exe1.entidad;
+package n1Exe1.entidad;
 
 public class Producto_Flor extends Producto {
 	

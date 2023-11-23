@@ -1,4 +1,4 @@
-package org.example.n1Exe1.entidad;
+package n1Exe1.entidad;
 
 public abstract class Producto {
 	
