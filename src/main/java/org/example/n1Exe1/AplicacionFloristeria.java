@@ -1,11 +1,7 @@
-package n1Exe1;
+package org.example.n1Exe1;
 
-import n1Exe1.entidad.Producto_Arbol;
-import n1Exe1.entidad.Producto_Decoracion;
-import n1Exe1.entidad.Producto_Flor;
-import n1Exe1.herramienta.Input;
-import n1Exe1.herramienta.Material;
-
+import org.example.n1Exe1.herramienta.*;
+import org.example.n1Exe1.entidad.*;
 import java.util.Scanner;
 
 public class AplicacionFloristeria {
@@ -68,7 +64,8 @@ public class AplicacionFloristeria {
                 String nombre = Input.inputString("Dime el nombre del arbol:");
                 float precio = Input.inputFloat("Dime el precio;");
                 float altura = Input.inputFloat("Dime la altura:");
-                Producto_Arbol arbol = new Producto_Arbol (nombre,precio,altura);
+                int cantidad = Input.inputInt("Dime la cantidad:");
+                Producto_Arbol arbol = new Producto_Arbol (nombre,precio,altura,cantidad);
                 floristeria.addProducto(arbol);
                 break;
 
@@ -76,7 +73,8 @@ public class AplicacionFloristeria {
                 nombre = Input.inputString("Dime el nombre de la flor:");
                 precio = Input.inputFloat("Dime el precio;");
                 String color = Input.inputString("Dime el color:");
-                Producto_Flor flor = new Producto_Flor(nombre,precio,color);
+                cantidad = Input.inputInt("Dime la cantidad:");
+                Producto_Flor flor = new Producto_Flor(nombre,precio,color,cantidad);
                 floristeria.addProducto(flor);
                 break;
 
@@ -84,9 +82,11 @@ public class AplicacionFloristeria {
                 nombre = Input.inputString("Dime el tipo de decoración:");
                 precio = Input.inputFloat("Dime el precio;");
                 String material = Input.inputString("Dime el material (madera o plastico)");
+                cantidad = Input.inputInt("Dime la cantidad:");
+
                 Material decoracionMaterial = Material.valueOf(material.toUpperCase());
 
-                Producto_Decoracion decoracion = new Producto_Decoracion(nombre,precio,decoracionMaterial);
+                Producto_Decoracion decoracion = new Producto_Decoracion(nombre,precio,decoracionMaterial,cantidad);
                 floristeria.addProducto(decoracion);
                 break;
         }

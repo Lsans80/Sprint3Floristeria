@@ -1,8 +1,8 @@
-package n1Exe1;
+package org.example.n1Exe1.entidad;
 
-import n1Exe1.entidad.Producto;
-import n1Exe1.entidad.Producto_Arbol;
-import n1Exe1.entidad.Ticket;
+import org.example.n1Exe1.entidad.Producto;
+import org.example.n1Exe1.entidad.Producto_Arbol;
+import org.example.n1Exe1.entidad.Ticket;
 
 import java.util.ArrayList;
 import java.util.List;
