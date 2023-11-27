@@ -3,6 +3,7 @@ package org.example.n1Exe1.entidad;
 import org.example.n1Exe1.entidad.Producto;
 import org.example.n1Exe1.entidad.Producto_Arbol;
 import org.example.n1Exe1.entidad.Ticket;
+import org.example.n1Exe1.persistencia.BaseDeDatos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,22 +12,22 @@ public class Floristeria {
 
     private static Floristeria instancia = null;
     private String nombre;
-    private float valorTotalStock;
-    private List<Producto> productos;
-    private List<Ticket> tickets;
 
-    private Floristeria(String nombre, float valorTotalStock) {
-        this.nombre = nombre;
-        this.valorTotalStock = valorTotalStock;
-        this.productos = new ArrayList<Producto>();
-        this.tickets = new ArrayList<Ticket>();
+    //private List<Producto> productos;
+    //private List<Ticket> tickets;
+    private BaseDeDatos baseDeDatos;
+
+    private Floristeria() {
+        this.baseDeDatos = new BaseDeDatos();
+        //this.productos = new ArrayList<Producto>();
+        //this.tickets = new ArrayList<Ticket>();
     }
 
-    public static Floristeria getInstancia (String nombre, float valorTotalStock){
+    public static Floristeria getInstancia (){
 
         if (instancia == null){
 
-            return new Floristeria(nombre,valorTotalStock);
+            return new Floristeria();
         }
         return instancia;
     }
@@ -41,52 +42,31 @@ public class Floristeria {
         this.nombre = nombre;
     }
 
-    public float getValorTotalStock() {
-        return valorTotalStock;
+
+    public BaseDeDatos getBaseDeDatos() {
+        return baseDeDatos;
     }
 
-    public void setValorTotalStock(float valorTotalStock) {
-        this.valorTotalStock = valorTotalStock;
-    }
-
-    public List<Producto> getProductos() {
-        return productos;
-    }
-
-    public void setProductos(List<Producto> productos) {
-        this.productos = productos;
-    }
-
-    public List<Ticket> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(List<Ticket> tickets) {
-        this.tickets = tickets;
+    public void setBaseDeDatos(BaseDeDatos baseDeDatos) {
+        this.baseDeDatos = baseDeDatos;
     }
 
     //Métodos propios.
 
     public void addProducto (Producto producto){
-        productos.add(producto);
+        baseDeDatos.agregarProducto(producto);
     }
     
-    public Producto buscarProducto (int productoId, List<Producto> productos){ //Busqueda por id.
+    public Producto buscarProducto (int productoId){ //Busqueda por id.
 
-        Producto productoBuscado = null;
+        Producto productoBuscado = baseDeDatos.leerProducto(productoId);;
 
-        for (Producto p: productos){
-
-            if(p.getProductoID() == productoId){
-                productoBuscado = (Producto) p;
-            }
-        }
         return productoBuscado;
     }
 
     public void eliminarProducto (int productoId){
 
-        Producto productoEliminado = buscarProducto(productoId, productos);
+        /*Producto productoEliminado = baseDeDatos.eliminarProducto(productoId);
 
         if (productoEliminado == null){
             System.out.println("El producto no se ha encontrado.");
@@ -95,17 +75,28 @@ public class Floristeria {
             System.out.println(productoEliminado + " ha sido eliminado.");
             productos.remove(productoEliminado);
 
-        }
+        }*/
 
     }
 
-    public void valorTotal (List<Producto> productos){
+    public void getListaProductos (){
 
-        for (Producto p : productos){
+        //HashMap<Integer, Producto> stock = baseDeDatos.listarProductos();
+    }
 
-            valorTotalStock += p.getProductoPrecio();
-        }
+    public void getListaProductosCantidad(){
 
+        //
+    }
+
+    public float valorTotal (){
+
+        return baseDeDatos.getValorTotalStock();
+
+    }
+    public void finalizar(){
+
+        //baseDeDatos.save();
     }
 
 }

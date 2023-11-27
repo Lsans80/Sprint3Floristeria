@@ -8,9 +8,17 @@ public class AplicacionFloristeria {
 
     static Scanner sc = new Scanner(System.in);
 
+    public static void main (String args []){
+
+        start();
+        finalizar();
+
+    }
+
     public static void start (){
 
-        Floristeria floristeria = Floristeria.getInstancia("FeetLand", 40.0f);
+        Floristeria floristeria = Floristeria.getInstancia();
+        floristeria.setNombre("FeetLand");
 
         boolean salir = false;
 
@@ -99,20 +107,22 @@ public class AplicacionFloristeria {
     }
 
     public static void listarProductos(Floristeria floristeria){
-        System.out.println(floristeria.getProductos());
+
+
     }
 
     public static void valorTotalStock (Floristeria floristeria){
 
-        float valorTotal = floristeria.getValorTotalStock();
+        float valorTotal = floristeria.valorTotal();
 
         String formattedValue = String.format("%.2f", valorTotal);
 
-        System.out.println("El valor total del stock es de " + valorTotal + " Euros.");
+        System.out.println("El valor total del stock es de " + formattedValue + " Euros.");
     }
 
-    public static void finalizar (){
+    public static void finalizar(){
 
+        Floristeria.getInstancia().finalizar();
     }
 
 }
