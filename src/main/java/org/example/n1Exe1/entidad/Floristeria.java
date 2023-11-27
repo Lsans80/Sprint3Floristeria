@@ -1,11 +1,13 @@
-package org.example.n1Exe1.entidad;
+package n1Exe1;
+
+import n1Exe1.entidad.Producto;
+import n1Exe1.entidad.Producto_Arbol;
+import n1Exe1.entidad.Ticket;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Floristeria {
-    Scanner sc = new Scanner(System.in);
 
     private static Floristeria instancia = null;
     private String nombre;
@@ -20,7 +22,7 @@ public class Floristeria {
         this.tickets = new ArrayList<Ticket>();
     }
 
-    public Floristeria instanciar (String nombre, float valorTotalStock){
+    public static Floristeria getInstancia (String nombre, float valorTotalStock){
 
         if (instancia == null){
 
@@ -64,57 +66,46 @@ public class Floristeria {
     }
 
     //Métodos propios.
+
+    public void addProducto (Producto producto){
+        productos.add(producto);
+    }
     
-    public Producto_Arbol buscarArbol (){ //Busqueda por nombre por ahora.
+    public Producto buscarProducto (int productoId, List<Producto> productos){ //Busqueda por id.
 
-        System.out.println("Dime el nombre del arbol que quieres buscar:");
-        String nombreArbol = sc.nextLine();
-
-        //Input.inputString("Dime el nombre del arbol que quieres buscar:");
-
-        Producto_Arbol arbolBuscado = null;
+        Producto productoBuscado = null;
 
         for (Producto p: productos){
 
-            if(p instanceof Producto_Arbol && p.getProductoNombre().equalsIgnoreCase(nombreArbol)){
-                arbolBuscado = (Producto_Arbol) p;
+            if(p.getProductoID() == productoId){
+                productoBuscado = (Producto) p;
             }
         }
-        return arbolBuscado;
+        return productoBuscado;
     }
 
-    public Producto_Arbol agregarArbol (){
+    public void eliminarProducto (int productoId){
 
-        System.out.println("Nombre del arbol:");
-        String nombre = sc.nextLine();
-        System.out.println("Precio del arbol:");
-        float precio = sc.nextFloat();
-        System.out.println("Altura del arbol:");
-        float altura = sc.nextInt();
-        sc.nextLine();
+        Producto productoEliminado = buscarProducto(productoId, productos);
 
-        Producto_Arbol arbol = new Producto_Arbol (nombre,precio,altura, 1);
-        productos.add(arbol);
-        System.out.println(arbol + " agregado a la floristeria.");
-        //PersistanceManager.agregarTxt(arbol);
-
-        return arbol;
-    }
-
-    public void eliminarArbol (){
-
-        Producto_Arbol arbolBuscado = buscarArbol();
-
-        if (arbolBuscado == null){
-            System.out.println("El arbol no se ha encontrado.");
+        if (productoEliminado == null){
+            System.out.println("El producto no se ha encontrado.");
 
         } else {
-            System.out.println(arbolBuscado + " ha sido eliminado.");
-            productos.remove(arbolBuscado);
+            System.out.println(productoEliminado + " ha sido eliminado.");
+            productos.remove(productoEliminado);
 
         }
 
     }
 
+    public void valorTotal (List<Producto> productos){
+
+        for (Producto p : productos){
+
+            valorTotalStock += p.getProductoPrecio();
+        }
+
+    }
 
 }
