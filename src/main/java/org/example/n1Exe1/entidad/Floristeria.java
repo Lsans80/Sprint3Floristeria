@@ -11,15 +11,10 @@ public class Floristeria {
 
 	private static Floristeria instancia = null;
 	private String nombre;
-
-	// private List<Producto> productos;
-	// private List<Ticket> tickets;
 	private BaseDeDatos baseDeDatos;
 
 	private Floristeria() {
 		this.baseDeDatos = BaseDeDatos.instanciar();
-		// this.productos = new ArrayList<Producto>();
-		// this.tickets = new ArrayList<Ticket>();
 	}
 
 	public static Floristeria getInstancia() {
@@ -55,10 +50,9 @@ public class Floristeria {
 		baseDeDatos.agregarProducto(producto);
 	}
 
-	public Producto buscarProducto(int productoId) { // Busqueda por id.
+	public Producto buscarProducto(int productoId) {
 
 		Producto productoBuscado = baseDeDatos.leerProducto(productoId);
-		;
 
 		return productoBuscado;
 	}

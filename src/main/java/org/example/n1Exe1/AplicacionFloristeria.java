@@ -2,11 +2,15 @@ package org.example.n1Exe1;
 
 import org.example.n1Exe1.herramienta.*;
 import org.example.n1Exe1.entidad.*;
-import java.util.Scanner;
+import org.example.n1Exe1.persistencia.BaseDeDatos;
+import java.util.*;
+
 
 public class AplicacionFloristeria {
 
     static Scanner sc = new Scanner(System.in);
+
+    static BaseDeDatos baseDeDatos = BaseDeDatos.instanciar();
 
     public static void start (){
 
@@ -69,35 +73,50 @@ public class AplicacionFloristeria {
 
         switch (opcion){
             case 1:
-                String nombre = Input.inputString("Dime el nombre del arbol:");
-                float precio = Input.inputFloat("Dime el precio;");
-                float altura = Input.inputFloat("Dime la altura:");
-                int cantidad = Input.inputInt("Dime la cantidad:");
-                Producto_Arbol arbol = new Producto_Arbol (nombre,precio,altura,cantidad);
-                floristeria.addProducto(arbol);
+                crearArbol(floristeria);
                 break;
 
             case 2:
-                nombre = Input.inputString("Dime el nombre de la flor:");
-                precio = Input.inputFloat("Dime el precio;");
-                String color = Input.inputString("Dime el color:");
-                cantidad = Input.inputInt("Dime la cantidad:");
-                Producto_Flor flor = new Producto_Flor(nombre,precio,color,cantidad);
-                floristeria.addProducto(flor);
+                crearFlor(floristeria);
                 break;
 
             case 3:
-                nombre = Input.inputString("Dime el tipo de decoración:");
-                precio = Input.inputFloat("Dime el precio;");
-                String material = Input.inputString("Dime el material (madera o plastico)");
-                cantidad = Input.inputInt("Dime la cantidad:");
-
-                Material decoracionMaterial = Material.valueOf(material.toUpperCase());
-
-                Producto_Decoracion decoracion = new Producto_Decoracion(nombre,precio,decoracionMaterial,cantidad);
-                floristeria.addProducto(decoracion);
+                crearDecoracion(floristeria);
                 break;
         }
+    }
+
+    public static void crearArbol(Floristeria floristeria){
+
+        String nombre = Input.inputString("Dime el nombre del arbol:");
+        float precio = Input.inputFloat("Dime el precio;");
+        float altura = Input.inputFloat("Dime la altura:");
+        int cantidad = Input.inputInt("Dime la cantidad:");
+        Producto_Arbol arbol = new Producto_Arbol (nombre,precio,altura,cantidad);
+        floristeria.addProducto(arbol);
+    }
+
+    public static void crearFlor (Floristeria floristeria){
+
+        String nombre = Input.inputString("Dime el nombre de la flor:");
+        float precio = Input.inputFloat("Dime el precio;");
+        String color = Input.inputString("Dime el color:");
+        int cantidad = Input.inputInt("Dime la cantidad:");
+        Producto_Flor flor = new Producto_Flor(nombre,precio,color,cantidad);
+        floristeria.addProducto(flor);
+    }
+
+    public static void crearDecoracion (Floristeria floristeria){
+
+        String nombre = Input.inputString("Dime el tipo de decoración:");
+        float precio = Input.inputFloat("Dime el precio;");
+        String material = Input.inputString("Dime el material (madera o plastico)");
+        int cantidad = Input.inputInt("Dime la cantidad:");
+
+        Material decoracionMaterial = Material.valueOf(material.toUpperCase());
+
+        Producto_Decoracion decoracion = new Producto_Decoracion(nombre,precio,decoracionMaterial,cantidad);
+        floristeria.addProducto(decoracion);
     }
 
     public static void eliminarProducto(Floristeria floristeria){
@@ -108,7 +127,62 @@ public class AplicacionFloristeria {
 
     public static void listarProductos(Floristeria floristeria){
 
-    	System.out.println(floristeria.getListaProductos());
+        HashMap<Integer, Producto> stockArbol = baseDeDatos.listarProductosFiltrando(
+                producto -> producto.getProductoTipo().equalsIgnoreCase("Arbol"));
+        HashMap<Integer, Producto> stockFlor = baseDeDatos.listarProductosFiltrando(
+                producto -> producto.getProductoTipo().equalsIgnoreCase("Flor"));
+        HashMap<Integer, Producto> stockDecoracion = baseDeDatos.listarProductosFiltrando(
+                producto -> producto.getProductoTipo().equalsIgnoreCase("Decoracion"));
+
+        System.out.println("\nStock por tipo de producto:");
+        consultarArbol(stockArbol);
+        consultarFlor(stockFlor);
+        consultarDecoracion(stockDecoracion);
+
+    }
+
+    public static void consultarArbol (HashMap<Integer, Producto> stockArbol){
+
+        System.out.println("***ARBOL***:\n");
+        stockArbol.values().forEach(producto -> {
+
+                Producto_Arbol productoArbol = (Producto_Arbol) producto;
+                System.out.println("ID: " + productoArbol.getProductoID()
+                        + " | Cantidad: " + productoArbol.getProductoCantidad()
+                        + " | Nombre: " + productoArbol.getProductoNombre()
+                        + " | Altura: " + productoArbol.getArbolAltura()
+                        + " | Precio: " + productoArbol.getProductoPrecio());
+
+        });
+    }
+
+    public static void consultarFlor (HashMap<Integer, Producto> stockFlor){
+
+        System.out.println("\n***FLOR***:\n");
+        stockFlor.values().forEach(producto -> {
+
+                Producto_Flor productoFlor = (Producto_Flor) producto;
+                System.out.println("ID: " + productoFlor.getProductoID()
+                        + " | Cantidad: " + productoFlor.getProductoCantidad()
+                        + " | Nombre: " + productoFlor.getProductoNombre()
+                        + " | Color: " + productoFlor.getFlorColor()
+                        + " | Precio: " + productoFlor.getProductoPrecio());
+        });
+    }
+
+    public static void consultarDecoracion (HashMap<Integer,Producto> stockDecoracion){
+
+        System.out.println("\n***DECORACION***:\n");
+        stockDecoracion.values().forEach(producto -> {
+
+                Producto_Decoracion productoDecoracion = (Producto_Decoracion) producto;
+                System.out.println("ID: " + productoDecoracion.getProductoID()
+                        + " | Cantidad: " + productoDecoracion.getProductoCantidad()
+                        + " | Nombre: " + productoDecoracion.getProductoNombre()
+                        + " | Material: " + productoDecoracion.getDecoracionMaterial()
+                        + " | Precio: " + productoDecoracion.getProductoPrecio());
+
+        });
     }
 
     public static void valorTotalStock (Floristeria floristeria){
