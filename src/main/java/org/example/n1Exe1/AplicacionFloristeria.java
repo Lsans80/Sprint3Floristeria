@@ -8,11 +8,6 @@ public class AplicacionFloristeria {
 
     static Scanner sc = new Scanner(System.in);
 
-    public static void main (String args []){
-        start();
-        finalizar();
-    }
-
     public static void start (){
 
         Floristeria floristeria = Floristeria.getInstancia();

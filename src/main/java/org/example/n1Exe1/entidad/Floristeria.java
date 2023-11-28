@@ -80,7 +80,7 @@ public class Floristeria {
 		return stock;
 	}
 
-	public void getListaProductosCantidad() {
+	public void getListaProductosCantidad() { //TODO
 
 		baseDeDatos.getStock();
 	}
