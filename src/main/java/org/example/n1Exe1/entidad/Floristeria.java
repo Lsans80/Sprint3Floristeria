@@ -6,6 +6,7 @@ import org.example.n1Exe1.entidad.Ticket;
 import org.example.n1Exe1.persistencia.BaseDeDatos;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Floristeria {
@@ -79,15 +80,17 @@ public class Floristeria {
 
     }
 
-    public void getListaProductos (){
+    /*public HashMap getListaProductos (){
 
-        //HashMap<Integer, Producto> stock = baseDeDatos.listarProductos();
-    }
+        HashMap<Integer, Producto> stock = baseDeDatos.listarProductos();
+        return stock;
+    }*/
 
-    public void getListaProductosCantidad(){
+    /*public List getListaProductosCantidad(){
 
-        //
-    }
+        List<HashMap<Integer, Producto>> stockParaOrdenar = baseDeDatos.listarProductos();
+        return stockParaOrdenar;
+    }*/
 
     public float valorTotal (){
 

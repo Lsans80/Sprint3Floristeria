@@ -2,18 +2,12 @@ package org.example.n1Exe1;
 
 import org.example.n1Exe1.herramienta.*;
 import org.example.n1Exe1.entidad.*;
-import java.util.Scanner;
+
+import java.util.*;
 
 public class AplicacionFloristeria {
 
     static Scanner sc = new Scanner(System.in);
-
-    public static void main (String args []){
-
-        start();
-        finalizar();
-
-    }
 
     public static void start (){
 
@@ -50,6 +44,8 @@ public class AplicacionFloristeria {
             System.out.println("2. Eliminar producto.");
             System.out.println("3. Listar productos.");
             System.out.println("4. Consultar valor stock total.");
+
+            //todo crearTicket, mostrarTickets
             System.out.println("0. Salir de la aplicación.\n");
             opcion = sc.nextByte();
             sc.nextLine();
@@ -108,8 +104,15 @@ public class AplicacionFloristeria {
 
     public static void listarProductos(Floristeria floristeria){
 
-
+        //floristeria.getListaProductos();
     }
+
+    /*public static void listarProductosCantidad (Floristeria floristeria){
+
+        List<Map.Entry<Integer, Producto>>  productoList = floristeria.getListaProductosCantidad();
+
+        Collections.sort(productoList, Map.Entry.comparingByValue());
+    }*/
 
     public static void valorTotalStock (Floristeria floristeria){
 
