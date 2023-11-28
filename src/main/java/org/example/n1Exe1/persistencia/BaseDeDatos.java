@@ -5,6 +5,9 @@ import org.example.n1Exe1.entidad.Ticket;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class BaseDeDatos {
     private HashMap<Integer, Producto> stock;
@@ -13,8 +16,8 @@ public class BaseDeDatos {
     private static BaseDeDatos instancia;
 
     private BaseDeDatos () {
-        stock = new HashMap<Integer, Producto>();
-        tickets = new HashMap<Integer, Ticket>();
+        stock = new HashMap<>();
+        tickets = new HashMap<>();
         load();
     }
 
@@ -24,9 +27,12 @@ public class BaseDeDatos {
         }
         return instancia;
     }
+
+    //TODO Estandarizar el nombre a "getStock()"?
     public HashMap<Integer, Producto> listarProductos() {
         return stock;
     }
+    //TODO Estandarizar el nombre a "getTickets()"?
     public HashMap<Integer, Ticket> listarTickets() {
         return tickets;
     }
@@ -34,10 +40,8 @@ public class BaseDeDatos {
         stock.compute(producto.getProductoID(), (id, existingProducto) -> {
             if (existingProducto != null) {
                 producto.setProductoCantidad(producto.getProductoCantidad() + existingProducto.getProductoCantidad());
-                return producto;
-            } else {
-                return producto;
             }
+            return producto;
         });
     }
     public void agregarTicket(Ticket ticket) {
@@ -60,13 +64,19 @@ public class BaseDeDatos {
         return t;
     }
 
+    //Funcion única para filtros personalizados desde la aplicación(?)
+    public HashMap<Integer, Producto> listarProductosFiltrando(Predicate<Producto> predicate) {
+       // return (HashMap<Integer, Producto>) stock.values().stream().filter(predicate).collect(Collectors.toMap(Producto::getProductoID, producto -> producto));
+        return (HashMap<Integer, Producto>) stock.entrySet().stream().filter(entry -> predicate.test(entry.getValue())).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+
+    }
     public float getValorTotalStock() {
         return (float) stock.values().stream().mapToDouble(producto -> producto.getProductoPrecio() * producto.getProductoCantidad()).sum();
     }
     public float getValorTotalTickets() {
         return (float) tickets.values().stream().mapToDouble(Ticket::getTicketTotal).sum();
     }
-
+    //TODO Pulir excepciones, casteo, etc.
     public void load() {
         File database = new File ("database.txt");
         if (database.exists()) {
@@ -82,6 +92,7 @@ public class BaseDeDatos {
             }
         }
     }
+    //TODO Pulir excepciones
     public void save() {
         try (FileOutputStream fos = new FileOutputStream("database.txt");
              ObjectOutputStream oos = new ObjectOutputStream(fos)){
