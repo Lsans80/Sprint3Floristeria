@@ -1,9 +1,10 @@
 package org.example.n1Exe1.entidad;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Ticket {
+public class Ticket implements Serializable {
 
 	private int ticketID;
 	private List<Producto> productosVendidos;
