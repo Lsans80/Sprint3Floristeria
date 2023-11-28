@@ -1,6 +1,8 @@
 package org.example.n1Exe1.entidad;
 
-public abstract class Producto {
+import java.io.Serializable;
+
+public abstract class Producto implements Serializable {
 	
 	private int productoID;
 	private String productoNombre;
