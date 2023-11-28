@@ -49,11 +49,15 @@ public class BaseDeDatos {
     public Ticket leerTicket(int id) {
         return tickets.get(id);
     }
-    public void eliminarProducto(int id) {
+    public Producto eliminarProducto(int id) {
+        Producto p = leerProducto(id);
         stock.remove(id);
+        return p;
     }
-    public void eliminarTicket(int id) {
+    public Ticket eliminarTicket(int id) {
+        Ticket t = leerTicket(id);
         tickets.remove(id);
+        return t;
     }
 
     public float getValorTotalStock() {

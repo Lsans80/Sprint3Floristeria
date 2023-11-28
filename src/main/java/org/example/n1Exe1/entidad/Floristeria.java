@@ -6,6 +6,7 @@ import org.example.n1Exe1.entidad.Ticket;
 import org.example.n1Exe1.persistencia.BaseDeDatos;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Floristeria {
@@ -80,8 +81,7 @@ public class Floristeria {
     }
 
     public void getListaProductos (){
-
-        //HashMap<Integer, Producto> stock = baseDeDatos.listarProductos();
+        HashMap<Integer, Producto> stock = baseDeDatos.listarProductos();
     }
 
     public void getListaProductosCantidad(){
@@ -96,7 +96,7 @@ public class Floristeria {
     }
     public void finalizar(){
 
-        //baseDeDatos.save();
+        baseDeDatos.save();
     }
 
 }
