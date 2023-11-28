@@ -27,8 +27,18 @@ public class BaseDeDatos {
         }
         return instancia;
     }
+   
 
-    //TODO Estandarizar el nombre a "getStock()"?
+    public HashMap<Integer, Ticket> getTickets() {
+		return tickets;
+	}
+    
+
+	public HashMap<Integer, Producto> getStock() {
+		return stock;
+	}
+
+	//TODO Estandarizar el nombre a "getStock()"?
     public HashMap<Integer, Producto> listarProductos() {
         return stock;
     }
@@ -44,8 +54,8 @@ public class BaseDeDatos {
             return producto;
         });
     }
-    public void agregarTicket(Ticket ticket) {
-        tickets.put(ticket.getTicketID(), ticket);
+    public Ticket agregarTicket(Ticket ticket) {
+       return tickets.put(ticket.getTicketID(), ticket);
     }
     public Producto leerProducto(int id) {
         return stock.get(id);
@@ -77,7 +87,9 @@ public class BaseDeDatos {
         return (float) tickets.values().stream().mapToDouble(Ticket::getTicketTotal).sum();
     }
     //TODO Pulir excepciones, casteo, etc.
-    public void load() {
+ 
+    @SuppressWarnings("unchecked")
+	public void load() {
         File database = new File ("database.txt");
         if (database.exists()) {
             try (FileInputStream fis = new FileInputStream(database);
