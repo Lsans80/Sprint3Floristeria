@@ -6,12 +6,21 @@ import org.example.n1Exe1.entidad.Ticket;
 import java.util.HashMap;
 
 public class BaseDeDatos {
-    HashMap<Integer, Producto> stock;
-    HashMap<Integer, Ticket> tickets;
+    private HashMap<Integer, Producto> stock;
+    private HashMap<Integer, Ticket> tickets;
 
-    public BaseDeDatos () {
+    private BaseDeDatos instancia;
+
+    private BaseDeDatos () {
         stock = new HashMap<Integer, Producto>();
         tickets = new HashMap<Integer, Ticket>();
+    }
+
+    public BaseDeDatos instanciar() {
+        if (instancia == null) {
+            instancia = new BaseDeDatos();
+        }
+        return instancia;
     }
     public HashMap<Integer, Producto> getStock() {
         return stock;
@@ -45,13 +54,12 @@ public class BaseDeDatos {
         tickets.remove(id);
     }
 
-    //TODO Double?
     public float getValorTotalStock() {
         return (float) stock.values().stream().mapToDouble(producto -> producto.getProductoPrecio() * producto.getProductoCantidad()).sum();
     }
     public float getValorTotalTickets() {
         return (float) tickets.values().stream().mapToDouble(Ticket::getTicketTotal).sum();
-
     }
+
 
 }
