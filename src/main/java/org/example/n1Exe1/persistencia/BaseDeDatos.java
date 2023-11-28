@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 public class BaseDeDatos {
     private HashMap<Integer, Producto> stock;
     private HashMap<Integer, Ticket> tickets;
-
     private static BaseDeDatos instancia;
 
     private BaseDeDatos () {
