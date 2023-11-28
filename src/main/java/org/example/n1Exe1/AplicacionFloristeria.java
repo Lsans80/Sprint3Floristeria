@@ -9,17 +9,16 @@ public class AplicacionFloristeria {
     static Scanner sc = new Scanner(System.in);
 
     public static void main (String args []){
-
         start();
         finalizar();
-
     }
 
     public static void start (){
 
         Floristeria floristeria = Floristeria.getInstancia();
         floristeria.setNombre("FeetLand");
-
+        load();
+        
         boolean salir = false;
 
         do{
@@ -32,6 +31,10 @@ public class AplicacionFloristeria {
                     break;
                 case 4: valorTotalStock(floristeria);
                     break;
+                case 5: System.out.println(crearTicket(floristeria));
+                	break;
+                case 6: floristeria.printTicketsHistory();
+            		break;
                 case 0: System.out.println("Gracias por utilizar nuestra floristería.");
                     salir = true;
                     break;
@@ -42,7 +45,7 @@ public class AplicacionFloristeria {
     public static byte menu(){
         byte opcion;
         final byte MINIMO = 0;
-        final byte MAXIMO = 4;
+        final byte MAXIMO = 6;
 
         do{
             System.out.println("\n****FeetLand****");
@@ -50,6 +53,8 @@ public class AplicacionFloristeria {
             System.out.println("2. Eliminar producto.");
             System.out.println("3. Listar productos.");
             System.out.println("4. Consultar valor stock total.");
+            System.out.println("5. Crear Ticket.");
+            System.out.println("6. Lista historial Tickets.");
             System.out.println("0. Salir de la aplicación.\n");
             opcion = sc.nextByte();
             sc.nextLine();
@@ -108,7 +113,7 @@ public class AplicacionFloristeria {
 
     public static void listarProductos(Floristeria floristeria){
 
-
+    	System.out.println(floristeria.getListaProductos());
     }
 
     public static void valorTotalStock (Floristeria floristeria){
@@ -119,10 +124,28 @@ public class AplicacionFloristeria {
 
         System.out.println("El valor total del stock es de " + formattedValue + " Euros.");
     }
+    
+    public static Ticket crearTicket (Floristeria floristeria) {
+    	String stop;
+    	floristeria.agregarTicket();
+    	Ticket ticket = floristeria.getTicket().get(floristeria.getTicket().size());
+    	do {
+    		floristeria.agregarProductoTicket(Input.inputInt("Id Producto: "), 
+    			ticket.getTicketID());
+    		stop = Input.inputString("Deseas agregar otro producto? ");	
+    	} while (stop.equalsIgnoreCase("si"));
+    	
+    	return ticket;
+    }
 
     public static void finalizar(){
 
         Floristeria.getInstancia().finalizar();
+    }
+    
+    public static void load(){
+
+        Floristeria.getInstancia().load();
     }
 
 }
