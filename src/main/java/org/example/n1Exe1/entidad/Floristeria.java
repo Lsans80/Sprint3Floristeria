@@ -18,7 +18,7 @@ public class Floristeria {
     private BaseDeDatos baseDeDatos;
 
     private Floristeria() {
-        this.baseDeDatos = new BaseDeDatos();
+        this.baseDeDatos = BaseDeDatos.instanciar();
         //this.productos = new ArrayList<Producto>();
         //this.tickets = new ArrayList<Ticket>();
     }

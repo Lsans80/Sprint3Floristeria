@@ -10,7 +10,7 @@ public class BaseDeDatos {
     private HashMap<Integer, Producto> stock;
     private HashMap<Integer, Ticket> tickets;
 
-    private BaseDeDatos instancia;
+    private static BaseDeDatos instancia;
 
     private BaseDeDatos () {
         stock = new HashMap<Integer, Producto>();
@@ -18,7 +18,7 @@ public class BaseDeDatos {
         load();
     }
 
-    public BaseDeDatos instanciar() {
+    public static BaseDeDatos instanciar() {
         if (instancia == null) {
             instancia = new BaseDeDatos();
         }
