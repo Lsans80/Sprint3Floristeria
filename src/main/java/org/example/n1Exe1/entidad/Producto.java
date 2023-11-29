@@ -65,7 +65,7 @@ public abstract class Producto implements Serializable {
 		productoCantidad--;
 	}
 	
-	public void incrementarProductoCantidad() {
+	public void incrementarProductoCantidadUnidad() {
 		productoCantidad++;
 	}
 	
