@@ -1,4 +1,4 @@
-package org.example.n1Exe1;
+package org.example.n1Exe1.cliente;
 
 import org.example.n1Exe1.herramienta.*;
 import org.example.n1Exe1.entidad.*;

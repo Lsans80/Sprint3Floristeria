@@ -1,4 +1,4 @@
-package org.example.n1Exe1;
+package org.example.n1Exe1.cliente;
 
 public class Main {
 
