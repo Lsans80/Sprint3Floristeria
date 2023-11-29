@@ -49,19 +49,18 @@ public class AplicacionFloristeria {
         final byte MAXIMO = 6;
 
         do{
-            System.out.println("\n****FeetLand****");
-            System.out.println("1. Agregar producto.");
-            System.out.println("2. Eliminar producto.");
-            System.out.println("3. Listar productos.");
-            System.out.println("4. Consultar valor stock total.");
-            System.out.println("5. Crear Ticket.");
-            System.out.println("6. Lista historial Tickets.");
-            System.out.println("0. Salir de la aplicación.\n");
-            opcion = sc.nextByte();
-            sc.nextLine();
-            //TODO opcion = Input.nextByte(); y borrar scanner.
+
+            opcion = Input.inputByte("\n****FEETLAND****\n"
+                                            + "\n1. Agregar producto."
+                                            + "\n2. Eliminar producto."
+                                            + "\n3. Listar productos."
+                                            + "\n4. Consultar valor stock total."
+                                            + "\n5. Crear Ticket."
+                                            + "\n6. Lista historial Tickets."
+                                            + "\n0. Salir de la aplicación.\n");
+
             if(opcion < MINIMO || opcion > MAXIMO){
-                System.out.println("Escoge una opción válida.");
+                System.err.println("Escoge una opción válida.");
             }
 
         }while(opcion < MINIMO || opcion > MAXIMO);
