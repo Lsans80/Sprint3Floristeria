@@ -12,9 +12,11 @@ public class AplicacionFloristeria {
 
     static BaseDeDatos baseDeDatos = BaseDeDatos.instanciar();
 
+    static Floristeria floristeria;
+
     public static void start (){
 
-        Floristeria floristeria = Floristeria.getInstancia();
+        floristeria = Floristeria.getInstancia();
         floristeria.setNombre("FeetLand");
         load();
         
@@ -22,15 +24,15 @@ public class AplicacionFloristeria {
 
         do{
             switch(menu()){
-                case 1: crearProducto(floristeria);
+                case 1: crearProducto();
                     break;
-                case 2: eliminarProducto(floristeria);
+                case 2: eliminarProducto();
                     break;
-                case 3: listarProductos(floristeria);
+                case 3: listarProductos();
                     break;
-                case 4: valorTotalStock(floristeria);
+                case 4: valorTotalStock();
                     break;
-                case 5: System.out.println(crearTicket(floristeria));
+                case 5: System.out.println(crearTicket());
                 	break;
                 case 6: floristeria.printTicketsHistory();
             		break;
@@ -67,26 +69,26 @@ public class AplicacionFloristeria {
         return opcion;
     }
 
-    public static void crearProducto(Floristeria floristeria){
+    public static void crearProducto(){
 
         int opcion = Input.inputInt("Dime que producto deseas crear: \n1.Arbol.\n2.Flor.\n3.Decoración.");
 
         switch (opcion){
             case 1:
-                crearArbol(floristeria);
+                crearArbol();
                 break;
 
             case 2:
-                crearFlor(floristeria);
+                crearFlor();
                 break;
 
             case 3:
-                crearDecoracion(floristeria);
+                crearDecoracion();
                 break;
         }
     }
 
-    public static void crearArbol(Floristeria floristeria){
+    public static void crearArbol(){
 
         String nombre = Input.inputString("Dime el nombre del arbol:");
         float precio = Input.inputFloat("Dime el precio;");
@@ -96,7 +98,7 @@ public class AplicacionFloristeria {
         floristeria.addProducto(arbol);
     }
 
-    public static void crearFlor (Floristeria floristeria){
+    public static void crearFlor (){
 
         String nombre = Input.inputString("Dime el nombre de la flor:");
         float precio = Input.inputFloat("Dime el precio;");
@@ -106,7 +108,9 @@ public class AplicacionFloristeria {
         floristeria.addProducto(flor);
     }
 
-    public static void crearDecoracion (Floristeria floristeria){
+    public static void crearDecoracion (){
+
+        Floristeria.getInstancia();
 
         String nombre = Input.inputString("Dime el tipo de decoración:");
         float precio = Input.inputFloat("Dime el precio;");
@@ -119,25 +123,18 @@ public class AplicacionFloristeria {
         floristeria.addProducto(decoracion);
     }
 
-    public static void eliminarProducto(Floristeria floristeria){
+    public static void eliminarProducto(){
 
         int id = Input.inputInt("Introduce el número del ID de producto que quieres eliminar:");
         floristeria.eliminarProducto(id);
     }
 
-    public static void listarProductos(Floristeria floristeria){
-
-        HashMap<Integer, Producto> stockArbol = baseDeDatos.listarProductosFiltrando(
-                producto -> producto.getProductoTipo().equalsIgnoreCase("Arbol"));
-        HashMap<Integer, Producto> stockFlor = baseDeDatos.listarProductosFiltrando(
-                producto -> producto.getProductoTipo().equalsIgnoreCase("Flor"));
-        HashMap<Integer, Producto> stockDecoracion = baseDeDatos.listarProductosFiltrando(
-                producto -> producto.getProductoTipo().equalsIgnoreCase("Decoracion"));
+    public static void listarProductos(){
 
         System.out.println("\nStock por tipo de producto:");
-        consultarArbol(stockArbol);
-        consultarFlor(stockFlor);
-        consultarDecoracion(stockDecoracion);
+        consultarArbol(floristeria.getListaProductosPorTipo("arbol"));
+        consultarFlor(floristeria.getListaProductosPorTipo("flor"));
+        consultarDecoracion(floristeria.getListaProductosPorTipo("decoracion"));
 
     }
 
@@ -185,7 +182,7 @@ public class AplicacionFloristeria {
         });
     }
 
-    public static void valorTotalStock (Floristeria floristeria){
+    public static void valorTotalStock (){
 
         float valorTotal = floristeria.valorTotal();
 
@@ -194,7 +191,7 @@ public class AplicacionFloristeria {
         System.out.println("El valor total del stock es de " + formattedValue + " Euros.");
     }
     
-    public static Ticket crearTicket (Floristeria floristeria) {
+    public static Ticket crearTicket () {
     	String stop;
     	floristeria.agregarTicket();
     	Ticket ticket = floristeria.getTicket().get(floristeria.getTicket().size());

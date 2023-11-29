@@ -74,6 +74,11 @@ public class Floristeria {
 		return stock;
 	}
 
+	public HashMap<Integer, Producto> getListaProductosPorTipo (String tipo){
+
+		return baseDeDatos.listarProductosFiltrando(producto -> producto.getProductoTipo().equalsIgnoreCase(tipo));
+	}
+
 	public void getListaProductosCantidad() { //TODO
 
 		baseDeDatos.getStock();
