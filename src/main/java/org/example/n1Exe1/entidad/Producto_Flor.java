@@ -2,6 +2,7 @@ package org.example.n1Exe1.entidad;
 
 public class Producto_Flor extends Producto {
 	
+	private static final long serialVersionUID = 1L;
 	private String florColor;
 	
 	public Producto_Flor(String productoNombre, float productoPrecio, String florColor, int productoCantidad) {

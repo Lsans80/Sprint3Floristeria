@@ -3,7 +3,8 @@ package org.example.n1Exe1.entidad;
 import java.io.Serializable;
 
 public abstract class Producto implements Serializable {
-	
+
+	private static final long serialVersionUID = 1L;
 	private int productoID;
 	private String productoNombre;
 	private float productoPrecio;
@@ -54,6 +55,10 @@ public abstract class Producto implements Serializable {
 	}
 	public void setProductoCantidad(int productoCantidad) {
 		this.productoCantidad = productoCantidad;
+	}
+	
+	public void reduceProductoCantidad() {
+		productoCantidad--;
 	}
 
 	@Override
