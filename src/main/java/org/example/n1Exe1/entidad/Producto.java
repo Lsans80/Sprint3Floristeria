@@ -56,7 +56,7 @@ public abstract class Producto implements Serializable {
 	public void setProductoCantidad(int productoCantidad) {
 		this.productoCantidad = productoCantidad;
 	}
-	
+  
 	public void reducirProductoCantidad(int cantidad) {
 		productoCantidad = productoCantidad - cantidad;
 	}
@@ -71,6 +71,9 @@ public abstract class Producto implements Serializable {
 	
 	public void resetProductoCantidad() {
 		productoCantidad = 0;
+	}
+	public void reduceProductoCantidad() {
+		productoCantidad--;
 	}
 
 	@Override
