@@ -3,7 +3,8 @@ package org.example.n1Exe1.entidad;
 import java.io.Serializable;
 
 public abstract class Producto implements Serializable {
-	
+
+	private static final long serialVersionUID = 1L;
 	private int productoID;
 	private String productoNombre;
 	private float productoPrecio;
@@ -55,6 +56,22 @@ public abstract class Producto implements Serializable {
 	public void setProductoCantidad(int productoCantidad) {
 		this.productoCantidad = productoCantidad;
 	}
+	
+	public void reducirProductoCantidad(int cantidad) {
+		productoCantidad = productoCantidad - cantidad;
+	}
+	
+	public void reducirProductoCantidadUnidad() {
+		productoCantidad--;
+	}
+	
+	public void incrementarProductoCantidad() {
+		productoCantidad++;
+	}
+	
+	public void resetProductoCantidad() {
+		productoCantidad = 0;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -83,7 +100,7 @@ public abstract class Producto implements Serializable {
 	@Override
 	public String toString() {
 		return "Producto [ID= " + productoID + ", Nombre=" + productoNombre + ", Precio="
-				+ productoPrecio + ", Tipo=" + productoTipo + " ";
+				+ productoPrecio + ", Tipo=" + productoTipo + ", Cantidad=" + productoCantidad + " ";
 	}
 
 

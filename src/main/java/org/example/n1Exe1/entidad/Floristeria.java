@@ -1,6 +1,7 @@
 package org.example.n1Exe1.entidad;
 
 
+import org.example.n1Exe1.herramienta.Input;
 import org.example.n1Exe1.persistencia.BaseDeDatos;
 
 
@@ -57,9 +58,9 @@ public class Floristeria {
 		return productoBuscado;
 	}
 
-	public void eliminarProducto(int productoId) {
+	public void eliminarProducto(int productoID, int cantidad ) {
 
-		Producto productoEliminado = baseDeDatos.eliminarProducto(productoId);
+		Producto productoEliminado = baseDeDatos.eliminarProducto(productoID, cantidad);
 		if (productoEliminado == null) {
 			System.out.println("El producto no se ha encontrado.");
 		} else {
@@ -84,26 +85,51 @@ public class Floristeria {
 		baseDeDatos.getStock();
 	}
 
-	public Ticket agregarTicket() {
-
-		return baseDeDatos.agregarTicket(new Ticket());
+	public int agregarTicket() {
+		Ticket ticket = new Ticket();
+		baseDeDatos.agregarTicket(ticket);
+		return ticket.getTicketID();
 	}
 
 	public void agregarProductoTicket(int productoId, int ticketID) {
-		baseDeDatos.getTickets().get(ticketID).agregarProductoAlTicket(baseDeDatos.getStock().get(productoId));
+		baseDeDatos.leerTicket(ticketID).agregarProductoAlTicket(baseDeDatos.leerProducto(productoId));
+		
+	}
+	
+	public Ticket crearTicket() {
+		boolean si;
+		int ticketID = agregarTicket();
+		int productID;
+		do {
+			productID = Input.inputInt("Id Producto para agregar: ");
+			if (existeProducto(productID)){
+				agregarProductoTicket(productID, ticketID);
+			} else {
+				System.err.println("No existe el producto");
+			}
+			si = Input.inputSiNo("Deseas agregar otro producto? s/n");
+		} while (si || baseDeDatos.leerTicket(ticketID).getProductosVendidos().isEmpty());
+
+		return baseDeDatos.leerTicket(ticketID);
 	}
 
-	public HashMap<Integer, Ticket> getTicket() {
-		return baseDeDatos.getTickets();
-	}
-
-	public void printTicketsHistory() {
-		System.out.println(baseDeDatos.getTickets());
+	public HashMap<Integer, Ticket> getListaTickets() {
+		return baseDeDatos.listarTickets();
 	}
 
 	public float valorTotal() {
 		return baseDeDatos.getValorTotalStock();
 
+	}
+	
+	public float valorVentas() {
+		return baseDeDatos.getValorTotalTickets();
+
+	}
+	
+	public boolean existeProducto(int productoID) {
+		return baseDeDatos.listarProductos().containsKey(productoID) && 
+				baseDeDatos.listarProductos().get(productoID).getProductoCantidad() > 0;
 	}
 
 	public void finalizar() {

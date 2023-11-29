@@ -26,15 +26,17 @@ public class AplicacionFloristeria {
             switch(menu()){
                 case 1: crearProducto();
                     break;
-                case 2: eliminarProducto();
+                case 2: eliminarProducto(Input.inputInt("ID de producto: "), Input.inputInt("Cantidad a retirar: "));
                     break;
                 case 3: listarProductos();
                     break;
                 case 4: valorTotalStock();
                     break;
-                case 5: System.out.println(crearTicket());
+                case 5: crearTicket();
                 	break;
-                case 6: floristeria.printTicketsHistory();
+                case 6: listarHistorialTickets();
+            		break;
+                case 7: imprimirValorTotalDeVentas();
             		break;
                 case 0: System.out.println("Gracias por utilizar nuestra floristería.");
                     salir = true;
@@ -123,10 +125,9 @@ public class AplicacionFloristeria {
         floristeria.addProducto(decoracion);
     }
 
-    public static void eliminarProducto(){
+    public static void eliminarProducto (int id, int cantidad){
 
-        int id = Input.inputInt("Introduce el número del ID de producto que quieres eliminar:");
-        floristeria.eliminarProducto(id);
+        floristeria.eliminarProducto(id, cantidad);
     }
 
     public static void listarProductos(){
@@ -191,17 +192,22 @@ public class AplicacionFloristeria {
         System.out.println("El valor total del stock es de " + formattedValue + " Euros.");
     }
     
-    public static Ticket crearTicket () {
-    	String stop;
-    	floristeria.agregarTicket();
-    	Ticket ticket = floristeria.getTicket().get(floristeria.getTicket().size());
-    	do {
-    		floristeria.agregarProductoTicket(Input.inputInt("Id Producto: "), 
-    			ticket.getTicketID());
-    		stop = Input.inputString("Deseas agregar otro producto? ");	
-    	} while (stop.equalsIgnoreCase("si"));
+    public static void crearTicket () {
     	
-    	return ticket;
+		System.out.println(floristeria.crearTicket());
+ 
+    }
+    
+    public static void listarHistorialTickets () {
+    	
+    	floristeria.getListaTickets().entrySet().forEach(ticket-> System.out.println(ticket));
+ 
+    }
+    
+    public static void imprimirValorTotalDeVentas() {
+
+    	System.out.println("El valor total del ventas es de " + floristeria.valorVentas());
+
     }
 
     public static void finalizar(){
