@@ -62,10 +62,20 @@ public class BaseDeDatos {
     public Ticket leerTicket(int id) {
         return tickets.get(id);
     }
-    public Producto eliminarProducto(int id) {
-        Producto p = leerProducto(id);
-        stock.remove(id);
+    public Producto eliminarProducto(int id, int cantidad) {
+    	Producto p = leerProducto(id);
+    	if (p.getProductoCantidad() <= cantidad) {
+    		p.resetProductoCantidad();
+    		stock.remove(id);
+    	} else {
+    		reducirCantidadProducto(id, cantidad);
+    	}
         return p;
+    }
+    public Producto reducirCantidadProducto(int id, int cantidad) {
+    	Producto p = leerProducto(id);
+    	p.reducirProductoCantidad(cantidad);
+    	return p;
     }
     public Ticket eliminarTicket(int id) {
         Ticket t = leerTicket(id);

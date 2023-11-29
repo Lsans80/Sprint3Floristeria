@@ -58,9 +58,9 @@ public class Floristeria {
 		return productoBuscado;
 	}
 
-	public void eliminarProducto(int productoId) {
+	public void eliminarProducto(int productoID, int cantidad ) {
 
-		Producto productoEliminado = baseDeDatos.eliminarProducto(productoId);
+		Producto productoEliminado = baseDeDatos.eliminarProducto(productoID, cantidad);
 		if (productoEliminado == null) {
 			System.out.println("El producto no se ha encontrado.");
 		} else {

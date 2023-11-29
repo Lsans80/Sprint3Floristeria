@@ -56,7 +56,22 @@ public abstract class Producto implements Serializable {
 	public void setProductoCantidad(int productoCantidad) {
 		this.productoCantidad = productoCantidad;
 	}
+  
+	public void reducirProductoCantidad(int cantidad) {
+		productoCantidad = productoCantidad - cantidad;
+	}
 	
+	public void reducirProductoCantidadUnidad() {
+		productoCantidad--;
+	}
+	
+	public void incrementarProductoCantidadUnidad() {
+		productoCantidad++;
+	}
+	
+	public void resetProductoCantidad() {
+		productoCantidad = 0;
+	}
 	public void reduceProductoCantidad() {
 		productoCantidad--;
 	}
@@ -88,7 +103,7 @@ public abstract class Producto implements Serializable {
 	@Override
 	public String toString() {
 		return "Producto [ID= " + productoID + ", Nombre=" + productoNombre + ", Precio="
-				+ productoPrecio + ", Tipo=" + productoTipo + " ";
+				+ productoPrecio + ", Tipo=" + productoTipo + ", Cantidad=" + productoCantidad + " ";
 	}
 
 

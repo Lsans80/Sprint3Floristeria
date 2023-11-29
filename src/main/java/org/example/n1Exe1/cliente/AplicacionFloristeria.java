@@ -26,7 +26,7 @@ public class AplicacionFloristeria {
             switch(menu()){
                 case 1: crearProducto();
                     break;
-                case 2: eliminarProducto();
+                case 2: eliminarProducto(Input.inputInt("ID de producto: "), Input.inputInt("Cantidad a retirar: "));
                     break;
                 case 3: listarProductos();
                     break;
@@ -125,10 +125,9 @@ public class AplicacionFloristeria {
         floristeria.addProducto(decoracion);
     }
 
-    public static void eliminarProducto(){
+    public static void eliminarProducto (int id, int cantidad){
 
-        int id = Input.inputInt("Introduce el número del ID de producto que quieres eliminar:");
-        floristeria.eliminarProducto(id);
+        floristeria.eliminarProducto(id, cantidad);
     }
 
     public static void listarProductos(){
