@@ -80,11 +80,6 @@ public class Floristeria {
 		return baseDeDatos.listarProductosFiltrando(producto -> producto.getProductoTipo().equalsIgnoreCase(tipo));
 	}
 
-	public void getListaProductosCantidad() { //TODO
-
-		baseDeDatos.getStock();
-	}
-
 	public int agregarTicket() {
 		Ticket ticket = new Ticket();
 		baseDeDatos.agregarTicket(ticket);
