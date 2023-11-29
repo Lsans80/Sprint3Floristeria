@@ -13,6 +13,7 @@ public class AplicacionFloristeria {
     static BaseDeDatos baseDeDatos = BaseDeDatos.instanciar();
 
     static Floristeria floristeria;
+    
 
     public static void start (){
 

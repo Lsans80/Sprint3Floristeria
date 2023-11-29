@@ -58,7 +58,7 @@ public class Floristeria {
 		return productoBuscado;
 	}
 
-	public void eliminarProducto(int productoID, int cantidad ) {
+	public void eliminarProducto(int productoID, int cantidad) {
 
 		Producto productoEliminado = baseDeDatos.eliminarProducto(productoID, cantidad);
 		if (productoEliminado == null) {
@@ -91,24 +91,36 @@ public class Floristeria {
 		return ticket.getTicketID();
 	}
 
-	public void agregarProductoTicket(int productoId, int ticketID) {
-		baseDeDatos.leerTicket(ticketID).agregarProductoAlTicket(baseDeDatos.leerProducto(productoId));
+	public void agregarProductoTicket(int productoId, int ticketID, int cantidad) {
+		baseDeDatos.leerTicket(ticketID).agregarProductoAlTicket(productoId, baseDeDatos.leerProducto(productoId));
 		
 	}
 	
+	public void setCantidadProductoTicket(int productoId, int ticketID, int cantidad) {
+		baseDeDatos.leerTicket(ticketID).getProductosVendidos().get(productoId).setProductoCantidad(cantidad);
+	}
+	
+	public void reducirCantidadStockProducto (int productoId, int cantidad) {
+		baseDeDatos.reducirCantidadProducto(productoId, cantidad);
+	}
+	
 	public Ticket crearTicket() {
-		boolean si;
 		int ticketID = agregarTicket();
 		int productID;
+		int cantidad;
+		boolean si;
 		do {
 			productID = Input.inputInt("Id Producto para agregar: ");
+			cantidad = Input.inputInt("Cantidad: ");
 			if (existeProducto(productID)){
-				agregarProductoTicket(productID, ticketID);
+				agregarProductoTicket(productID, ticketID, cantidad);
+				reducirCantidadStockProducto(productID, cantidad);
+				setCantidadProductoTicket(productID, ticketID, cantidad);
 			} else {
 				System.err.println("No existe el producto");
 			}
 			si = Input.inputSiNo("Deseas agregar otro producto? s/n");
-		} while (si || baseDeDatos.leerTicket(ticketID).getProductosVendidos().isEmpty());
+		} while (si || baseDeDatos.leerTicket(ticketID).getProductosVendidos().isEmpty()); //TODO
 
 		return baseDeDatos.leerTicket(ticketID);
 	}

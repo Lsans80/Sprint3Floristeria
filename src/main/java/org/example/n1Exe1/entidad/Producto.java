@@ -2,6 +2,8 @@ package org.example.n1Exe1.entidad;
 
 import java.io.Serializable;
 
+import org.example.n1Exe1.persistencia.BaseDeDatos;
+
 public abstract class Producto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -9,13 +11,14 @@ public abstract class Producto implements Serializable {
 	private String productoNombre;
 	private float productoPrecio;
 	private String productoTipo;
-	private static int proximoID = 1;
+	private static BaseDeDatos baseDeDatos = BaseDeDatos.instanciar();
+	protected static int proximoID = baseDeDatos.maximoIDStock()+1;
 
 	private int productoCantidad;
 
 	
 	public Producto(String productoNombre, float productoPrecio, int cantidad) {
-		this.productoID = proximoID;
+		productoID = proximoID;
 		this.productoNombre = productoNombre;
 		this.productoPrecio = productoPrecio;
 		this.productoCantidad = cantidad;

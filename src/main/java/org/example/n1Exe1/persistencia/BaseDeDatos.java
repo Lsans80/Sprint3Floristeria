@@ -4,7 +4,9 @@ import org.example.n1Exe1.entidad.Producto;
 import org.example.n1Exe1.entidad.Ticket;
 
 import java.io.*;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -77,10 +79,22 @@ public class BaseDeDatos {
     	p.reducirProductoCantidad(cantidad);
     	return p;
     }
+    
     public Ticket eliminarTicket(int id) {
         Ticket t = leerTicket(id);
         tickets.remove(id);
         return t;
+    }
+    
+    public int maximoIDStock () {
+    	Integer maxKey = 0;
+        for (Integer key : stock.keySet()) {
+            if (maxKey == null || stock.get(key).getProductoID() > stock.get(maxKey).getProductoID()) {
+                maxKey = key;
+            }
+        }
+        
+        return maxKey;
     }
 
     //Funcion única para filtros personalizados desde la aplicación(?)
