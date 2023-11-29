@@ -10,7 +10,25 @@ public class Input {
 	private static final String DOUBLE_FORMAT_ERR_MSG = "There is a format error on your response. Enter a double";
 	private static final String FLOAT_FORMAT_ERR_MSG = "There is a format error on your response. Enter a float";
 	private static final String EMPTY_STRING_ERR_MSG = "Your respose must not be empty.";
+	private static final String YES_NO_ERR_MSG = "Hay un error en tu respuesta. Ingresa S or N if si o no.";
+	private static final String BYTE_FORMAT_ERR_MSG = "There is a format error on your response. Enter a byte";
+
 	
+	public static byte inputByte (String pregunta) {
+		byte response = 0;
+		boolean okey = false;
+		do {
+			System.out.println(pregunta);
+			try {
+				response = input.nextByte();
+				okey = true;
+			} catch (InputMismatchException ex) {
+				System.err.println(BYTE_FORMAT_ERR_MSG);
+			}
+			input.nextLine();
+		} while (!okey);
+		return response;
+	}
 	
 	public static int inputInt (String pregunta) {
 		int response = 0;
@@ -79,5 +97,30 @@ public class Input {
 		} while (!okey);		
 		return response;	
 	}
+	
+	public static boolean inputSiNo (String pregunta) {
+        boolean booleanResponse = false;
+        boolean okey = false;
+        String userResponse = "";
+
+        do {
+            System.out.println(pregunta);
+            try {
+                userResponse = input.nextLine().toUpperCase();
+                if (userResponse.charAt(0) == 'S') {
+                    booleanResponse = true;
+                    okey = true;
+                } else if (userResponse.charAt(0) == 'N') {
+                    booleanResponse = false;
+                    okey = true;
+                } else {
+                	throw new Exception(YES_NO_ERR_MSG);
+                }
+            } catch (Exception ex) {
+                System.err.println(ex.getMessage());
+            }
+        } while (!okey);
+        return booleanResponse;
+	 }
 
 }

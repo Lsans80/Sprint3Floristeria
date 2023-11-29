@@ -4,6 +4,7 @@ import org.example.n1Exe1.herramienta.Material;
 
 public class Producto_Decoracion extends Producto {
 	
+	private static final long serialVersionUID = 1L;
 	private Enum<Material> decoracionMaterial;
 	
 	public Producto_Decoracion(String productoNombre, float productoPrecio, Enum<Material> decoracionMaterial, int productoCantidad) {

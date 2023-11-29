@@ -32,9 +32,11 @@ public class AplicacionFloristeria {
                     break;
                 case 4: valorTotalStock();
                     break;
-                case 5: System.out.println(crearTicket());
+                case 5: crearTicket();
                 	break;
-                case 6: floristeria.printTicketsHistory();
+                case 6: listarHistorialTickets();
+            		break;
+                case 7: imprimirValorTotalDeVentas();
             		break;
                 case 0: System.out.println("Gracias por utilizar nuestra floristería.");
                     salir = true;
@@ -191,17 +193,22 @@ public class AplicacionFloristeria {
         System.out.println("El valor total del stock es de " + formattedValue + " Euros.");
     }
     
-    public static Ticket crearTicket () {
-    	String stop;
-    	floristeria.agregarTicket();
-    	Ticket ticket = floristeria.getTicket().get(floristeria.getTicket().size());
-    	do {
-    		floristeria.agregarProductoTicket(Input.inputInt("Id Producto: "), 
-    			ticket.getTicketID());
-    		stop = Input.inputString("Deseas agregar otro producto? ");	
-    	} while (stop.equalsIgnoreCase("si"));
+    public static void crearTicket () {
     	
-    	return ticket;
+		System.out.println(floristeria.crearTicket());
+ 
+    }
+    
+    public static void listarHistorialTickets () {
+    	
+    	floristeria.getListaTickets().entrySet().forEach(ticket-> System.out.println(ticket));
+ 
+    }
+    
+    public static void imprimirValorTotalDeVentas() {
+
+    	System.out.println("El valor total del ventas es de " + floristeria.valorVentas());
+
     }
 
     public static void finalizar(){
