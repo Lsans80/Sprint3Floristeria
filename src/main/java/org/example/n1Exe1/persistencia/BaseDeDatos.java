@@ -54,7 +54,6 @@ public class BaseDeDatos {
     public HashMap<Integer, Ticket> listarTickets() {
         return tickets;
     }
-    
     public HashMap<Integer, Producto> listarTicketsProductosVendidos(int id) {
         return tickets.get(id).getProductosVendidos();
     }
@@ -66,16 +65,13 @@ public class BaseDeDatos {
             return producto;
         });
     }
-    
     public Ticket agregarTicket(Ticket ticket) {
        return tickets.put(ticket.getTicketID(), ticket);
     }
-    
     public void agregarProductoTicket(int productoID, int ticketID) {
     	Producto p = this.leerProducto(productoID);
     	leerTicket(ticketID).agregarProductoAlTicket(productoID, p.clonar());
     }
-    
     public Producto leerProducto(int id) {
         return stock.get(id);
     }
@@ -97,17 +93,14 @@ public class BaseDeDatos {
     	p.reducirProductoCantidad(cantidad);
     	return p;
     }
-    
     public void setCantidadProductoTicket(int productoID, int ticketID, int cantidad) {
     	leerTicket(ticketID).getProductosVendidos().get(productoID).setProductoCantidad(cantidad);
     }
-    
     public Ticket eliminarTicket(int id) {
         Ticket t = leerTicket(id);
         tickets.remove(id);
         return t;
     }
-    
     public int maximoIDStock () {
     	Integer maxKey = 0;
         for (Integer key : stock.keySet()) {
@@ -115,10 +108,8 @@ public class BaseDeDatos {
                 maxKey = key;
             }
         }
-        
         return maxKey;
     }
-
     //Funcion única para filtros personalizados desde la aplicación(?)
     public HashMap<Integer, Producto> listarProductosFiltrando(Predicate<Producto> predicate) {
        // return (HashMap<Integer, Producto>) stock.values().stream().filter(predicate).collect(Collectors.toMap(Producto::getProductoID, producto -> producto));
@@ -128,25 +119,17 @@ public class BaseDeDatos {
     public float getValorTotalStock() {
         return (float) stock.values().stream().mapToDouble(producto -> producto.getProductoPrecio() * producto.getProductoCantidad()).sum();
     }
-    
-    
     public float getValorTotalTickets() {
         return (float) tickets.values().stream().mapToDouble(Ticket::getTicketTotal).sum();
     }
-    
-
-    
     //TODO Pulir excepciones, casteo, etc.
- 
     public int getNextProductoId() {
         nextProductoId++;
 		return nextProductoId;
 	}
-
 	public int getNextTicketId() {
 		return nextTicketId;
 	}
-
 	@SuppressWarnings("unchecked")
 	public void load() {
         File database = new File ("database.txt");
@@ -175,7 +158,6 @@ public class BaseDeDatos {
             System.err.format("IOException: %s%n", x);
         }
     }
-    
 	/*@SuppressWarnings("unchecked")
 	public void loadJsonFileToStock () {
 		File database = new File ("bdJson.txt");
