@@ -5,8 +5,8 @@ public class Producto_Flor extends Producto {
 	private static final long serialVersionUID = 1L;
 	private String florColor;
 	
-	public Producto_Flor(String productoNombre, float productoPrecio, String florColor, int productoCantidad) {
-		super(productoNombre, productoPrecio, productoCantidad);
+	public Producto_Flor(int productoID, String productoNombre, float productoPrecio, String florColor, int productoCantidad) {
+		super(productoID, productoNombre, productoPrecio, productoCantidad);
 		this.florColor = florColor;
 		super.setProductoTipo("Flor");
 	}
