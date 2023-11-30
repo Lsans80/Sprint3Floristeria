@@ -68,6 +68,7 @@ public abstract class Producto implements Serializable, Cloneable {
 		Producto.proximoID = proximoID;
 	}*/
 
+  
 	public void reducirProductoCantidad(int cantidad) {
 		productoCantidad = productoCantidad - cantidad;
 	}
@@ -99,6 +100,11 @@ public abstract class Producto implements Serializable, Cloneable {
         return obj;
     }
 	
+	public void reduceProductoCantidad() {
+		productoCantidad--;
+	}
+
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

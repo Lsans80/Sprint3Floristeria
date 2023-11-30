@@ -10,8 +10,6 @@ public class AplicacionFloristeria {
 
     static Scanner sc = new Scanner(System.in);
 
-    static BaseDeDatos baseDeDatos = BaseDeDatos.instanciar();
-
     static Floristeria floristeria;
     
 
@@ -64,8 +62,17 @@ public class AplicacionFloristeria {
             opcion = sc.nextByte();
             sc.nextLine();
 
+            opcion = Input.inputByte("\n****FEETLAND****\n"
+                                            + "\n1. Agregar producto."
+                                            + "\n2. Eliminar producto."
+                                            + "\n3. Listar productos."
+                                            + "\n4. Consultar valor stock total."
+                                            + "\n5. Crear Ticket."
+                                            + "\n6. Lista historial Tickets."
+                                            + "\n0. Salir de la aplicación.\n");
+
             if(opcion < MINIMO || opcion > MAXIMO){
-                System.out.println("Escoge una opción válida.");
+                System.err.println("Escoge una opción válida.");
             }
 
         }while(opcion < MINIMO || opcion > MAXIMO);
@@ -73,6 +80,7 @@ public class AplicacionFloristeria {
         return opcion;
     }
 
+    //TODO test de crear producto.
     public static void crearProducto(){
 
         int opcion = Input.inputInt("Dime que producto deseas crear: \n1.Arbol.\n2.Flor.\n3.Decoración.");
