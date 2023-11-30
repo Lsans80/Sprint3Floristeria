@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 public class Ticket implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private int ticketID;
 	private LocalDate ticketDate;
 	private HashMap<Integer, Producto> productosVendidos;

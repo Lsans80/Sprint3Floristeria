@@ -52,56 +52,35 @@ public class Floristeria {
 	}
 
 	public Producto buscarProducto(int productoId) {
-
 		Producto productoBuscado = baseDeDatos.leerProducto(productoId);
 
 		return productoBuscado;
 	}
+	
+	public int nextProductoID () {
+		return baseDeDatos.getNextProductoId();
+	}
 
 	public void eliminarProducto(int productoID, int cantidad) {
-
 		Producto productoEliminado = baseDeDatos.eliminarProducto(productoID, cantidad);
 		if (productoEliminado == null) {
 			System.out.println("El producto no se ha encontrado.");
 		} else {
 			System.out.println(productoEliminado + " ha sido eliminado.");
 		}
-
 	}
 
 	public HashMap<Integer, Producto> getListaProductos() {
-
 		HashMap<Integer, Producto> stock = baseDeDatos.listarProductos();
 		return stock;
 	}
 
 	public HashMap<Integer, Producto> getListaProductosPorTipo (String tipo){
-
 		return baseDeDatos.listarProductosFiltrando(producto -> producto.getProductoTipo().equalsIgnoreCase(tipo));
 	}
 
 	public void getListaProductosCantidad() { //TODO
-
 		baseDeDatos.getStock();
-	}
-
-	public int agregarTicket() {
-		Ticket ticket = new Ticket();
-		baseDeDatos.agregarTicket(ticket);
-		return ticket.getTicketID();
-	}
-
-	public void agregarProductoTicket(int productoID, int ticketID) {
-		baseDeDatos.agregarProductoTicket(productoID, ticketID);
-		
-	}
-	
-	public void setCantidadProductoTicket(int productoID, int ticketID, int cantidad) {
-		baseDeDatos.setCantidadProductoTicket(productoID, ticketID, cantidad);
-	}
-	
-	public void reducirCantidadStockProducto (int productoID, int cantidad) {
-		baseDeDatos.reducirCantidadProducto(productoID, cantidad);
 	}
 	
 	public Ticket crearTicket() {
@@ -125,6 +104,25 @@ public class Floristeria {
 		return baseDeDatos.leerTicket(ticketID);
 	}
 
+	private int agregarTicket() {
+		Ticket ticket = new Ticket();
+		baseDeDatos.agregarTicket(ticket);
+		return ticket.getTicketID();
+	}
+
+	private void agregarProductoTicket(int productoID, int ticketID) {
+		baseDeDatos.agregarProductoTicket(productoID, ticketID);
+		
+	}
+	
+	private void setCantidadProductoTicket(int productoID, int ticketID, int cantidad) {
+		baseDeDatos.setCantidadProductoTicket(productoID, ticketID, cantidad);
+	}
+	
+	private void reducirCantidadStockProducto (int productoID, int cantidad) {
+		baseDeDatos.reducirCantidadProducto(productoID, cantidad);
+	}
+
 	public HashMap<Integer, Ticket> getListaTickets() {
 		return baseDeDatos.listarTickets();
 	}
@@ -139,7 +137,7 @@ public class Floristeria {
 
 	}
 	
-	public boolean existeProducto(int productoID) {
+	private boolean existeProducto(int productoID) {
 		return baseDeDatos.listarProductos().containsKey(productoID) && 
 				baseDeDatos.listarProductos().get(productoID).getProductoCantidad() > 0;
 	}

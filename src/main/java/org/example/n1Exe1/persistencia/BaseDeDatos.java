@@ -2,7 +2,7 @@ package org.example.n1Exe1.persistencia;
 
 import org.example.n1Exe1.entidad.Producto;
 import org.example.n1Exe1.entidad.Ticket;
-import org.example.n1Exe1.herramienta.SerDeSerObjectJson;
+//import org.example.n1Exe1.herramienta.SerDeSerObjectJson;
 
 import java.io.*;
 import java.util.HashMap;
@@ -14,6 +14,8 @@ public class BaseDeDatos {
     private HashMap<Integer, Producto> stock;
     private HashMap<Integer, Ticket> tickets;
     private static BaseDeDatos instancia;
+    private int nextProductoId;
+    private int nextTicketId;
 	//private final String FILE_NOT_FOUND_MSG = "File not found";
 
 
@@ -104,9 +106,9 @@ public class BaseDeDatos {
     }
     
     public int maximoIDStock () {
-    	Integer maxKey = 0;
+    	Integer maxKey = 1;
         for (Integer key : stock.keySet()) {
-            if (maxKey == null || stock.get(key).getProductoID() > stock.get(maxKey).getProductoID()) {
+            if (stock.get(key).getProductoID() > stock.get(maxKey).getProductoID()) {
                 maxKey = key;
             }
         }
@@ -133,7 +135,15 @@ public class BaseDeDatos {
     
     //TODO Pulir excepciones, casteo, etc.
  
-    @SuppressWarnings("unchecked")
+    public int getNextProductoId() {
+		return nextProductoId;
+	}
+
+	public int getNextTicketId() {
+		return nextTicketId;
+	}
+
+	@SuppressWarnings("unchecked")
 	public void load() {
         File database = new File ("database.txt");
         if (database.exists()) {
@@ -148,6 +158,7 @@ public class BaseDeDatos {
                 System.err.format("ClassNotFoundException: %s%n", x);
             }
         }
+        nextProductoId = maximoIDStock() +1;
     }
     //TODO Pulir excepciones
     public void save() {

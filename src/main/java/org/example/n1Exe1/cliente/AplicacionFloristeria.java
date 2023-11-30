@@ -98,7 +98,7 @@ public class AplicacionFloristeria {
         float precio = Input.inputFloat("Dime el precio;");
         float altura = Input.inputFloat("Dime la altura:");
         int cantidad = Input.inputInt("Dime la cantidad:");
-        Producto_Arbol arbol = new Producto_Arbol (nombre,precio,altura,cantidad);
+        Producto_Arbol arbol = new Producto_Arbol (floristeria.nextProductoID(), nombre, precio, altura,cantidad);
         floristeria.addProducto(arbol);
     }
 
@@ -108,7 +108,7 @@ public class AplicacionFloristeria {
         float precio = Input.inputFloat("Dime el precio;");
         String color = Input.inputString("Dime el color:");
         int cantidad = Input.inputInt("Dime la cantidad:");
-        Producto_Flor flor = new Producto_Flor(nombre,precio,color,cantidad);
+        Producto_Flor flor = new Producto_Flor(floristeria.nextProductoID(), nombre, precio, color, cantidad);
         floristeria.addProducto(flor);
     }
 
@@ -123,7 +123,7 @@ public class AplicacionFloristeria {
 
         Material decoracionMaterial = Material.valueOf(material.toUpperCase());
 
-        Producto_Decoracion decoracion = new Producto_Decoracion(nombre,precio,decoracionMaterial,cantidad);
+        Producto_Decoracion decoracion = new Producto_Decoracion(floristeria.nextProductoID(), nombre, precio, decoracionMaterial, cantidad);
         floristeria.addProducto(decoracion);
     }
 
