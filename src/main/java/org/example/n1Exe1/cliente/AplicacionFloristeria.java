@@ -49,7 +49,7 @@ public class AplicacionFloristeria {
     public static byte menu(){
         byte opcion;
         final byte MINIMO = 0;
-        final byte MAXIMO = 6;
+        final byte MAXIMO = 7;
 
         do{
             System.out.println("\n****FeetLand****");
@@ -59,6 +59,7 @@ public class AplicacionFloristeria {
             System.out.println("4. Consultar valor stock total.");
             System.out.println("5. Crear Ticket.");
             System.out.println("6. Lista historial Tickets.");
+            System.out.println("7. Totalizar ventas.");
             System.out.println("0. Salir de la aplicación.\n");
             opcion = sc.nextByte();
             sc.nextLine();

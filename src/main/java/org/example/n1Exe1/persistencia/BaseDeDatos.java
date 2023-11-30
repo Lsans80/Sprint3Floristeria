@@ -2,11 +2,10 @@ package org.example.n1Exe1.persistencia;
 
 import org.example.n1Exe1.entidad.Producto;
 import org.example.n1Exe1.entidad.Ticket;
+import org.example.n1Exe1.herramienta.SerDeSerObjectJson;
 
 import java.io.*;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -15,11 +14,14 @@ public class BaseDeDatos {
     private HashMap<Integer, Producto> stock;
     private HashMap<Integer, Ticket> tickets;
     private static BaseDeDatos instancia;
+	//private final String FILE_NOT_FOUND_MSG = "File not found";
+
 
     private BaseDeDatos () {
         stock = new HashMap<>();
         tickets = new HashMap<>();
         load();
+        //loadJsonFileToStock();
     }
 
     public static BaseDeDatos instanciar() {
@@ -47,6 +49,10 @@ public class BaseDeDatos {
     public HashMap<Integer, Ticket> listarTickets() {
         return tickets;
     }
+    
+    public HashMap<Integer, Producto> listarTicketsProductosVendidos(int id) {
+        return tickets.get(id).getProductosVendidos();
+    }
     public void agregarProducto(Producto producto) {
         stock.compute(producto.getProductoID(), (id, existingProducto) -> {
             if (existingProducto != null) {
@@ -55,9 +61,15 @@ public class BaseDeDatos {
             return producto;
         });
     }
+    
     public Ticket agregarTicket(Ticket ticket) {
        return tickets.put(ticket.getTicketID(), ticket);
     }
+    
+    public void agregarProductoTicket(int productoID, int ticketID) {
+    	leerTicket(ticketID).agregarProductoAlTicket(productoID, this.leerProducto(productoID));
+    }
+    
     public Producto leerProducto(int id) {
         return stock.get(id);
     }
@@ -78,6 +90,10 @@ public class BaseDeDatos {
     	Producto p = leerProducto(id);
     	p.reducirProductoCantidad(cantidad);
     	return p;
+    }
+    
+    public void setCantidadProductoTicket(int productoID, int ticketID, int cantidad) {
+    	leerTicket(ticketID).getProductosVendidos().get(productoID).setProductoCantidad(cantidad);
     }
     
     public Ticket eliminarTicket(int id) {
@@ -106,9 +122,14 @@ public class BaseDeDatos {
     public float getValorTotalStock() {
         return (float) stock.values().stream().mapToDouble(producto -> producto.getProductoPrecio() * producto.getProductoCantidad()).sum();
     }
+    
+    
     public float getValorTotalTickets() {
         return (float) tickets.values().stream().mapToDouble(Ticket::getTicketTotal).sum();
     }
+    
+
+    
     //TODO Pulir excepciones, casteo, etc.
  
     @SuppressWarnings("unchecked")
@@ -138,5 +159,35 @@ public class BaseDeDatos {
             System.err.format("IOException: %s%n", x);
         }
     }
+    
+	/*@SuppressWarnings("unchecked")
+	public void loadJsonFileToStock () {
+		File database = new File ("bdJson.txt");
+		if (database.exists()) {
+			try (FileReader input = new FileReader(database);
+			BufferedReader buffer = new BufferedReader(input);) {
+	
+				String json = buffer.readLine();
+				
+				stock = SerDeSerObjectJson.deserialize(json, HashMap.class);
+			} catch (IOException event) {
+				System.out.println(FILE_NOT_FOUND_MSG);
+				
+			}
+		}
+		
+	}
+    
+	public void saveStockJsonToFile() {
+		try (FileWriter output = new FileWriter("bdJson.txt", true);
+				BufferedWriter buffer = new BufferedWriter(output)){
+			
+			String json = SerDeSerObjectJson.serialize(stock);
+		
+			buffer.write(json);
+		} catch (IOException event) {
+			System.out.println(FILE_NOT_FOUND_MSG);
+		}
+	}*/
 
 }

@@ -91,36 +91,36 @@ public class Floristeria {
 		return ticket.getTicketID();
 	}
 
-	public void agregarProductoTicket(int productoId, int ticketID, int cantidad) {
-		baseDeDatos.leerTicket(ticketID).agregarProductoAlTicket(productoId, baseDeDatos.leerProducto(productoId));
+	public void agregarProductoTicket(int productoID, int ticketID) {
+		baseDeDatos.agregarProductoTicket(productoID, ticketID);
 		
 	}
 	
-	public void setCantidadProductoTicket(int productoId, int ticketID, int cantidad) {
-		baseDeDatos.leerTicket(ticketID).getProductosVendidos().get(productoId).setProductoCantidad(cantidad);
+	public void setCantidadProductoTicket(int productoID, int ticketID, int cantidad) {
+		baseDeDatos.setCantidadProductoTicket(productoID, ticketID, cantidad);
 	}
 	
-	public void reducirCantidadStockProducto (int productoId, int cantidad) {
-		baseDeDatos.reducirCantidadProducto(productoId, cantidad);
+	public void reducirCantidadStockProducto (int productoID, int cantidad) {
+		baseDeDatos.reducirCantidadProducto(productoID, cantidad);
 	}
 	
 	public Ticket crearTicket() {
 		int ticketID = agregarTicket();
-		int productID;
+		int productoID;
 		int cantidad;
 		boolean si;
 		do {
-			productID = Input.inputInt("Id Producto para agregar: ");
+			productoID = Input.inputInt("Id Producto para agregar: ");
 			cantidad = Input.inputInt("Cantidad: ");
-			if (existeProducto(productID)){
-				agregarProductoTicket(productID, ticketID, cantidad);
-				reducirCantidadStockProducto(productID, cantidad);
-				setCantidadProductoTicket(productID, ticketID, cantidad);
+			if (existeProducto(productoID)){
+				agregarProductoTicket(productoID, ticketID);
+				reducirCantidadStockProducto(productoID, cantidad);
+				setCantidadProductoTicket(productoID, ticketID, cantidad);
 			} else {
 				System.err.println("No existe el producto");
 			}
 			si = Input.inputSiNo("Deseas agregar otro producto? s/n");
-		} while (si || baseDeDatos.leerTicket(ticketID).getProductosVendidos().isEmpty()); //TODO
+		} while (si || baseDeDatos.listarTicketsProductosVendidos(ticketID).isEmpty()); //TODO
 
 		return baseDeDatos.leerTicket(ticketID);
 	}

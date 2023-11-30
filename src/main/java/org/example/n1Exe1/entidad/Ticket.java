@@ -1,20 +1,22 @@
 package org.example.n1Exe1.entidad;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
 
 public class Ticket implements Serializable {
 
 	private int ticketID;
+	private LocalDate ticketDate;
 	private HashMap<Integer, Producto> productosVendidos;
 	private float ticketTotal = 0.0F;
-	private int proximoID = 1;
+	private static int proximoID = 1;
 
 	public Ticket() {
 		this.ticketID = proximoID;
+		ticketDate = LocalDate.now();
 		productosVendidos = new HashMap<>();
+		ticketTotal = calcularValorTotalDelTicket();
 		proximoID++;
 	}
 
@@ -50,7 +52,7 @@ public class Ticket implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Ticket [ID= " + ticketID + ", productos=" + productosVendidos + ", Total="
+		return "Ticket [ID= " + ticketID + ", Date= " + ticketDate +  ", productos= " + productosVendidos + ", Total= "
 				+ calcularValorTotalDelTicket() + "]";
 	}
 
