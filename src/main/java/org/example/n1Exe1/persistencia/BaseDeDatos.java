@@ -5,6 +5,9 @@ import org.example.n1Exe1.entidad.Ticket;
 //import org.example.n1Exe1.herramienta.SerDeSerObjectJson;
 
 import java.io.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.function.Predicate;
@@ -108,7 +111,7 @@ public class BaseDeDatos {
     public int maximoIDStock () {
     	Integer maxKey = 0;
         for (Integer key : stock.keySet()) {
-            if (stock.get(key).getProductoID() > stock.get(maxKey).getProductoID()) {
+            if (maxKey == 0 || stock.get(key).getProductoID() > stock.get(maxKey).getProductoID()) {
                 maxKey = key;
             }
         }
