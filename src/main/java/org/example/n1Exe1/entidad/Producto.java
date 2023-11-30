@@ -2,24 +2,25 @@ package org.example.n1Exe1.entidad;
 
 import java.io.Serializable;
 
-public abstract class Producto implements Serializable {
+public abstract class Producto implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 	private int productoID;
 	private String productoNombre;
 	private float productoPrecio;
 	private String productoTipo;
-	private static int proximoID = 1;
+	//private static BaseDeDatos baseDeDatos = BaseDeDatos.instanciar();
+	//protected static int proximoID = baseDeDatos.maximoIDStock()+1;
 
 	private int productoCantidad;
 
 	
-	public Producto(String productoNombre, float productoPrecio, int cantidad) {
-		this.productoID = proximoID;
+	public Producto(int productoID, String productoNombre, float productoPrecio, int cantidad) {
+		this.productoID = productoID;
 		this.productoNombre = productoNombre;
 		this.productoPrecio = productoPrecio;
 		this.productoCantidad = cantidad;
-		proximoID++;
+		//proximoID++;
 	}
 	
 	public int getProductoID() {
@@ -56,7 +57,15 @@ public abstract class Producto implements Serializable {
 	public void setProductoCantidad(int productoCantidad) {
 		this.productoCantidad = productoCantidad;
 	}
-  
+	
+	/*public static int getProximoID() {
+		return proximoID;
+	}
+
+	public static void setProximoID(int proximoID) {
+		Producto.proximoID = proximoID;
+	}*/
+
 	public void reducirProductoCantidad(int cantidad) {
 		productoCantidad = productoCantidad - cantidad;
 	}
@@ -72,10 +81,22 @@ public abstract class Producto implements Serializable {
 	public void resetProductoCantidad() {
 		productoCantidad = 0;
 	}
-	public void reduceProductoCantidad() {
-		productoCantidad--;
+	
+	public Producto clonar () {
+		Producto pcopia = (Producto) this.clone();
+		return pcopia;
 	}
-
+	
+    public Object clone(){
+        Object obj=null;
+        try{
+            obj=super.clone();
+        }catch(CloneNotSupportedException ex){
+            System.out.println(" no se puede duplicar");
+        }
+        return obj;
+    }
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
