@@ -139,6 +139,7 @@ public class BaseDeDatos {
     //TODO Pulir excepciones, casteo, etc.
  
     public int getNextProductoId() {
+        nextProductoId++;
 		return nextProductoId;
 	}
 
@@ -161,7 +162,7 @@ public class BaseDeDatos {
                 System.err.format("ClassNotFoundException: %s%n", x);
             }
         }
-        nextProductoId = maximoIDStock() +1;
+        nextProductoId = maximoIDStock();
     }
     //TODO Pulir excepciones
     public void save() {
