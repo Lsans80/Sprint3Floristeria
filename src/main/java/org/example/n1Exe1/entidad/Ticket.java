@@ -1,27 +1,23 @@
 package org.example.n1Exe1.entidad;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Ticket implements Serializable {
 
-	private static final long serialVersionUID = 1L;
 	private int ticketID;
-	private LocalDate ticketDate;
-	private HashMap<Integer, Producto> productosVendidos;
+	private List<Producto> productosVendidos;
 	private float ticketTotal = 0.0F;
-	private static int proximoID = 1;
+	private int proximoID = 1;
 
 	public Ticket() {
 		this.ticketID = proximoID;
-		ticketDate = LocalDate.now();
-		productosVendidos = new HashMap<>();
-		ticketTotal = calcularValorTotalDelTicket();
+		productosVendidos = new ArrayList<>();
 		proximoID++;
 	}
 
-	public HashMap<Integer, Producto> getProductosVendidos() {
+	public List<Producto> getProductosVendidos() {
 		return productosVendidos;
 	}
 
@@ -37,23 +33,23 @@ public class Ticket implements Serializable {
 		return ticketID;
 	}
 
-	public HashMap<Integer, Producto> agregarProductoAlTicket(int productoID, Producto producto) {
-		productosVendidos.put(productoID, producto);
+	public List<Producto> agregarProductoAlTicket(Producto producto) {
+		productosVendidos.add(producto);
 		return productosVendidos;
 	}
 
-	public HashMap<Integer, Producto> removerProductoDelTicket(int productoID, Producto producto) {
-		productosVendidos.remove(productoID, producto);
+	public List<Producto> removerProductoDelTicket(Producto producto) {
+		productosVendidos.add(producto);
 		return productosVendidos;
 	}
 
-	public float calcularValorTotalDelTicket() {		
-		return (float) productosVendidos.values().stream().mapToDouble(producto -> producto.getProductoPrecio() * producto.getProductoCantidad()).sum();
+	public float calcularValorTotalDelTicket() {
+		return ticketTotal = (float) productosVendidos.stream().mapToDouble(Producto::getProductoPrecio).sum();
 	}
 
 	@Override
 	public String toString() {
-		return "Ticket [ID= " + ticketID + ", Date= " + ticketDate +  ", productos= " + productosVendidos + ", Total= "
+		return "Ticket [ID= " + ticketID + ", productos=" + productosVendidos + ", Total="
 				+ calcularValorTotalDelTicket() + "]";
 	}
 
