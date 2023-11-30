@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.example.n1Exe1.persistencia.BaseDeDatos;
 
-public abstract class Producto implements Serializable {
+public abstract class Producto implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 	private int productoID;
@@ -24,6 +24,16 @@ public abstract class Producto implements Serializable {
 		this.productoCantidad = cantidad;
 		proximoID++;
 	}
+	
+    public Object clone(){
+        Object obj=null;
+        try{
+            obj=super.clone();
+        }catch(CloneNotSupportedException ex){
+            System.out.println(" no se puede duplicar");
+        }
+        return obj;
+    }
 	
 	public int getProductoID() {
 		return productoID;
@@ -75,7 +85,12 @@ public abstract class Producto implements Serializable {
 	public void resetProductoCantidad() {
 		productoCantidad = 0;
 	}
-
+	
+	public Producto clonar () {
+		Producto pcopia = (Producto) this.clone();
+		return pcopia;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
