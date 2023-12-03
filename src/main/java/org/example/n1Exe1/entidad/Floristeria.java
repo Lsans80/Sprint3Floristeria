@@ -69,7 +69,7 @@ public class Floristeria {
 	}
 
 	public HashMap<Integer, Producto> getListaProductos() {
-		return baseDeDatos.listarProductos();
+		return baseDeDatos.getProductos();
 	}
 
 	public HashMap<Integer, Producto> getListaProductosPorTipo (String tipo){
@@ -135,8 +135,8 @@ public class Floristeria {
 	}
 	
 	private boolean existeProducto(int productoID) {
-		return baseDeDatos.listarProductos().containsKey(productoID) && 
-				baseDeDatos.listarProductos().get(productoID).getProductoCantidad() > 0;
+		return baseDeDatos.getProductos().containsKey(productoID) &&
+				baseDeDatos.getProductos().get(productoID).getProductoCantidad() > 0;
 	}
 
 	public void finalizar() {

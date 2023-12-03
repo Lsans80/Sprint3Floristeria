@@ -43,10 +43,6 @@ public class BaseDeDatos {
 		return productos;
 	}
 
-	//TODO Estandarizar el nombre a "getStock()"?
-    public HashMap<Integer, Producto> listarProductos() {
-        return productos;
-    }
     //TODO Estandarizar el nombre a "getTickets()"?
     public HashMap<Integer, Ticket> listarTickets() {
         return tickets;
