@@ -7,8 +7,8 @@ public class Producto_Decoracion extends Producto {
 	private static final long serialVersionUID = 1L;
 	private Enum<Material> decoracionMaterial;
 	
-	public Producto_Decoracion(String productoNombre, float productoPrecio, Enum<Material> decoracionMaterial, int productoCantidad) {
-		super(productoNombre, productoPrecio, productoCantidad);
+	public Producto_Decoracion(int productoID, String productoNombre, float productoPrecio, Enum<Material> decoracionMaterial, int productoCantidad) {
+		super(productoID, productoNombre, productoPrecio, productoCantidad);
 		this.decoracionMaterial = decoracionMaterial;
 		super.setProductoTipo("Decoracion");
 	}
