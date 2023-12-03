@@ -52,9 +52,7 @@ public class Floristeria {
 	}
 
 	public Producto buscarProducto(int productoId) {
-		Producto productoBuscado = baseDeDatos.leerProducto(productoId);
-
-		return productoBuscado;
+		return baseDeDatos.leerProducto(productoId);
 	}
 	
 	public int nextProductoID () {
