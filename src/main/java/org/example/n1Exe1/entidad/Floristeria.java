@@ -69,8 +69,7 @@ public class Floristeria {
 	}
 
 	public HashMap<Integer, Producto> getListaProductos() {
-		HashMap<Integer, Producto> stock = baseDeDatos.listarProductos();
-		return stock;
+		return baseDeDatos.listarProductos();
 	}
 
 	public HashMap<Integer, Producto> getListaProductosPorTipo (String tipo){
