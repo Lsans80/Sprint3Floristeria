@@ -13,6 +13,8 @@ public class Input {
 	private static final String YES_NO_ERR_MSG = "Hay un error en tu respuesta. Ingresa S or N if si o no.";
 	private static final String BYTE_FORMAT_ERR_MSG = "There is a format error on your response. Enter a byte";
 
+	private static final String ENUM_FORMAT_ERR_MSG = "There is a format error on your response. Enter 'madera' or 'plastico'";
+
 	
 	public static byte inputByte (String pregunta) {
 		byte response = 0;
@@ -122,5 +124,30 @@ public class Input {
         } while (!okey);
         return booleanResponse;
 	 }
+
+	public static Material inputEnum(String pregunta) {
+		Material response = null;
+		boolean okey = false;
+		String userResponse = "";
+
+		do {
+			System.out.println(pregunta);
+			try {
+				userResponse = input.nextLine();
+				if (userResponse.isEmpty()) {
+					throw new IllegalArgumentException(ENUM_FORMAT_ERR_MSG);
+				} else {
+					response = Material.valueOf(userResponse.toUpperCase());
+					okey = true;
+				}
+			} catch (IllegalArgumentException ex) {
+				System.err.println(ENUM_FORMAT_ERR_MSG);
+			} catch (Exception ex) {
+				System.err.println(ENUM_FORMAT_ERR_MSG);
+			}
+		} while (!okey);
+
+		return response;
+	}
 
 }

@@ -102,10 +102,10 @@ public class AplicacionFloristeria {
     public static void crearDecoracion (){
         String nombre = Input.inputString("Dime el tipo de decoración:");
         float precio = Input.inputFloat("Dime el precio;");
-        String material = Input.inputString("Dime el material (madera o plastico)");
+        Material material = Input.inputEnum("Dime el material (madera o plastico)");
         int cantidad = Input.inputInt("Dime la cantidad:");
-        Material decoracionMaterial = Material.valueOf(material.toUpperCase());
-        Producto_Decoracion decoracion = new Producto_Decoracion(floristeria.nextProductoID(), nombre, precio, decoracionMaterial, cantidad);
+        //Material decoracionMaterial = Material.valueOf(material.toUpperCase());
+        Producto_Decoracion decoracion = new Producto_Decoracion(floristeria.nextProductoID(), nombre, precio, material, cantidad);
         floristeria.addProducto(decoracion);
     }
     public static void eliminarProducto (int id, int cantidad){
