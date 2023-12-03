@@ -121,7 +121,7 @@ public class Floristeria {
 	}
 
 	public HashMap<Integer, Ticket> getListaTickets() {
-		return baseDeDatos.listarTickets();
+		return baseDeDatos.getTickets();
 	}
 
 	public float valorTotal() {

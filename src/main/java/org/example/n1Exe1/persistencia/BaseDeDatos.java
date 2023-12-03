@@ -32,19 +32,13 @@ public class BaseDeDatos {
         }
         return instancia;
     }
-   
-
-    public HashMap<Integer, Ticket> getTickets() {
-		return tickets;
-	}
-    
 
 	public HashMap<Integer, Producto> getProductos() {
 		return productos;
 	}
 
     //TODO Estandarizar el nombre a "getTickets()"?
-    public HashMap<Integer, Ticket> listarTickets() {
+    public HashMap<Integer, Ticket> getTickets() {
         return tickets;
     }
     public HashMap<Integer, Producto> listarTicketsProductosVendidos(int id) {
