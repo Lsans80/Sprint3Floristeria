@@ -77,9 +77,9 @@ public class Floristeria {
 	}
 
 	public void getListaProductosCantidad() { //TODO
-		baseDeDatos.getStock();
+		baseDeDatos.getProductos();
 	}
-	
+
 	public Ticket crearTicket() {
 		int ticketID = agregarTicket();
 		int productoID;
