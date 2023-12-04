@@ -2,7 +2,6 @@ package org.example.n1Exe1.cliente;
 
 import org.example.n1Exe1.herramienta.*;
 import org.example.n1Exe1.entidad.*;
-import org.example.n1Exe1.persistencia.BaseDeDatos;
 import java.util.*;
 
 
@@ -10,21 +9,19 @@ public class AplicacionFloristeria {
 
     //TODO Es necesario el atributo, si usamos Singleton?
     static Floristeria floristeria;
-    
-
     public static void start (){
 
         floristeria = Floristeria.getInstancia();
         floristeria.setNombre("FeetLand");
         load();
-        
+
         boolean salir = false;
 
         do{
             switch(menu()){
                 case 1: crearProducto();
                     break;
-                case 2: eliminarProducto(Input.inputInt("ID de producto: "), Input.inputInt("Cantidad a retirar: "));
+                case 2: eliminarProducto();
                     break;
                 case 3: listarProductos();
                     break;
@@ -42,14 +39,13 @@ public class AplicacionFloristeria {
             }
         }while(!salir);
     }
-
     public static byte menu(){
         byte opcion;
         final byte MINIMO = 0;
         final byte MAXIMO = 7;
 
         do{
-            opcion = Input.inputByte("\n****FEETLAND****\n"
+            opcion = Input.inputByte("\n****" + floristeria.getNombre().toUpperCase() + "****\n"
                                             + "\n1. Agregar producto."
                                             + "\n2. Eliminar producto."
                                             + "\n3. Listar productos."
@@ -67,10 +63,9 @@ public class AplicacionFloristeria {
 
         return opcion;
     }
+
     public static void crearProducto(){
-
         int opcion = Input.inputInt("Dime que producto deseas crear: \n1.Arbol.\n2.Flor.\n3.Decoración.");
-
         switch (opcion){
             case 1:
                 crearArbol();
@@ -83,32 +78,30 @@ public class AplicacionFloristeria {
                 break;
         }
     }
-    public static void crearArbol(){
+    private static void crearArbol(){
         String nombre = Input.inputString("Dime el nombre del arbol:");
         float precio = Input.inputFloat("Dime el precio;");
         float altura = Input.inputFloat("Dime la altura:");
         int cantidad = Input.inputInt("Dime la cantidad:");
-        Producto_Arbol arbol = new Producto_Arbol (floristeria.nextProductoID(), nombre, precio, altura,cantidad);
-        floristeria.addProducto(arbol);
+        floristeria.addProducto(new Producto_Arbol (floristeria.nextProductoID(), nombre, precio, altura,cantidad));
     }
-    public static void crearFlor (){
+    private static void crearFlor (){
         String nombre = Input.inputString("Dime el nombre de la flor:");
         float precio = Input.inputFloat("Dime el precio;");
         String color = Input.inputString("Dime el color:");
         int cantidad = Input.inputInt("Dime la cantidad:");
-        Producto_Flor flor = new Producto_Flor(floristeria.nextProductoID(), nombre, precio, color, cantidad);
-        floristeria.addProducto(flor);
+        floristeria.addProducto(new Producto_Flor(floristeria.nextProductoID(), nombre, precio, color, cantidad));
     }
-    public static void crearDecoracion (){
+    private static void crearDecoracion (){
         String nombre = Input.inputString("Dime el tipo de decoración:");
         float precio = Input.inputFloat("Dime el precio;");
         Material material = Input.inputEnum("Dime el material (madera o plastico)");
         int cantidad = Input.inputInt("Dime la cantidad:");
-        //Material decoracionMaterial = Material.valueOf(material.toUpperCase());
-        Producto_Decoracion decoracion = new Producto_Decoracion(floristeria.nextProductoID(), nombre, precio, material, cantidad);
-        floristeria.addProducto(decoracion);
+        floristeria.addProducto(new Producto_Decoracion(floristeria.nextProductoID(), nombre, precio, material, cantidad));
     }
-    public static void eliminarProducto (int id, int cantidad){
+    public static void eliminarProducto (){
+        int id = Input.inputInt("ID de producto: ");
+        int cantidad = Input.inputInt("Cantidad a retirar: ");
         floristeria.eliminarProducto(id, cantidad);
     }
     public static void listarProductos(){
@@ -116,9 +109,8 @@ public class AplicacionFloristeria {
         consultarArbol(floristeria.getListaProductosPorTipo("arbol"));
         consultarFlor(floristeria.getListaProductosPorTipo("flor"));
         consultarDecoracion(floristeria.getListaProductosPorTipo("decoracion"));
-
     }
-    public static void consultarArbol (HashMap<Integer, Producto> stockArbol){
+    private static void consultarArbol (HashMap<Integer, Producto> stockArbol){
         System.out.println("***ARBOL***:\n");
         stockArbol.values().forEach(producto -> {
                 Producto_Arbol productoArbol = (Producto_Arbol) producto;
@@ -130,7 +122,7 @@ public class AplicacionFloristeria {
 
         });
     }
-    public static void consultarFlor (HashMap<Integer, Producto> stockFlor){
+    private static void consultarFlor (HashMap<Integer, Producto> stockFlor){
         System.out.println("\n***FLOR***:\n");
         stockFlor.values().forEach(producto -> {
                 Producto_Flor productoFlor = (Producto_Flor) producto;
@@ -141,7 +133,7 @@ public class AplicacionFloristeria {
                         + " | Precio: " + productoFlor.getProductoPrecio());
         });
     }
-    public static void consultarDecoracion (HashMap<Integer,Producto> stockDecoracion){
+    private static void consultarDecoracion (HashMap<Integer,Producto> stockDecoracion){
         System.out.println("\n***DECORACION***:\n");
         stockDecoracion.values().forEach(producto -> {
                 Producto_Decoracion productoDecoracion = (Producto_Decoracion) producto;
@@ -158,9 +150,30 @@ public class AplicacionFloristeria {
         String formattedValue = String.format("%.2f", valorTotal);
         System.out.println("El valor total del stock es de " + formattedValue + " Euros.");
     }
-    
+    /*
     public static void crearTicket () {
-		System.out.println(floristeria.crearTicket());
+        System.out.println(floristeria.crearTicket());
+    }
+*/
+    public static void crearTicket() {
+        Ticket ticket = new Ticket(floristeria.nextTicketID());
+        int productoID;
+        int cantidadProductoEnTicket;
+        boolean si;
+        do {
+            productoID = Input.inputInt("Id Producto para agregar: ");
+            cantidadProductoEnTicket = Input.inputInt("Cantidad: ");
+            if (floristeria.existeProducto(productoID, cantidadProductoEnTicket)) {
+                Producto productoAAgregar = floristeria.buscarProducto(productoID).clonar();
+                productoAAgregar.setProductoCantidad(cantidadProductoEnTicket);
+                ticket.agregarProductoAlTicket(productoAAgregar);
+                floristeria.eliminarProducto(productoID, cantidadProductoEnTicket);
+                floristeria.addTicket(ticket);
+            } else {
+                System.err.println("No existe el producto, o no hay suficiente en stock.");
+            }
+            si = Input.inputSiNo("Deseas agregar otro producto/ o cambiar cantidad? s/n");
+        } while (si);
     }
     
     public static void listarHistorialTickets () {
