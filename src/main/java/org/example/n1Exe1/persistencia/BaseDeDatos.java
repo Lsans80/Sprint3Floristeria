@@ -71,14 +71,9 @@ public class BaseDeDatos {
     		p.resetProductoCantidad();
     		productos.remove(id);
     	} else {
-    		reducirCantidadProducto(id, cantidad);
+            p.reducirProductoCantidad(cantidad);
     	}
         return p;
-    }
-    public Producto reducirCantidadProducto(int id, int cantidad) {
-    	Producto p = leerProducto(id);
-    	p.reducirProductoCantidad(cantidad);
-    	return p;
     }
     public void setCantidadProductoTicket(int productoID, int ticketID, int cantidad) {
     	leerTicket(ticketID).getProductosVendidos().get(productoID).setProductoCantidad(cantidad);
@@ -88,7 +83,7 @@ public class BaseDeDatos {
         tickets.remove(id);
         return t;
     }
-    public int maximoIDStock () {
+    public int maximoIDProductos () {
     	Integer maxKey = 0;
         for (Integer key : productos.keySet()) {
             if (maxKey == 0 || productos.get(key).getProductoID() > productos.get(maxKey).getProductoID()) {
@@ -97,9 +92,8 @@ public class BaseDeDatos {
         }
         return maxKey;
     }
-    //Funcion única para filtros personalizados desde la aplicación(?)
+
     public HashMap<Integer, Producto> listarProductosFiltrando(Predicate<Producto> predicate) {
-       // return (HashMap<Integer, Producto>) stock.values().stream().filter(predicate).collect(Collectors.toMap(Producto::getProductoID, producto -> producto));
         return (HashMap<Integer, Producto>) productos.entrySet().stream().filter(entry -> predicate.test(entry.getValue())).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
 
     }
@@ -117,6 +111,7 @@ public class BaseDeDatos {
 	public int getNextTicketId() {
 		return nextTicketId;
 	}
+    //TODO LoadTickets
 	@SuppressWarnings("unchecked")
 	public void load() {
         File database = new File ("database.txt");
@@ -132,7 +127,7 @@ public class BaseDeDatos {
                 System.err.format("ClassNotFoundException: %s%n", x);
             }
         }
-        nextProductoId = maximoIDStock();
+        nextProductoId = maximoIDProductos();
     }
     //TODO Pulir excepciones
     public void save() {

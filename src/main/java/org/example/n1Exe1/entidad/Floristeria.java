@@ -26,39 +26,30 @@ public class Floristeria {
 		}
 		return instancia;
 	}
-
 	// Getters y Setters.
-
 	public String getNombre() {
 		return nombre;
 	}
-
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
 	public BaseDeDatos getBaseDeDatos() {
 		return baseDeDatos;
 	}
-
 	public void setBaseDeDatos(BaseDeDatos baseDeDatos) {
 		this.baseDeDatos = baseDeDatos;
 	}
 
 	// Métodos propios.
-
 	public void addProducto(Producto producto) {
 		baseDeDatos.agregarProducto(producto);
 	}
-
 	public Producto buscarProducto(int productoId) {
 		return baseDeDatos.leerProducto(productoId);
 	}
-	
 	public int nextProductoID () {
 		return baseDeDatos.getNextProductoId();
 	}
-
 	public void eliminarProducto(int productoID, int cantidad) {
 		Producto productoEliminado = baseDeDatos.eliminarProducto(productoID, cantidad);
 		if (productoEliminado == null) {
@@ -67,19 +58,15 @@ public class Floristeria {
 			System.out.println(productoEliminado + " ha sido eliminado.");
 		}
 	}
-
 	public HashMap<Integer, Producto> getListaProductos() {
 		return baseDeDatos.getProductos();
 	}
-
 	public HashMap<Integer, Producto> getListaProductosPorTipo (String tipo){
 		return baseDeDatos.listarProductosFiltrando(producto -> producto.getProductoTipo().equalsIgnoreCase(tipo));
 	}
-
 	public void getListaProductosCantidad() { //TODO
 		baseDeDatos.getProductos();
-	}
-
+	} //TODO?
 	public Ticket crearTicket() {
 		int ticketID = agregarTicket();
 		int productoID;
@@ -97,7 +84,6 @@ public class Floristeria {
 			}
 			si = Input.inputSiNo("Deseas agregar otro producto? s/n");
 		} while (si || baseDeDatos.listarTicketsProductosVendidos(ticketID).isEmpty()); //TODO
-
 		return baseDeDatos.leerTicket(ticketID);
 	}
 
@@ -109,15 +95,14 @@ public class Floristeria {
 
 	private void agregarProductoTicket(int productoID, int ticketID) {
 		baseDeDatos.agregarProductoTicket(productoID, ticketID);
-		
 	}
-	
+
 	private void setCantidadProductoTicket(int productoID, int ticketID, int cantidad) {
 		baseDeDatos.setCantidadProductoTicket(productoID, ticketID, cantidad);
 	}
-	
+
 	private void reducirCantidadStockProducto (int productoID, int cantidad) {
-		baseDeDatos.reducirCantidadProducto(productoID, cantidad);
+		baseDeDatos.eliminarProducto(productoID, cantidad);
 	}
 
 	public HashMap<Integer, Ticket> getListaTickets() {
@@ -126,12 +111,10 @@ public class Floristeria {
 
 	public float valorTotal() {
 		return baseDeDatos.getValorTotalStock();
-
 	}
 	
 	public float valorVentas() {
 		return baseDeDatos.getValorTotalTickets();
-
 	}
 	
 	private boolean existeProducto(int productoID) {
