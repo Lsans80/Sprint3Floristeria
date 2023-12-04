@@ -59,13 +59,15 @@ public class Floristeria {
 		return baseDeDatos.getNextProductoId();
 	}
 
-	public void eliminarProducto(int productoID, int cantidad) {
+	public String eliminarProducto(int productoID, int cantidad) {
+		String response;
+		if (existeProducto(productoID)){  
 		Producto productoEliminado = baseDeDatos.eliminarProducto(productoID, cantidad);
-		if (productoEliminado == null) {
-			System.out.println("El producto no se ha encontrado.");
+			response = productoEliminado + " ha sido eliminado.";
 		} else {
-			System.out.println(productoEliminado + " ha sido eliminado.");
+			response = "El producto no se ha encontrado.";
 		}
+		return response;
 	}
 
 	public HashMap<Integer, Producto> getListaProductos() {
@@ -80,31 +82,52 @@ public class Floristeria {
 		baseDeDatos.getProductos();
 	}
 
-	public Ticket crearTicket() {
-		int ticketID = agregarTicket();
-		int productoID;
-		int cantidad;
-		boolean si;
-		do {
-			productoID = Input.inputInt("Id Producto para agregar: ");
-			cantidad = Input.inputInt("Cantidad: ");
-			if (existeProducto(productoID)){
-				agregarProductoTicket(productoID, ticketID);
-				reducirCantidadStockProducto(productoID, cantidad);
-				setCantidadProductoTicket(productoID, ticketID, cantidad);
+	public String crearTicket() {
+		int ticketID = agregarTicketVacio();
+		String respuesta;
+		if (ticketID == -1) {
+			respuesta = "No stock.";
+		} else {
+			int productoID;
+			int cantidadProductoEnTicket;
+			boolean si;
+			do {
+				productoID = Input.inputInt("Id Producto para agregar: ");
+				cantidadProductoEnTicket = Input.inputInt("Cantidad: ");
+				if (existeProducto(productoID) && existeProductoCantidad(productoID)
+						&& existeProductoCantidadVsCantidadEnTicket(productoID, cantidadProductoEnTicket)) {
+					agregarProductoTicket(productoID, ticketID);
+					reducirCantidadStockProducto(productoID, cantidadProductoEnTicket);
+					setCantidadProductoTicket(productoID, ticketID, cantidadProductoEnTicket);
+				} else {
+					System.err.println("No existe el producto, o no hay suficiente en stock.");
+				}
+				if (!(baseDeDatos.getTotalCantidadStock() == 0)) {
+					si = Input.inputSiNo("Deseas agregar otro producto/ o cambiar cantidad? s/n");
+				} else {
+					si = false;
+				}
+			} while (si);
+			if (baseDeDatos.listarTicketsProductosVendidos(ticketID).isEmpty()) {
+				baseDeDatos.eliminarTicket(ticketID);
+				respuesta = "Ticket desechado.";
 			} else {
-				System.err.println("No existe el producto");
+				respuesta = "Ticket creado: " + baseDeDatos.leerTicket(ticketID);
 			}
-			si = Input.inputSiNo("Deseas agregar otro producto? s/n");
-		} while (si || baseDeDatos.listarTicketsProductosVendidos(ticketID).isEmpty()); //TODO
+		}
 
-		return baseDeDatos.leerTicket(ticketID);
+		return respuesta;
 	}
 
-	private int agregarTicket() {
-		Ticket ticket = new Ticket();
-		baseDeDatos.agregarTicket(ticket);
-		return ticket.getTicketID();
+	private int agregarTicketVacio() {
+		if (!(baseDeDatos.getTotalCantidadStock() <= 0)) {
+			Ticket ticket = new Ticket(baseDeDatos.getNextTicketId());
+			baseDeDatos.agregarTicket(ticket);
+			return ticket.getTicketID();
+		} else {
+			return -1;
+		}
+
 	}
 
 	private void agregarProductoTicket(int productoID, int ticketID) {
@@ -137,6 +160,14 @@ public class Floristeria {
 	private boolean existeProducto(int productoID) {
 		return baseDeDatos.getProductos().containsKey(productoID) &&
 				baseDeDatos.getProductos().get(productoID).getProductoCantidad() > 0;
+	}
+	
+	private boolean existeProductoCantidad(int productoID) {
+		return baseDeDatos.existeProductoCantidad(productoID);
+	}
+
+	private boolean existeProductoCantidadVsCantidadEnTicket(int productoID, int cantidadProductoEnTicket) {
+		return baseDeDatos.existeProductoCantidadVsCantidadEnTicket(productoID, cantidadProductoEnTicket);
 	}
 
 	public void finalizar() {

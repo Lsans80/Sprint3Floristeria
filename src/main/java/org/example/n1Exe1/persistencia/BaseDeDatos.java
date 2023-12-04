@@ -97,6 +97,19 @@ public class BaseDeDatos {
         }
         return maxKey;
     }
+    
+    public int maximoIDTickets () {
+    	Integer maxKey = 0;
+        for (Integer key : tickets.keySet()) {
+            if (maxKey == 0 || tickets.get(key).getTicketID() > tickets.get(maxKey).getTicketID()) {
+                maxKey = key;
+            }
+        }
+        
+        return maxKey;
+    }
+    
+    
     //Funcion única para filtros personalizados desde la aplicación(?)
     public HashMap<Integer, Producto> listarProductosFiltrando(Predicate<Producto> predicate) {
        // return (HashMap<Integer, Producto>) stock.values().stream().filter(predicate).collect(Collectors.toMap(Producto::getProductoID, producto -> producto));
@@ -106,15 +119,35 @@ public class BaseDeDatos {
     public float getValorTotalStock() {
         return (float) productos.values().stream().mapToDouble(producto -> producto.getProductoPrecio() * producto.getProductoCantidad()).sum();
     }
-    public float getValorTotalTickets() {
-        return (float) tickets.values().stream().mapToDouble(Ticket::getTicketTotal).sum();
+    
+    public int getTotalCantidadStock() {
+        return productos.values().stream().mapToInt(producto -> producto.getProductoCantidad()).sum();
     }
+    
+    public float getValorTotalTickets() {
+        return (float) tickets.values().stream().mapToDouble(Ticket::calcularValorTotalDelTicket).sum();
+    }
+    
+    public boolean existeProducto(int productoID) {
+    	return getProductos().containsKey(productoID);
+    }
+    
+    public boolean existeProductoCantidad(int productoID) {
+		return getProductos().get(productoID).getProductoCantidad() > 0;
+	}
+    
+	public boolean existeProductoCantidadVsCantidadEnTicket(int productoID, int cantidadProductoEnTicket) {
+		return getProductos().get(productoID).getProductoCantidad() >= cantidadProductoEnTicket;
+	}
+    
+    
     //TODO Pulir excepciones, casteo, etc.
     public int getNextProductoId() {
         nextProductoId++;
 		return nextProductoId;
 	}
 	public int getNextTicketId() {
+		nextTicketId++;
 		return nextTicketId;
 	}
 	@SuppressWarnings("unchecked")
@@ -133,6 +166,7 @@ public class BaseDeDatos {
             }
         }
         nextProductoId = maximoIDStock();
+        nextTicketId = maximoIDTickets() +1;
     }
     //TODO Pulir excepciones
     public void save() {
