@@ -38,6 +38,14 @@ public class Ticket implements Serializable {
 	}
 
 	public HashMap<Integer, Producto> agregarProductoAlTicket(int productoID, Producto producto) {
+		/*
+		productosVendidos.compute(producto.getProductoID(), (id, existingProducto) -> {
+			if (existingProducto != null) {
+				producto.setProductoCantidad(producto.getProductoCantidad() + existingProducto.getProductoCantidad());
+			}
+			return producto;
+		});
+		*/
 		productosVendidos.put(productoID, producto);
 		return productosVendidos;
 	}

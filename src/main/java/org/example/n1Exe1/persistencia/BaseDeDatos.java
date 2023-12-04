@@ -55,7 +55,7 @@ public class BaseDeDatos {
 
     public void agregarProductoTicket(int productoID, int ticketID) {
     	Producto p = this.leerProducto(productoID);
-    	leerTicket(ticketID).agregarProductoAlTicket(productoID, p.clonar());
+    	tickets.get(ticketID).agregarProductoAlTicket(productoID, p.clonar());
     }
     public Producto leerProducto(int id) {
         return productos.get(id);
@@ -75,6 +75,12 @@ public class BaseDeDatos {
     }
     public void setCantidadProductoTicket(int productoID, int ticketID, int cantidad) {
     	leerTicket(ticketID).getProductosVendidos().get(productoID).setProductoCantidad(cantidad);
+/*
+        Producto producto = tickets.get(ticketID).getProductosVendidos().get(productoID);
+        int cantidadActual = producto.getProductoCantidad();
+        producto.setProductoCantidad(cantidadActual + cantidadAnadida);
+
+ */
     }
     public Ticket eliminarTicket(int id) {
         Ticket t = leerTicket(id);
