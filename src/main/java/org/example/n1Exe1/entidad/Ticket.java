@@ -11,14 +11,14 @@ public class Ticket implements Serializable {
 	private LocalDate ticketDate;
 	private HashMap<Integer, Producto> productosVendidos;
 	private float ticketTotal = 0.0F;
-	private static int proximoID = 1;
+	//private static int proximoID = 1;
 
-	public Ticket() {
-		this.ticketID = proximoID;
+	public Ticket(int ticketID) {
+		this.ticketID = ticketID;
 		ticketDate = LocalDate.now();
 		productosVendidos = new HashMap<>();
 		ticketTotal = calcularValorTotalDelTicket();
-		proximoID++;
+		//proximoID++;
 	}
 
 	public HashMap<Integer, Producto> getProductosVendidos() {
