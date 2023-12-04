@@ -5,9 +5,6 @@ import org.example.n1Exe1.entidad.Ticket;
 //import org.example.n1Exe1.herramienta.SerDeSerObjectJson;
 
 import java.io.*;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.function.Predicate;
@@ -71,6 +68,16 @@ public class BaseDeDatos {
        return tickets.put(ticket.getTicketID(), ticket);
     }
     
+    public void agregarProductoTicket2(int productoID, int ticketID, int cantidad) {
+    	Producto p = leerProducto(productoID).clonar();
+        tickets.get(ticketID).getProductosVendidos().compute(p.getProductoID(), (id, existingProducto) -> {
+            if (existingProducto != null) {
+            setCantidadProductoTicket(productoID, ticketID, cantidad + existingProducto.getProductoCantidad());
+            }
+            return p;
+        });
+    }
+    
     public void agregarProductoTicket(int productoID, int ticketID) {
     	Producto p = this.leerProducto(productoID);
     	leerTicket(ticketID).agregarProductoAlTicket(productoID, p.clonar());
@@ -118,6 +125,17 @@ public class BaseDeDatos {
         
         return maxKey;
     }
+    
+    public int maximoIDTickets () {
+    	Integer maxKey = 0;
+        for (Integer key : tickets.keySet()) {
+            if (maxKey == 0 || tickets.get(key).getTicketID() > tickets.get(maxKey).getTicketID()) {
+                maxKey = key;
+            }
+        }
+        
+        return maxKey;
+    }
 
     //Funcion única para filtros personalizados desde la aplicación(?)
     public HashMap<Integer, Producto> listarProductosFiltrando(Predicate<Producto> predicate) {
@@ -129,20 +147,37 @@ public class BaseDeDatos {
         return (float) stock.values().stream().mapToDouble(producto -> producto.getProductoPrecio() * producto.getProductoCantidad()).sum();
     }
     
+    public int getTotalCantidadStock() {
+        return stock.values().stream().mapToInt(producto -> producto.getProductoCantidad()).sum();
+    }
+    
     
     public float getValorTotalTickets() {
         return (float) tickets.values().stream().mapToDouble(Ticket::calcularValorTotalDelTicket).sum();
     }
     
+    public boolean existeProducto(int productoID) {
+    	return listarProductos().containsKey(productoID);
+    }
+    
+    public boolean existeProductoCantidad(int productoID) {
+		return listarProductos().get(productoID).getProductoCantidad() > 0;
+	}
+    
+	public boolean existeProductoCantidadVsCantidadEnTicket(int productoID, int cantidadProductoEnTicket) {
+		return listarProductos().get(productoID).getProductoCantidad() >= cantidadProductoEnTicket;
+	}
 
     
     //TODO Pulir excepciones, casteo, etc.
  
     public int getNextProductoId() {
-		return nextProductoId;
+    	nextProductoId++;
+    	return nextProductoId;
 	}
 
 	public int getNextTicketId() {
+		nextTicketId++;
 		return nextTicketId;
 	}
 
@@ -162,6 +197,7 @@ public class BaseDeDatos {
             }
         }
         nextProductoId = maximoIDStock() +1;
+        nextTicketId = maximoIDTickets() +1;
     }
     //TODO Pulir excepciones
     public void save() {
@@ -190,6 +226,8 @@ public class BaseDeDatos {
 				
 			}
 		}
+       //nextProductoId = maximoIDStock() +1;
+        //nextTicketId = maximoIDTickets() +1;
 		
 	}
     

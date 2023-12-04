@@ -128,7 +128,7 @@ public class AplicacionFloristeria {
 
     public static void eliminarProducto (int id, int cantidad){
 
-        floristeria.eliminarProducto(id, cantidad);
+        System.out.println(floristeria.eliminarProducto(id, cantidad));
     }
 
     public static void listarProductos(){
