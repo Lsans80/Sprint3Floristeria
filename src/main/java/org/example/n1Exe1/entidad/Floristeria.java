@@ -78,10 +78,6 @@ public class Floristeria {
 		return baseDeDatos.listarProductosFiltrando(producto -> producto.getProductoTipo().equalsIgnoreCase(tipo));
 	}
 
-	public void getListaProductosCantidad() { //TODO
-		baseDeDatos.getProductos();
-	}
-
 	public String crearTicket() {
 		int ticketID = agregarTicketVacio();
 		String respuesta;
@@ -127,57 +123,39 @@ public class Floristeria {
 		} else {
 			return -1;
 		}
-
 	}
-
 	private void agregarProductoTicket(int productoID, int ticketID) {
 		baseDeDatos.agregarProductoTicket(productoID, ticketID);
-		
 	}
-	
 	private void setCantidadProductoTicket(int productoID, int ticketID, int cantidad) {
 		baseDeDatos.setCantidadProductoTicket(productoID, ticketID, cantidad);
 	}
-	
 	private void reducirCantidadStockProducto (int productoID, int cantidad) {
 		baseDeDatos.eliminarProducto(productoID, cantidad);
 	}
-
 	public HashMap<Integer, Ticket> getListaTickets() {
 		return baseDeDatos.getTickets();
 	}
-
 	public float valorTotal() {
 		return baseDeDatos.getValorTotalStock();
-
 	}
-	
 	public float valorVentas() {
 		return baseDeDatos.getValorTotalTickets();
-
 	}
-	
 	private boolean existeProducto(int productoID) {
 		return baseDeDatos.getProductos().containsKey(productoID) &&
 				baseDeDatos.getProductos().get(productoID).getProductoCantidad() > 0;
 	}
-
 	private boolean existeProductoCantidad(int productoID) {
 		return baseDeDatos.existeProductoCantidad(productoID);
 	}
-
 	private boolean existeProductoCantidadVsCantidadEnTicket(int productoID, int cantidadProductoEnTicket) {
 		return baseDeDatos.existeProductoCantidadVsCantidadEnTicket(productoID, cantidadProductoEnTicket);
 	}
-
 	public void finalizar() {
 		baseDeDatos.save();
-		// baseDeDatos.saveTickets(); TODO
 	}
-
 	public void load() {
 		baseDeDatos.load();
-		// baseDeDatos.loadTickets(); TODO
 	}
-
 }

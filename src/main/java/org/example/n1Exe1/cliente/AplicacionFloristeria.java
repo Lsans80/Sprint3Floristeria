@@ -2,7 +2,6 @@ package org.example.n1Exe1.cliente;
 
 import org.example.n1Exe1.herramienta.*;
 import org.example.n1Exe1.entidad.*;
-import org.example.n1Exe1.persistencia.BaseDeDatos;
 import java.util.*;
 
 
@@ -153,9 +152,7 @@ public class AplicacionFloristeria {
     }
     
     public static void crearTicket () {
-        Ticket ticket = new Ticket();
-
-        //System.out.println(floristeria.crearTicket());
+        System.out.println(floristeria.crearTicket());
     }
     
     public static void listarHistorialTickets () {
