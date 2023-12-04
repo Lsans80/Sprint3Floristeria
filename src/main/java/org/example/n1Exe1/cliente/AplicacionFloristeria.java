@@ -150,9 +150,30 @@ public class AplicacionFloristeria {
         String formattedValue = String.format("%.2f", valorTotal);
         System.out.println("El valor total del stock es de " + formattedValue + " Euros.");
     }
-    
+    /*
     public static void crearTicket () {
         System.out.println(floristeria.crearTicket());
+    }
+*/
+    public static void crearTicket() {
+        Ticket ticket = new Ticket(floristeria.nextTicketID());
+        int productoID;
+        int cantidadProductoEnTicket;
+        boolean si;
+        do {
+            productoID = Input.inputInt("Id Producto para agregar: ");
+            cantidadProductoEnTicket = Input.inputInt("Cantidad: ");
+            if (floristeria.existeProducto(productoID, cantidadProductoEnTicket)) {
+                Producto productoAAgregar = floristeria.buscarProducto(productoID).clonar();
+                productoAAgregar.setProductoCantidad(cantidadProductoEnTicket);
+                ticket.agregarProductoAlTicket(productoAAgregar);
+                floristeria.eliminarProducto(productoID, cantidadProductoEnTicket);
+                floristeria.addTicket(ticket);
+            } else {
+                System.err.println("No existe el producto, o no hay suficiente en stock.");
+            }
+            si = Input.inputSiNo("Deseas agregar otro producto/ o cambiar cantidad? s/n");
+        } while (si);
     }
     
     public static void listarHistorialTickets () {

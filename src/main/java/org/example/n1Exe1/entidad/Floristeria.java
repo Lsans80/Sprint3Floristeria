@@ -1,15 +1,10 @@
 package org.example.n1Exe1.entidad;
 
 
-import org.example.n1Exe1.herramienta.Input;
 import org.example.n1Exe1.persistencia.BaseDeDatos;
-
-
 import java.util.HashMap;
 
-
 public class Floristeria {
-
 	private static Floristeria instancia = null;
 	private String nombre;
 	private BaseDeDatos baseDeDatos;
@@ -50,6 +45,9 @@ public class Floristeria {
 	public void addProducto(Producto producto) {
 		baseDeDatos.agregarProducto(producto);
 	}
+	public void addTicket(Ticket ticket) {
+		baseDeDatos.agregarTicket(ticket);
+	}
 
 	public Producto buscarProducto(int productoId) {
 		return baseDeDatos.leerProducto(productoId);
@@ -57,6 +55,9 @@ public class Floristeria {
 	
 	public int nextProductoID () {
 		return baseDeDatos.getNextProductoId();
+	}
+	public int nextTicketID () {
+		return baseDeDatos.getNextTicketId();
 	}
 
 	public String eliminarProducto(int productoID, int cantidad) {
@@ -77,7 +78,7 @@ public class Floristeria {
 	public HashMap<Integer, Producto> getListaProductosPorTipo (String tipo){
 		return baseDeDatos.listarProductosFiltrando(producto -> producto.getProductoTipo().equalsIgnoreCase(tipo));
 	}
-
+/*
 	public String crearTicket() {
 		int ticketID = agregarTicketVacio();
 		String respuesta;
@@ -124,6 +125,8 @@ public class Floristeria {
 			return -1;
 		}
 	}
+
+
 	private void agregarProductoTicket(int productoID, int ticketID) {
 		baseDeDatos.agregarProductoTicket(productoID, ticketID);
 	}
@@ -133,25 +136,34 @@ public class Floristeria {
 	private void reducirCantidadStockProducto (int productoID, int cantidad) {
 		baseDeDatos.eliminarProducto(productoID, cantidad);
 	}
+ */
 	public HashMap<Integer, Ticket> getListaTickets() {
 		return baseDeDatos.getTickets();
 	}
+
 	public float valorTotal() {
 		return baseDeDatos.getValorTotalStock();
 	}
 	public float valorVentas() {
 		return baseDeDatos.getValorTotalTickets();
 	}
-	private boolean existeProducto(int productoID) {
+	public boolean existeProducto(int productoID) {
 		return baseDeDatos.getProductos().containsKey(productoID) &&
 				baseDeDatos.getProductos().get(productoID).getProductoCantidad() > 0;
 	}
-	private boolean existeProductoCantidad(int productoID) {
+	public boolean existeProducto(int productoID, int cantidad) {
+		return baseDeDatos.getProductos().containsKey(productoID) &&
+				baseDeDatos.getProductos().get(productoID).getProductoCantidad() > cantidad;
+	}
+	/*
+	public boolean existeProductoCantidad(int productoID) {
 		return baseDeDatos.existeProductoCantidad(productoID);
 	}
+
 	private boolean existeProductoCantidadVsCantidadEnTicket(int productoID, int cantidadProductoEnTicket) {
 		return baseDeDatos.existeProductoCantidadVsCantidadEnTicket(productoID, cantidadProductoEnTicket);
 	}
+	 */
 	public void finalizar() {
 		baseDeDatos.save();
 	}
