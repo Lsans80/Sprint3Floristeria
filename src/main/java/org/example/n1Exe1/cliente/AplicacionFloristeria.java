@@ -109,7 +109,7 @@ public class AplicacionFloristeria {
         floristeria.addProducto(decoracion);
     }
     public static void eliminarProducto (int id, int cantidad){
-        floristeria.eliminarProducto(id, cantidad);
+        System.out.println(floristeria.eliminarProducto(id, cantidad));
     }
     public static void listarProductos(){
         System.out.println("\nStock por tipo de producto:");
