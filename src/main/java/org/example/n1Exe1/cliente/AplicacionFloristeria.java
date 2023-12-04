@@ -68,37 +68,41 @@ public class AplicacionFloristeria {
         int opcion = Input.inputInt("Dime que producto deseas crear: \n1.Arbol.\n2.Flor.\n3.Decoración.");
         switch (opcion){
             case 1:
-                crearArbol();
+                floristeria.addProducto(crearArbol());
                 break;
             case 2:
-                crearFlor();
+                floristeria.addProducto(crearFlor());
                 break;
             case 3:
-                crearDecoracion();
+                floristeria.addProducto(crearDecoracion());
                 break;
         }
     }
-    private static void crearArbol(){
-        String nombre = Input.inputString("Dime el nombre del arbol:");
-        float precio = Input.inputFloat("Dime el precio;");
+
+    public static Producto_Arbol crearArbol() {
+        String nombre = Input.inputString("Dime el nombre del árbol:");
+        float precio = Input.inputFloat("Dime el precio:");
         float altura = Input.inputFloat("Dime la altura:");
         int cantidad = Input.inputInt("Dime la cantidad:");
-        floristeria.addProducto(new Producto_Arbol (floristeria.nextProductoID(), nombre, precio, altura,cantidad));
+        return new Producto_Arbol(floristeria.nextProductoID(), nombre, precio, altura, cantidad);
     }
-    private static void crearFlor (){
+
+    public static Producto_Flor crearFlor() {
         String nombre = Input.inputString("Dime el nombre de la flor:");
-        float precio = Input.inputFloat("Dime el precio;");
+        float precio = Input.inputFloat("Dime el precio:");
         String color = Input.inputString("Dime el color:");
         int cantidad = Input.inputInt("Dime la cantidad:");
-        floristeria.addProducto(new Producto_Flor(floristeria.nextProductoID(), nombre, precio, color, cantidad));
+        return new Producto_Flor(floristeria.nextProductoID(), nombre, precio, color, cantidad);
     }
-    private static void crearDecoracion (){
+
+    public static Producto_Decoracion crearDecoracion() {
         String nombre = Input.inputString("Dime el tipo de decoración:");
-        float precio = Input.inputFloat("Dime el precio;");
+        float precio = Input.inputFloat("Dime el precio:");
         Material material = Input.inputEnum("Dime el material (madera o plastico)");
         int cantidad = Input.inputInt("Dime la cantidad:");
-        floristeria.addProducto(new Producto_Decoracion(floristeria.nextProductoID(), nombre, precio, material, cantidad));
+        return new Producto_Decoracion(floristeria.nextProductoID(), nombre, precio, material, cantidad);
     }
+
     public static void eliminarProducto (){
         int id = Input.inputInt("ID de producto: ");
         int cantidad = Input.inputInt("Cantidad a retirar: ");

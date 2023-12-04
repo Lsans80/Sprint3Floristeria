@@ -6,8 +6,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 
+import static org.example.n1Exe1.cliente.AplicacionFloristeria.crearArbol;
 import static org.example.n1Exe1.herramienta.Material.PLASTICO;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AplicacionFloristeriaTest {
 
@@ -19,9 +20,10 @@ public class AplicacionFloristeriaTest {
     @DisplayName("Verificar crear arbol")
     public void crearArbolTest() {
 
-        Producto arbol = new Producto_Arbol(floristeria.nextProductoID(),"pino", 5, 3, 2);
-        productos.put(arbol.getProductoID(), arbol);
-        assertEquals(arbol, productos.get(arbol.getProductoID()));
+        Producto arbol = new Producto_Arbol(floristeria.nextProductoID(),"pino", 3, 3, 3);
+        floristeria.addProducto(arbol);
+        assertNotNull(arbol);
+        assertTrue(floristeria.getListaProductos().containsValue(arbol));
     }
 
     @Test
