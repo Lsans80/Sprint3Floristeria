@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AplicacionFloristeriaTest {
 
-    static Floristeria floristeria = floristeria = Floristeria.getInstancia();
+    static Floristeria floristeria = Floristeria.getInstancia();
     static HashMap<Integer, Producto> productos = new HashMap<>();
     //La Key de productos es la misma que producto.getProductoID().
 
