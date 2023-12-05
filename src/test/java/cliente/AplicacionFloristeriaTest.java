@@ -30,7 +30,7 @@ public class AplicacionFloristeriaTest {
     public void crearFlorTest() {
 
         Producto flor = new Producto_Flor(floristeria.nextProductoID(), "gardenia", 5, "rojo", 2);
-        productos.put(flor.getProductoID(), flor);
+        floristeria.addProducto(flor);
         assertEquals(flor, productos.get(flor.getProductoID()));
     }
 
@@ -39,7 +39,7 @@ public class AplicacionFloristeriaTest {
     public void crearDecoracionTest() {
 
         Producto decoracion = new Producto_Decoracion(floristeria.nextProductoID(),"silla", 5, PLASTICO, 2);
-        productos.put(decoracion.getProductoID(), decoracion);
+        floristeria.addProducto(decoracion);
         assertEquals(decoracion, productos.get(decoracion.getProductoID()));
     }
 
