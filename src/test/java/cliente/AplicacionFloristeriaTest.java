@@ -11,6 +11,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AplicacionFloristeriaTest {
 
+    private double valorTotalStock;
+
     Floristeria floristeria = Floristeria.getInstancia();
     HashMap<Integer, Producto> productos = new HashMap<>();
     //La Key de productos es la misma que producto.getProductoID().
@@ -21,7 +23,6 @@ public class AplicacionFloristeriaTest {
 
         Producto arbol = new Producto_Arbol(floristeria.nextProductoID(),"pino", 3, 3, 3);
         floristeria.addProducto(arbol);
-        assertNotNull(arbol);
         assertTrue(floristeria.getListaProductos().containsValue(arbol));
     }
 
@@ -31,7 +32,7 @@ public class AplicacionFloristeriaTest {
 
         Producto flor = new Producto_Flor(floristeria.nextProductoID(), "gardenia", 5, "rojo", 2);
         floristeria.addProducto(flor);
-        assertEquals(flor, productos.get(flor.getProductoID()));
+        assertTrue(floristeria.getListaProductos().containsValue(flor));
     }
 
     @Test
@@ -40,7 +41,15 @@ public class AplicacionFloristeriaTest {
 
         Producto decoracion = new Producto_Decoracion(floristeria.nextProductoID(),"silla", 5, PLASTICO, 2);
         floristeria.addProducto(decoracion);
-        assertEquals(decoracion, productos.get(decoracion.getProductoID()));
+        assertTrue(floristeria.getListaProductos().containsValue(decoracion));
+    }
+
+    @Test
+    @DisplayName("Verificar valorTotalStock")
+    public void getValorTotalStockTest (){
+        valorTotalStock = productos.values().stream().mapToDouble(
+                producto -> producto.getProductoPrecio() * producto.getProductoCantidad()).sum();
+        assertEquals(valorTotalStock,floristeria.valorTotal());
     }
 
 }
