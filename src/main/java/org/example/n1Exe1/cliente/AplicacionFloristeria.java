@@ -12,7 +12,7 @@ public class AplicacionFloristeria {
     public static void start (){
 
         floristeria = Floristeria.getInstancia();
-        floristeria.setNombre("FeetLand");
+        floristeria.setNombre("Landful");
         load();
 
         boolean salir = false;
