@@ -6,14 +6,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 
-import static org.example.n1Exe1.cliente.AplicacionFloristeria.crearArbol;
 import static org.example.n1Exe1.herramienta.Material.PLASTICO;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AplicacionFloristeriaTest {
 
-    static Floristeria floristeria = Floristeria.getInstancia();
-    static HashMap<Integer, Producto> productos = new HashMap<>();
+    Floristeria floristeria = Floristeria.getInstancia();
+    HashMap<Integer, Producto> productos = new HashMap<>();
     //La Key de productos es la misma que producto.getProductoID().
 
     @Test
