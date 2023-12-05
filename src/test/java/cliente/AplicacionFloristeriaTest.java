@@ -11,8 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AplicacionFloristeriaTest {
 
-    private double valorTotalStock;
-
     Floristeria floristeria = Floristeria.getInstancia();
     HashMap<Integer, Producto> productos = new HashMap<>();
     //La Key de productos es la misma que producto.getProductoID().
@@ -47,7 +45,7 @@ public class AplicacionFloristeriaTest {
     @Test
     @DisplayName("Verificar valorTotalStock")
     public void getValorTotalStockTest (){
-        valorTotalStock = productos.values().stream().mapToDouble(
+        double valorTotalStock = productos.values().stream().mapToDouble(
                 producto -> producto.getProductoPrecio() * producto.getProductoCantidad()).sum();
         assertEquals(valorTotalStock,floristeria.valorTotal());
     }
