@@ -1,4 +1,4 @@
-package org.example.n1Exe1.entidad;
+package org.example.n2Exe1MySQL.entidad;
 
 import java.io.Serializable;
 

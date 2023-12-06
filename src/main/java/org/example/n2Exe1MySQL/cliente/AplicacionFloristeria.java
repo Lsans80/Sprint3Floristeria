@@ -1,8 +1,10 @@
-package org.example.n1Exe1.cliente;
+package org.example.n2Exe1MySQL.cliente;
 
-import org.example.n1Exe1.herramienta.*;
-import org.example.n1Exe1.entidad.*;
-import java.util.*;
+import org.example.n2Exe1MySQL.entidad.*;
+import org.example.n2Exe1MySQL.herramienta.Input;
+import org.example.n2Exe1MySQL.herramienta.Material;
+
+import java.util.HashMap;
 
 
 public class AplicacionFloristeria {
@@ -137,7 +139,7 @@ public class AplicacionFloristeria {
                         + " | Precio: " + productoFlor.getProductoPrecio());
         });
     }
-    private static void consultarDecoracion (HashMap<Integer,Producto> stockDecoracion){
+    private static void consultarDecoracion (HashMap<Integer, Producto> stockDecoracion){
         System.out.println("\n***DECORACION***:\n");
         stockDecoracion.values().forEach(producto -> {
                 Producto_Decoracion productoDecoracion = (Producto_Decoracion) producto;

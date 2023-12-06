@@ -1,4 +1,4 @@
-package org.example.n1Exe1.herramienta;
+package org.example.n2Exe1MySQL.herramienta;
 
 public enum Material {
 	

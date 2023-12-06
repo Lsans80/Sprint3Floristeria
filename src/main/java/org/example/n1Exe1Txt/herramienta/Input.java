@@ -1,4 +1,4 @@
-package org.example.n1Exe1.herramienta;
+package org.example.n1Exe1Txt.herramienta;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

@@ -1,7 +1,8 @@
-package org.example.n1Exe1.entidad;
+package org.example.n2Exe1MySQL.entidad;
 
 
-import org.example.n1Exe1.persistencia.BaseDeDatos;
+import org.example.n2Exe1MySQL.persistencia.BaseDeDatos;
+
 import java.util.HashMap;
 
 public class Floristeria {

@@ -1,4 +1,4 @@
-package org.example.n1Exe1.entidad;
+package org.example.n1Exe1Txt.entidad;
 
 import java.io.Serializable;
 import java.time.LocalDate;

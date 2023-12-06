@@ -1,6 +1,6 @@
-package org.example.n1Exe1.entidad;
+package org.example.n1Exe1Txt.entidad;
 
-import org.example.n1Exe1.herramienta.Material;
+import org.example.n1Exe1Txt.herramienta.Material;
 
 public class Producto_Decoracion extends Producto {
 	

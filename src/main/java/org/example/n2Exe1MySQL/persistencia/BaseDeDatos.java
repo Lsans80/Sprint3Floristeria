@@ -1,8 +1,7 @@
-package org.example.n1Exe1.persistencia;
+package org.example.n2Exe1MySQL.persistencia;
 
-import org.example.n1Exe1.entidad.Producto;
-import org.example.n1Exe1.entidad.Ticket;
-//import org.example.n1Exe1.herramienta.SerDeSerObjectJson;
+import org.example.n2Exe1MySQL.entidad.Producto;
+import org.example.n2Exe1MySQL.entidad.Ticket;
 
 import java.io.*;
 import java.util.HashMap;

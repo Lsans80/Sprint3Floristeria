@@ -1,4 +1,4 @@
-package org.example.n1Exe1.cliente;
+package org.example.n2Exe1MySQL.cliente;
 
 public class Main {
 

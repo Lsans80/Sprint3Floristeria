@@ -1,12 +1,12 @@
 package cliente;
 
-import org.example.n1Exe1.entidad.*;
+import org.example.n1Exe1Txt.entidad.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 
-import static org.example.n1Exe1.herramienta.Material.PLASTICO;
+import static org.example.n1Exe1Txt.herramienta.Material.PLASTICO;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AplicacionFloristeriaTest {
