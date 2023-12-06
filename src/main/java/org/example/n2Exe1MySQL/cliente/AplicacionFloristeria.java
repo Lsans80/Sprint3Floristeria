@@ -1,16 +1,15 @@
 package org.example.n2Exe1MySQL.cliente;
 
-import org.example.n2Exe1MySQL.entidad.*;
-import org.example.n2Exe1MySQL.herramienta.Input;
-import org.example.n2Exe1MySQL.herramienta.Material;
+import org.example.n1Exe1Txt.entidad.*;
+import org.example.n1Exe1Txt.herramienta.Input;
+import org.example.n1Exe1Txt.herramienta.Material;
 
 import java.util.HashMap;
 
 
 public class AplicacionFloristeria {
 
-    //TODO Es necesario el atributo, si usamos Singleton?
-    static Floristeria floristeria;
+    private static Floristeria floristeria;
     public static void start (){
 
         floristeria = Floristeria.getInstancia();
@@ -139,7 +138,7 @@ public class AplicacionFloristeria {
                         + " | Precio: " + productoFlor.getProductoPrecio());
         });
     }
-    private static void consultarDecoracion (HashMap<Integer, Producto> stockDecoracion){
+    private static void consultarDecoracion (HashMap<Integer,Producto> stockDecoracion){
         System.out.println("\n***DECORACION***:\n");
         stockDecoracion.values().forEach(producto -> {
                 Producto_Decoracion productoDecoracion = (Producto_Decoracion) producto;
@@ -156,11 +155,7 @@ public class AplicacionFloristeria {
         String formattedValue = String.format("%.2f", valorTotal);
         System.out.println("El valor total del stock es de " + formattedValue + " Euros.");
     }
-    /*
-    public static void crearTicket () {
-        System.out.println(floristeria.crearTicket());
-    }
-*/
+
     public static void crearTicket() {
         Ticket ticket = new Ticket(floristeria.nextTicketID());
         int productoID;

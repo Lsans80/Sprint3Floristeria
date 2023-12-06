@@ -7,8 +7,7 @@ import java.util.*;
 
 public class AplicacionFloristeria {
 
-    //TODO Es necesario el atributo, si usamos Singleton?
-    static Floristeria floristeria;
+    private static Floristeria floristeria;
     public static void start (){
 
         floristeria = Floristeria.getInstancia();
@@ -154,11 +153,7 @@ public class AplicacionFloristeria {
         String formattedValue = String.format("%.2f", valorTotal);
         System.out.println("El valor total del stock es de " + formattedValue + " Euros.");
     }
-    /*
-    public static void crearTicket () {
-        System.out.println(floristeria.crearTicket());
-    }
-*/
+
     public static void crearTicket() {
         Ticket ticket = new Ticket(floristeria.nextTicketID());
         int productoID;
