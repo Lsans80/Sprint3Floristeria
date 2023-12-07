@@ -14,9 +14,9 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     private int nextTicketId;
 
     private MySQLDB() {
-        CONNECTION_URL = "jdbc:mysql://localhost/t3n2floristeria?user=root&password=MySQL_897300";
+        CONNECTION_URL = "jdbc:mysql://localhost/t3n2floristeria?user=root&password=Losangeles@2023";
     }
-
+    //jdbc:mysql://localhost:3306/?user=root
     public static MySQLDB instanciar() {
         if (instancia == null) {
             instancia = new MySQLDB();

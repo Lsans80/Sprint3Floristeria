@@ -1,8 +1,8 @@
 package org.example.n2Exe1MySQL.cliente;
 
-import org.example.n1Exe1Txt.entidad.*;
-import org.example.n1Exe1Txt.herramienta.Input;
-import org.example.n1Exe1Txt.herramienta.Material;
+import org.example.n2Exe1MySQL.entidad.*;
+import org.example.n2Exe1MySQL.herramienta.Input;
+import org.example.n2Exe1MySQL.herramienta.Material;
 
 import java.util.HashMap;
 
@@ -14,7 +14,7 @@ public class AplicacionFloristeria {
 
         floristeria = Floristeria.getInstancia();
         floristeria.setNombre("Landful");
-        load();
+        //load();
 
         boolean salir = false;
 
@@ -185,12 +185,12 @@ public class AplicacionFloristeria {
     	System.out.println("El valor total del ventas es de " + floristeria.valorVentas());
     }
 
-    public static void finalizar(){
+    /*public static void finalizar(){
         Floristeria.getInstancia().finalizar();
     }
     
     public static void load(){
         Floristeria.getInstancia().load();
-    }
+    }*/
 
 }
