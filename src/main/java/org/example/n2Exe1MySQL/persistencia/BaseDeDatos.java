@@ -2,8 +2,14 @@ package org.example.n2Exe1MySQL.persistencia;
 
 import org.example.n2Exe1MySQL.entidad.Producto;
 import org.example.n2Exe1MySQL.entidad.Ticket;
+import org.example.n2Exe1MySQL.herramienta.ConnectionFloristeria;
+import org.example.n2Exe1MySQL.herramienta.QueryFloristeria;
 
 import java.io.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.function.Predicate;
@@ -16,10 +22,14 @@ public class BaseDeDatos {
     private int nextProductoId;
     private int nextTicketId;
 	//private final String FILE_NOT_FOUND_MSG = "File not found";
+    //ResultSet ticketsResultSet = null;
+	ConnectionFloristeria floristeriaDbConnection;
+	//Statement getTicketResultSet;
 
     private BaseDeDatos () {
         productos = new HashMap<>();
         tickets = new HashMap<>();
+        floristeriaDbConnection = new ConnectionFloristeria();
         load();
         //loadJsonFileToStock();
     }
@@ -33,7 +43,18 @@ public class BaseDeDatos {
 		return productos;
 	}
     public HashMap<Integer, Ticket> getTickets() {
-        return tickets;
+    	Statement getTicketsResultSet;
+    	ResultSet ticketsResultSet;
+    	try (Connection conexiondb = floristeriaDbConnection.getConnection()) {
+    		getTicketsResultSet = conexiondb.createStatement();
+    		ticketsResultSet = getTicketsResultSet.executeQuery(QueryFloristeria.LISTAR_TICKETS);
+		} catch (Exception ex) {
+			System.err.println("There is no connection");
+			ex.printStackTrace();
+		}
+    	
+    	//return ticketsResultSet;
+    	return tickets;
     }
 
     public HashMap<Integer, Producto> listarTicketsProductosVendidos(int id) {
@@ -48,8 +69,18 @@ public class BaseDeDatos {
             return producto;
         });
     }
-    public Ticket agregarTicket(Ticket ticket) {
-       return tickets.put(ticket.getTicketID(), ticket);
+    
+    public void agregarTicketDb(Ticket ticket) {
+    	PreparedStatement insertTicketOnTicketDB;
+    	try (Connection conexiondb = floristeriaDbConnection.getConnection()) {
+			insertTicketOnTicketDB = conexiondb.prepareStatement(QueryFloristeria.AGREGAR_TICKET);
+			insertTicketOnTicketDB.setInt(1, ticket.getTicketID());
+			insertTicketOnTicketDB.execute();
+		} catch (Exception ex) {
+			System.err.println("There is no connection");
+			ex.printStackTrace();
+		}
+    	tickets.put(ticket.getTicketID(), ticket);	
     }
 
     public void agregarProductoTicket(int productoID, int ticketID) {
@@ -60,6 +91,8 @@ public class BaseDeDatos {
         return productos.get(id);
     }
     public Ticket leerTicket(int id) {
+    	
+    	
         return tickets.get(id);
     }
     public Producto eliminarProducto(int id, int cantidad) {
@@ -74,12 +107,6 @@ public class BaseDeDatos {
     }
     public void setCantidadProductoTicket(int productoID, int ticketID, int cantidad) {
     	leerTicket(ticketID).getProductosVendidos().get(productoID).setProductoCantidad(cantidad);
-/*
-        Producto producto = tickets.get(ticketID).getProductosVendidos().get(productoID);
-        int cantidadActual = producto.getProductoCantidad();
-        producto.setProductoCantidad(cantidadActual + cantidadAnadida);
-
- */
     }
     public Ticket eliminarTicket(int id) {
         Ticket t = leerTicket(id);

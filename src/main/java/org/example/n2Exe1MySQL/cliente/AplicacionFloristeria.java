@@ -1,8 +1,8 @@
 package org.example.n2Exe1MySQL.cliente;
 
-import org.example.n1Exe1Txt.entidad.*;
-import org.example.n1Exe1Txt.herramienta.Input;
-import org.example.n1Exe1Txt.herramienta.Material;
+import org.example.n2Exe1MySQL.entidad.*;
+import org.example.n2Exe1MySQL.herramienta.Input;
+import org.example.n2Exe1MySQL.herramienta.Material;
 
 import java.util.HashMap;
 
@@ -158,6 +158,7 @@ public class AplicacionFloristeria {
 
     public static void crearTicket() {
         Ticket ticket = new Ticket(floristeria.nextTicketID());
+        floristeria.addTicket(ticket);
         int productoID;
         int cantidadProductoEnTicket;
         boolean si;
@@ -167,9 +168,8 @@ public class AplicacionFloristeria {
             if (floristeria.existeProducto(productoID, cantidadProductoEnTicket)) {
                 Producto productoAAgregar = floristeria.buscarProducto(productoID).clonar();
                 productoAAgregar.setProductoCantidad(cantidadProductoEnTicket);
-                ticket.agregarProductoAlTicket(productoAAgregar);
+                ticket.agregarProductoAlTicketDb(productoAAgregar);
                 floristeria.eliminarProducto(productoID, cantidadProductoEnTicket);
-                floristeria.addTicket(ticket);
             } else {
                 System.err.println("No existe el producto, o no hay suficiente en stock.");
             }

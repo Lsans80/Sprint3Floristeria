@@ -1,24 +1,29 @@
 package org.example.n2Exe1MySQL.entidad;
 
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.time.LocalDate;
 import java.util.HashMap;
+
+import org.example.n2Exe1MySQL.herramienta.ConnectionFloristeria;
+import org.example.n2Exe1MySQL.herramienta.QueryFloristeria;
 
 public class Ticket implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private int ticketID;
+	private int id;
 	private LocalDate ticketDate;
 	private HashMap<Integer, Producto> productosVendidos;
 	private float ticketTotal = 0.0F;
-	//private static int proximoID = 1;
+	ConnectionFloristeria floristeriaDbConnection;
 
 	public Ticket(int ticketID) {
-		this.ticketID = ticketID;
+		this.id = ticketID;
+        floristeriaDbConnection = new ConnectionFloristeria();
 		ticketDate = LocalDate.now();
 		productosVendidos = new HashMap<>();
 		ticketTotal = calcularValorTotalDelTicket();
-		//proximoID++;
 	}
 
 	public HashMap<Integer, Producto> getProductosVendidos() {
@@ -34,7 +39,11 @@ public class Ticket implements Serializable {
 	}
 
 	public int getTicketID() {
-		return ticketID;
+		return id;
+	}
+
+	public LocalDate getTicketDate() {
+		return ticketDate;
 	}
 
 	public HashMap<Integer, Producto> agregarProductoAlTicket(Producto producto) {
@@ -44,8 +53,29 @@ public class Ticket implements Serializable {
 			}
 			return producto;
 		});
-		//productosVendidos.put(productoID, producto);
 		return productosVendidos;
+	}
+	
+	public void agregarProductoAlTicketDb(Producto producto) {
+    	PreparedStatement insertProductOnProductTicketDB;
+    	try (Connection conexiondb = floristeriaDbConnection.getConnection()) {
+    		insertProductOnProductTicketDB = conexiondb.prepareStatement(QueryFloristeria.AGREGAR_PRODUCTO_TICKET);
+    		insertProductOnProductTicketDB.setInt(1, this.getTicketID());
+    		insertProductOnProductTicketDB.setInt(2, producto.getProductoID());
+    		insertProductOnProductTicketDB.setInt(3, producto.getProductoCantidad());
+    		insertProductOnProductTicketDB.execute();
+		} catch (Exception ex) {
+			System.out.println("No hay conexion.");
+			ex.printStackTrace();
+		}
+    	
+    	productosVendidos.compute(producto.getProductoID(), (id, existingProducto) -> {
+			if (existingProducto != null) {
+				producto.setProductoCantidad(producto.getProductoCantidad() + existingProducto.getProductoCantidad());
+			}
+			return producto;
+		});
+		
 	}
 
 	public HashMap<Integer, Producto> removerProductoDelTicket(int productoID, Producto producto) {
@@ -59,7 +89,7 @@ public class Ticket implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Ticket [ID= " + ticketID + ", Date= " + ticketDate +  ", productos= " + productosVendidos + ", Total= "
+		return "Ticket [ID= " + id + ", Date= " + ticketDate +  ", productos= " + productosVendidos + ", Total= "
 				+ calcularValorTotalDelTicket() + "]";
 	}
 
