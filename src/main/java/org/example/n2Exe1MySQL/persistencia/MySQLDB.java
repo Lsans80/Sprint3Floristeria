@@ -6,6 +6,7 @@ import org.example.n2Exe1MySQL.herramienta.Material;
 
 import java.sql.*;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class MySQLDB implements InterfaceBaseDeDatos{
     private final String CONNECTION_URL; //= "jdbc:mysql://localhost/t3n2floristeria?user=root&password=MySQL_897300";
@@ -50,15 +51,14 @@ public class MySQLDB implements InterfaceBaseDeDatos{
 
     @Override
     public void agregarProducto(Producto producto) {
-
+    //TODO Habria que añadir una comprobacion: si producto no existe en la base de datos, crear; si el producto ya existe, sumar cantidades;
         try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
             Statement stmt = conn.createStatement();
 
-            String insertarProducto = String.format("INSERT INTO producto VALUES (%d, '%s', %f, '%s', %d)",
+            String insertarProducto = String.format(Locale.US, "INSERT INTO producto VALUES (%d, '%s', %f, '%s', %d)",
                     producto.getProductoID(), producto.getProductoNombre(),
                     producto.getProductoPrecio(), producto.getProductoTipo(),
                     producto.getProductoCantidad());
-
             stmt.executeUpdate(insertarProducto);
 
             if (producto instanceof Producto_Arbol){
@@ -82,6 +82,14 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         }
     }
 
+    private void setCantidadProducto(int id, int nuevaCantidad) {
+        try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("UPDATE producto SET cantidad = " + nuevaCantidad + " WHERE producto.id = " + id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     @Override
@@ -140,7 +148,16 @@ public class MySQLDB implements InterfaceBaseDeDatos{
 
     @Override
     public Producto eliminarProducto(int id, int cantidad) {
-        return null;
+        Producto producto = leerProducto(id);
+    /*    if (producto.getProductoCantidad() <= cantidad) {
+            producto.resetProductoCantidad();
+            productos.remove(id);
+        } else {
+            producto.reducirProductoCantidad(cantidad);
+        }
+
+     */
+        return producto;
     }
 
     @Override
