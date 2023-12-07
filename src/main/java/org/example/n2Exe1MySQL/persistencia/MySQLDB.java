@@ -15,13 +15,13 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     private int nextTicketId;
 
     private MySQLDB() {
-
         String usuario = Input.inputString("Dime tu usuario MySQL:");
         String password = Input.inputString("Dime tu password MySQL:");
-        CONNECTION_URL = "jdbc:mysql://localhost/t3n2floristeria?user="+usuario+"&password="+password+"";
+        CONNECTION_URL = "jdbc:mysql://localhost/t3n2floristeria?user="+usuario+"&password="+password;
+        nextProductoId = generateNextID("producto");
+        nextTicketId = generateNextID("ticket");
     }
-
-    public static MySQLDB instanciar() {
+        public static MySQLDB instanciar() {
         if (instancia == null) {
             instancia = new MySQLDB();
         }
@@ -149,12 +149,28 @@ public class MySQLDB implements InterfaceBaseDeDatos{
 
     @Override
     public int getNextProductoId() {
-        return 0;
+        nextProductoId++;
+        return nextProductoId;
     }
 
     @Override
     public int getNextTicketId() {
-        return 0;
+        nextTicketId++;
+        return nextTicketId;
+    }
+
+    private int generateNextID(String table) {
+        int id = 1;
+        try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT MAX(id) FROM " + table);
+            if (rs.next()) {
+                id = rs.getInt("MAX(id)") + 1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
     }
 
 }
