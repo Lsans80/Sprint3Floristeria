@@ -1,15 +1,12 @@
 package org.example.n2Exe1MySQL.persistencia;
 
-import org.example.n2Exe1MySQL.entidad.Producto;
-import org.example.n2Exe1MySQL.entidad.Producto_Arbol;
-import org.example.n2Exe1MySQL.entidad.Producto_Decoracion;
-import org.example.n2Exe1MySQL.entidad.Producto_Flor;
+import org.example.n2Exe1MySQL.entidad.*;
 import org.example.n2Exe1MySQL.herramienta.Material;
 
 import java.sql.*;
 import java.util.HashMap;
 
-public class MySQLDB {
+public class MySQLDB implements InterfaceBaseDeDatos{
     private final String CONNECTION_URL; //= "jdbc:mysql://localhost/t3n2floristeria?user=root&password=MySQL_897300";
     private static MySQLDB instancia;
 
@@ -68,6 +65,61 @@ public class MySQLDB {
             e.printStackTrace();
         }
         return productos;
+    }
+
+    @Override
+    public HashMap<Integer, Ticket> getTickets() {
+        return null;
+    }
+
+    @Override
+    public void agregarProducto(Producto producto) {
+
+    }
+
+    @Override
+    public Ticket agregarTicket(Ticket ticket) {
+        return null;
+    }
+
+    @Override
+    public Producto leerProducto(int id) {
+        return null;
+    }
+
+    @Override
+    public Ticket leerTicket(int id) {
+        return null;
+    }
+
+    @Override
+    public Producto eliminarProducto(int id, int cantidad) {
+        return null;
+    }
+
+    @Override
+    public HashMap<Integer, Producto> listarProductosFiltrando(String tipo) {
+        return null;
+    }
+
+    @Override
+    public float getValorTotalStock() {
+        return 0;
+    }
+
+    @Override
+    public float getValorTotalTickets() {
+        return 0;
+    }
+
+    @Override
+    public int getNextProductoId() {
+        return 0;
+    }
+
+    @Override
+    public int getNextTicketId() {
+        return 0;
     }
 
 }
