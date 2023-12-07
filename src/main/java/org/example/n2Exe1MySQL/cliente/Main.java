@@ -13,8 +13,8 @@ public class Main {
         //AplicacionFloristeria.finalizar();
 
         MySQLDB baseDeDatos = MySQLDB.instanciar();
-        HashMap<Integer, Producto> productos = baseDeDatos.getProductos();
+        Producto producto = baseDeDatos.leerProducto(1);
 
-        System.out.println(productos);
+        System.out.println(producto);
     }
 }

@@ -91,7 +91,46 @@ public class MySQLDB implements InterfaceBaseDeDatos{
 
     @Override
     public Producto leerProducto(int id) {
-        return null;
+        Producto producto = null;
+        try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM producto " +
+                    "LEFT JOIN arbol ON producto.id = arbol.id " +
+                    "LEFT JOIN flor ON producto.id = flor.id " +
+                    "LEFT JOIN decoracion ON producto.id = decoracion.id " +
+                    "WHERE producto.id = " + id);
+            if (rs.next()) {
+                switch (rs.getString("tipo").toLowerCase()) {
+                    case "arbol":
+                        producto = new Producto_Arbol(
+                                rs.getInt("id"),
+                                rs.getString("nombre"),
+                                rs.getFloat("precio"),
+                                rs.getFloat("altura"),
+                                rs.getInt("cantidad"));
+                        break;
+                    case "flor":
+                        producto = new Producto_Flor(
+                                rs.getInt("id"),
+                                rs.getString("nombre"),
+                                rs.getFloat("precio"),
+                                rs.getString("color"),
+                                rs.getInt("cantidad"));
+                        break;
+                    case "decoracion":
+                        producto = new Producto_Decoracion(
+                                rs.getInt("id"),
+                                rs.getString("nombre"),
+                                rs.getFloat("precio"),
+                                Material.valueOf(rs.getString("material")),
+                                rs.getInt("cantidad"));
+                        break;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return producto;
     }
 
     @Override
