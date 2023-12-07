@@ -86,6 +86,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
                     producto.getProductoID(), producto.getProductoNombre(),
                     producto.getProductoPrecio(), producto.getProductoTipo(),
                     producto.getProductoCantidad());
+
             stmt.executeUpdate(insertarProducto);
 
             if (producto instanceof Producto_Arbol){
@@ -108,6 +109,8 @@ public class MySQLDB implements InterfaceBaseDeDatos{
             e.printStackTrace();
         }
     }
+
+
 
     @Override
     public Ticket agregarTicket(Ticket ticket) {
