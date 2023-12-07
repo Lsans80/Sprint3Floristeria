@@ -1,5 +1,6 @@
 package org.example.n2Exe1MySQL.persistencia;
 
+import org.example.n1Exe1Txt.herramienta.Input;
 import org.example.n2Exe1MySQL.entidad.*;
 import org.example.n2Exe1MySQL.herramienta.Material;
 
@@ -14,9 +15,12 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     private int nextTicketId;
 
     private MySQLDB() {
-        CONNECTION_URL = "jdbc:mysql://localhost/t3n2floristeria?user=root&password=Losangeles@2023";
+
+        String usuario = Input.inputString("Dime tu usuario MySQL:");
+        String password = Input.inputString("Dime tu password MySQL:");
+        CONNECTION_URL = "jdbc:mysql://localhost/t3n2floristeria?user="+usuario+"&password="+password+"";
     }
-    //jdbc:mysql://localhost:3306/?user=root
+
     public static MySQLDB instanciar() {
         if (instancia == null) {
             instancia = new MySQLDB();
@@ -75,6 +79,34 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     @Override
     public void agregarProducto(Producto producto) {
 
+        try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
+            Statement stmt = conn.createStatement();
+
+            String insertarProducto = String.format("INSERT INTO producto VALUES (%d, '%s', %f, '%s', %d)",
+                    producto.getProductoID(), producto.getProductoNombre(),
+                    producto.getProductoPrecio(), producto.getProductoTipo(),
+                    producto.getProductoCantidad());
+            stmt.executeUpdate(insertarProducto);
+
+            if (producto instanceof Producto_Arbol){
+                String insertarArbol = String.format("INSERT into arbol VALUES (%f)",
+                        ((Producto_Arbol) producto).getArbolAltura());
+                stmt.executeUpdate(insertarArbol);
+
+            } else if (producto instanceof Producto_Flor){
+                String insertarFlor = String.format("INSERT into flor VALUES ('%d')",
+                        ((Producto_Flor) producto).getFlorColor());
+                stmt.executeUpdate(insertarFlor);
+
+            } else {
+                String insertarDecoracion = String.format("INSERT into decoracion VALUES ('%d')",
+                        ((Producto_Decoracion) producto).getDecoracionMaterial());
+                stmt.executeUpdate(insertarDecoracion);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
