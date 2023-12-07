@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Locale;
 
 public class MySQLDB implements InterfaceBaseDeDatos{
-    private final String CONNECTION_URL; //= "jdbc:mysql://localhost/t3n2floristeria?user=root&password=MySQL_897300";
+    private final String CONNECTION_URL;
     private static MySQLDB instancia;
 
     private int nextProductoId;
@@ -52,6 +52,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     @Override
     public void agregarProducto(Producto producto) {
     //TODO Habria que añadir una comprobacion: si producto no existe en la base de datos, crear; si el producto ya existe, sumar cantidades;
+    // Para hacer update de la cantidad una vez sumada, se puede usar el metodo privado private void setCantidadProducto(int id, int nuevaCantidad)
         try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
             Statement stmt = conn.createStatement();
 
@@ -147,16 +148,16 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     }
 
     @Override
-    public Producto eliminarProducto(int id, int cantidad) {
+    public Producto eliminarProducto(int id, int cantidadEliminar) {
         Producto producto = leerProducto(id);
-    /*    if (producto.getProductoCantidad() <= cantidad) {
-            producto.resetProductoCantidad();
-            productos.remove(id);
-        } else {
-            producto.reducirProductoCantidad(cantidad);
-        }
+        int cantidadActual = producto.getProductoCantidad();
 
-     */
+        if (cantidadActual >= cantidadEliminar) {
+            setCantidadProducto(id, cantidadActual - cantidadEliminar);
+            producto.reducirProductoCantidad(cantidadEliminar);
+        } else {
+            //TODO Gestionar excepcion?
+        }
         return producto;
     }
 
