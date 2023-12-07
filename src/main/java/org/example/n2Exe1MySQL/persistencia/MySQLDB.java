@@ -123,7 +123,17 @@ public class MySQLDB implements InterfaceBaseDeDatos{
 
     @Override
     public float getValorTotalStock() {
-        return 0;
+        int valorTotal = 0;
+        try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT SUM(precio) FROM producto");
+            if (rs.next()) {
+                valorTotal = rs.getInt("SUM(precio)");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return valorTotal;
     }
 
     @Override
