@@ -1,17 +1,18 @@
 package org.example.n2Exe1MySQL.entidad;
 
 
-import org.example.n2Exe1MySQL.persistencia.BaseDeDatos;
+import org.example.n2Exe1MySQL.persistencia.InterfaceBaseDeDatos;
+import org.example.n2Exe1MySQL.persistencia.MySQLDB;
 
 import java.util.HashMap;
 
 public class Floristeria {
 	private static Floristeria instancia = null;
 	private String nombre;
-	private BaseDeDatos baseDeDatos;
+	private InterfaceBaseDeDatos baseDeDatos;
 
 	private Floristeria() {
-		this.baseDeDatos = BaseDeDatos.instanciar();
+		this.baseDeDatos = MySQLDB.instanciar();
 	}
 
 	public static Floristeria getInstancia() {
@@ -33,11 +34,11 @@ public class Floristeria {
 		this.nombre = nombre;
 	}
 
-	public BaseDeDatos getBaseDeDatos() {
+	public InterfaceBaseDeDatos getBaseDeDatos() {
 		return baseDeDatos;
 	}
 
-	public void setBaseDeDatos(BaseDeDatos baseDeDatos) {
+	public void setBaseDeDatos(InterfaceBaseDeDatos baseDeDatos) {
 		this.baseDeDatos = baseDeDatos;
 	}
 
@@ -77,7 +78,7 @@ public class Floristeria {
 	}
 
 	public HashMap<Integer, Producto> getListaProductosPorTipo (String tipo){
-		return baseDeDatos.listarProductosFiltrando(producto -> producto.getProductoTipo().equalsIgnoreCase(tipo));
+		return baseDeDatos.listarProductosFiltrando(tipo);
 	}
 /*
 	public String crearTicket() {
@@ -165,10 +166,5 @@ public class Floristeria {
 		return baseDeDatos.existeProductoCantidadVsCantidadEnTicket(productoID, cantidadProductoEnTicket);
 	}
 	 */
-	public void finalizar() {
-		baseDeDatos.save();
-	}
-	public void load() {
-		baseDeDatos.load();
-	}
+
 }

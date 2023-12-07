@@ -63,7 +63,7 @@ public class BaseDeDatos {
     	}
         return p;
     }
-    public int maximoIDProductos () {
+    private int maximoIDProductos () {
     	Integer maxKey = 0;
         for (Integer key : productos.keySet()) {
             if (maxKey == 0 || productos.get(key).getProductoID() > productos.get(maxKey).getProductoID()) {
@@ -72,7 +72,7 @@ public class BaseDeDatos {
         }
         return maxKey;
     }
-    public int maximoIDTickets () {
+    private int maximoIDTickets () {
     	Integer maxKey = 0;
         for (Integer key : tickets.keySet()) {
             if (maxKey == 0 || tickets.get(key).getTicketID() > tickets.get(maxKey).getTicketID()) {
