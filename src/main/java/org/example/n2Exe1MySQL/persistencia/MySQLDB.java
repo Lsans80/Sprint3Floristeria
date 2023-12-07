@@ -36,35 +36,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
                     "LEFT JOIN arbol ON producto.id = arbol.id " +
                     "LEFT JOIN flor ON producto.id = flor.id " +
                     "LEFT JOIN decoracion ON producto.id = decoracion.id");
-            while (rs.next()) {
-                switch(rs.getString("tipo").toLowerCase()) {
-                    case "arbol":
-                        productos.put(rs.getInt("id"), new Producto_Arbol(
-                                rs.getInt("id"),
-                                rs.getString("nombre"),
-                                rs.getFloat("precio"),
-                                rs.getFloat("altura"),
-                                rs.getInt("cantidad")));
-                        break;
-                    case "flor":
-                        productos.put(rs.getInt("id"), new Producto_Flor(
-                                rs.getInt("id"),
-                                rs.getString("nombre"),
-                                rs.getFloat("precio"),
-                                rs.getString("color"),
-                                rs.getInt("cantidad")));
-                        break;
-                    case "decoracion":
-                        productos.put(rs.getInt("id"), new Producto_Decoracion(
-                                rs.getInt("id"),
-                                rs.getString("nombre"),
-                                rs.getFloat("precio"),
-                                Material.valueOf(rs.getString("material")),
-                                rs.getInt("cantidad")));
-                        break;
-                }
-
-            }
+            productos = generaMapaProducto(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -134,7 +106,19 @@ public class MySQLDB implements InterfaceBaseDeDatos{
 
     @Override
     public HashMap<Integer, Producto> listarProductosFiltrando(String tipo) {
-        return null;
+        HashMap<Integer, Producto> productos = new HashMap<>();
+        try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM producto " +
+                    "LEFT JOIN arbol ON producto.id = arbol.id " +
+                    "LEFT JOIN flor ON producto.id = flor.id " +
+                    "LEFT JOIN decoracion ON producto.id = decoracion.id " +
+                    "WHERE producto.tipo = \"" + tipo + "\"");
+            productos = generaMapaProducto(rs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return productos;
     }
 
     @Override
@@ -165,12 +149,49 @@ public class MySQLDB implements InterfaceBaseDeDatos{
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT MAX(id) FROM " + table);
             if (rs.next()) {
-                id = rs.getInt("MAX(id)") + 1;
+                id = rs.getInt("MAX(id)");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return id;
+    }
+
+    private HashMap<Integer, Producto> generaMapaProducto(ResultSet rs) {
+        HashMap<Integer, Producto> productos = new HashMap<>();
+        try {
+            while (rs.next()) {
+                switch (rs.getString("tipo").toLowerCase()) {
+                    case "arbol":
+                        productos.put(rs.getInt("id"), new Producto_Arbol(
+                                rs.getInt("id"),
+                                rs.getString("nombre"),
+                                rs.getFloat("precio"),
+                                rs.getFloat("altura"),
+                                rs.getInt("cantidad")));
+                        break;
+                    case "flor":
+                        productos.put(rs.getInt("id"), new Producto_Flor(
+                                rs.getInt("id"),
+                                rs.getString("nombre"),
+                                rs.getFloat("precio"),
+                                rs.getString("color"),
+                                rs.getInt("cantidad")));
+                        break;
+                    case "decoracion":
+                        productos.put(rs.getInt("id"), new Producto_Decoracion(
+                                rs.getInt("id"),
+                                rs.getString("nombre"),
+                                rs.getFloat("precio"),
+                                Material.valueOf(rs.getString("material")),
+                                rs.getInt("cantidad")));
+                        break;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return productos;
     }
 
 }
