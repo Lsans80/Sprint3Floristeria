@@ -36,10 +36,6 @@ public class BaseDeDatos {
         return tickets;
     }
 
-    public HashMap<Integer, Producto> listarTicketsProductosVendidos(int id) {
-        return tickets.get(id).getProductosVendidos();
-    }
-
     public void agregarProducto(Producto producto) {
         productos.compute(producto.getProductoID(), (id, existingProducto) -> {
             if (existingProducto != null) {
@@ -50,11 +46,6 @@ public class BaseDeDatos {
     }
     public Ticket agregarTicket(Ticket ticket) {
        return tickets.put(ticket.getTicketID(), ticket);
-    }
-
-    public void agregarProductoTicket(int productoID, int ticketID) {
-    	Producto p = this.leerProducto(productoID);
-    	tickets.get(ticketID).agregarProductoAlTicket(p.clonar());
     }
     public Producto leerProducto(int id) {
         return productos.get(id);
@@ -71,20 +62,6 @@ public class BaseDeDatos {
             p.reducirProductoCantidad(cantidad);
     	}
         return p;
-    }
-    public void setCantidadProductoTicket(int productoID, int ticketID, int cantidad) {
-    	leerTicket(ticketID).getProductosVendidos().get(productoID).setProductoCantidad(cantidad);
-/*
-        Producto producto = tickets.get(ticketID).getProductosVendidos().get(productoID);
-        int cantidadActual = producto.getProductoCantidad();
-        producto.setProductoCantidad(cantidadActual + cantidadAnadida);
-
- */
-    }
-    public Ticket eliminarTicket(int id) {
-        Ticket t = leerTicket(id);
-        tickets.remove(id);
-        return t;
     }
     public int maximoIDProductos () {
     	Integer maxKey = 0;
@@ -104,10 +81,8 @@ public class BaseDeDatos {
         }
         return maxKey;
     }
-
     public HashMap<Integer, Producto> listarProductosFiltrando(Predicate<Producto> predicate) {
         return (HashMap<Integer, Producto>) productos.entrySet().stream().filter(entry -> predicate.test(entry.getValue())).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
-
     }
     public float getValorTotalStock() {
         return (float) productos.values().stream().mapToDouble(producto -> producto.getProductoPrecio() * producto.getProductoCantidad()).sum();
@@ -118,16 +93,6 @@ public class BaseDeDatos {
     public float getValorTotalTickets() {
         return (float) tickets.values().stream().mapToDouble(Ticket::calcularValorTotalDelTicket).sum();
     }
-    public boolean existeProducto(int productoID) {
-    	return productos.containsKey(productoID);
-    }
-    public boolean existeProductoCantidad(int productoID) {
-		return productos.get(productoID).getProductoCantidad() > 0;
-	}
-	public boolean existeProductoCantidadVsCantidadEnTicket(int productoID, int cantidadProductoEnTicket) {
-		return productos.get(productoID).getProductoCantidad() >= cantidadProductoEnTicket;
-	}
-    //TODO Pulir excepciones, casteo, etc.
     public int getNextProductoId() {
         nextProductoId++;
 		return nextProductoId;
@@ -136,7 +101,6 @@ public class BaseDeDatos {
 		nextTicketId++;
 		return nextTicketId;
 	}
-
     public void load() {
         loadProductos();
         loadTickets();
@@ -175,7 +139,6 @@ public class BaseDeDatos {
             }
         }
     }
-    //TODO Pulir excepciones
     public void save() {
         try (FileOutputStream fos = new FileOutputStream("productosDB.txt");
              ObjectOutputStream oos = new ObjectOutputStream(fos)){
