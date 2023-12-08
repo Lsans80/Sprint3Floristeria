@@ -180,12 +180,12 @@ public class MySQLDB implements InterfaceBaseDeDatos{
 
     @Override
     public float getValorTotalStock() {
-        int valorTotal = 0;
+        float valorTotal = 0;
         try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT SUM(precio) FROM producto");
+            ResultSet rs = stmt.executeQuery("SELECT SUM(precio * cantidad) AS sumaTotal FROM producto");
             if (rs.next()) {
-                valorTotal = rs.getInt("SUM(precio)");
+                valorTotal = rs.getFloat("sumaTotal");
             }
         } catch (SQLException e) {
             e.printStackTrace();
