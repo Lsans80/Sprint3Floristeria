@@ -55,26 +55,37 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
             Statement stmt = conn.createStatement();
 
-            String insertarProducto = String.format(Locale.US, "INSERT INTO producto VALUES (%d, '%s', %f, '%s', %d)",
-                    producto.getProductoID(), producto.getProductoNombre(),
-                    producto.getProductoPrecio(), producto.getProductoTipo(),
-                    producto.getProductoCantidad());
-            stmt.executeUpdate(insertarProducto);
+            ResultSet rs = stmt.executeQuery(String.format(
+                    "SELECT * FROM producto WHERE id = %d", producto.getProductoID()));
 
-            if (producto instanceof Producto_Arbol){
-                String insertarArbol = String.format("INSERT into arbol VALUES (%f)",
-                        ((Producto_Arbol) producto).getArbolAltura());
-                stmt.executeUpdate(insertarArbol);
-
-            } else if (producto instanceof Producto_Flor){
-                String insertarFlor = String.format("INSERT into flor VALUES ('%s')",
-                        ((Producto_Flor) producto).getFlorColor());
-                stmt.executeUpdate(insertarFlor);
+            if (rs.next()) {
+                int nuevaCantidad = producto.getProductoCantidad() + rs.getInt("cantidad");
+                setCantidadProducto(producto.getProductoID(), nuevaCantidad);
 
             } else {
-                String insertarDecoracion = String.format("INSERT into decoracion VALUES ('%s')",
-                        ((Producto_Decoracion) producto).getDecoracionMaterial());
-                stmt.executeUpdate(insertarDecoracion);
+
+                String insertarProducto = String.format(Locale.US,
+                        "INSERT INTO producto VALUES (%d, '%s', %f, '%s', %d)",
+                        producto.getProductoID(), producto.getProductoNombre(),
+                        producto.getProductoPrecio(), producto.getProductoTipo(),
+                        producto.getProductoCantidad());
+                stmt.executeUpdate(insertarProducto);
+
+                if (producto instanceof Producto_Arbol) {
+                    String insertarArbol = String.format("INSERT into arbol VALUES (%f)",
+                            ((Producto_Arbol) producto).getArbolAltura());
+                    stmt.executeUpdate(insertarArbol);
+
+                } else if (producto instanceof Producto_Flor) {
+                    String insertarFlor = String.format("INSERT into flor VALUES ('%s')",
+                            ((Producto_Flor) producto).getFlorColor());
+                    stmt.executeUpdate(insertarFlor);
+
+                } else {
+                    String insertarDecoracion = String.format("INSERT into decoracion VALUES ('%s')",
+                            ((Producto_Decoracion) producto).getDecoracionMaterial());
+                    stmt.executeUpdate(insertarDecoracion);
+                }
             }
 
         } catch (SQLException e) {
