@@ -21,6 +21,10 @@ public class Ticket implements Serializable {
 		//proximoID++;
 	}
 
+	public LocalDate getTicketDate() {
+		return ticketDate;
+	}
+
 	public HashMap<Integer, Producto> getProductosVendidos() {
 		return productosVendidos;
 	}

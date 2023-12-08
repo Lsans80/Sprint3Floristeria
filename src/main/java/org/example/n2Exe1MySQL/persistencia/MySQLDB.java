@@ -83,7 +83,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     }
 
     private void setCantidadProducto(int id, int nuevaCantidad) {
-        try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
+        try (Connection conn = DriverManager.getConnection(CONNECTION_URL)) {
             Statement stmt = conn.createStatement();
             stmt.executeUpdate("UPDATE producto SET cantidad = " + nuevaCantidad + " WHERE producto.id = " + id);
         } catch (SQLException e) {
@@ -91,10 +91,40 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         }
     }
 
-
     @Override
     public Ticket agregarTicket(Ticket ticket) {
-        return null;
+        PreparedStatement insertTicketOnTicketDB;
+
+        try (Connection conn = DriverManager.getConnection(CONNECTION_URL)) {
+            insertTicketOnTicketDB = conn.prepareStatement(QueriesSQL.AGREGAR_TICKET);
+            insertTicketOnTicketDB.setInt(1, ticket.getTicketID());
+            insertTicketOnTicketDB.setDate(2, Date.valueOf(ticket.getTicketDate()));
+            insertTicketOnTicketDB.execute();
+
+            ticket.getProductosVendidos().values().forEach(producto ->
+                    agregarProductoAlTicket(producto, ticket.getTicketID(), conn));
+
+        } catch (SQLException ex) {
+            System.err.println("There is no connection");
+            ex.printStackTrace();
+        }
+
+        return ticket;
+    }
+
+    private void agregarProductoAlTicket(Producto producto, int ticketID, Connection conn) {
+        PreparedStatement insertProductOnProductTicketDB;
+
+        try {
+            insertProductOnProductTicketDB = conn.prepareStatement(QueriesSQL.AGREGAR_PRODUCTO_TICKET);
+            insertProductOnProductTicketDB.setInt(1, ticketID);
+            insertProductOnProductTicketDB.setInt(2, producto.getProductoID());
+            insertProductOnProductTicketDB.setInt(3, producto.getProductoCantidad());
+            insertProductOnProductTicketDB.execute();
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
