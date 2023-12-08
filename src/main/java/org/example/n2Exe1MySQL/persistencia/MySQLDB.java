@@ -11,7 +11,6 @@ import java.util.Locale;
 public class MySQLDB implements InterfaceBaseDeDatos{
     private final String CONNECTION_URL;
     private static MySQLDB instancia;
-
     private int nextProductoId;
     private int nextTicketId;
 
@@ -22,7 +21,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         nextProductoId = generateNextID("producto");
         nextTicketId = generateNextID("ticket");
     }
-        public static MySQLDB instanciar() {
+    public static MySQLDB instanciar() {
         if (instancia == null) {
             instancia = new MySQLDB();
         }
