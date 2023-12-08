@@ -169,12 +169,13 @@ public class AplicacionFloristeria {
                 productoAAgregar.setProductoCantidad(cantidadProductoEnTicket);
                 ticket.agregarProductoAlTicket(productoAAgregar);
                 floristeria.eliminarProducto(productoID, cantidadProductoEnTicket);
-                floristeria.addTicket(ticket);
+                //floristeria.addTicket(ticket);
             } else {
                 System.err.println("No existe el producto, o no hay suficiente en stock.");
             }
             si = Input.inputSiNo("Deseas agregar otro producto/ o cambiar cantidad? s/n");
         } while (si);
+        floristeria.addTicket(ticket);
     }
     
     public static void listarHistorialTickets () {
