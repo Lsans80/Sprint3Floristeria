@@ -73,7 +73,6 @@ public class AplicacionFloristeria {
                 int idProducto = Input.inputInt("Id del producto:");
                 int cantidad = Input.inputInt("Cantidad a añadir:");
                 Producto producto = floristeria.buscarProducto(idProducto);
-                System.out.println(floristeria.buscarProducto(idProducto));
                 floristeria.agregarCantidadProducto(idProducto, producto.getProductoCantidad() + cantidad);
                 break;
 
