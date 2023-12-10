@@ -72,17 +72,17 @@ public class MySQLDB implements InterfaceBaseDeDatos{
                 stmt.executeUpdate(insertarProducto);
 
                 if (producto instanceof Producto_Arbol) {
-                    String insertarArbol = String.format("INSERT into arbol VALUES (%f)",
+                    String insertarArbol = String.format("INSERT INTO arbol VALUES (%f)",
                             ((Producto_Arbol) producto).getArbolAltura());
                     stmt.executeUpdate(insertarArbol);
 
                 } else if (producto instanceof Producto_Flor) {
-                    String insertarFlor = String.format("INSERT into flor VALUES ('%s')",
+                    String insertarFlor = String.format("INSERT INTO flor VALUES ('%s')",
                             ((Producto_Flor) producto).getFlorColor());
                     stmt.executeUpdate(insertarFlor);
 
                 } else {
-                    String insertarDecoracion = String.format("INSERT into decoracion VALUES ('%s')",
+                    String insertarDecoracion = String.format("INSERT INTO decoracion VALUES ('%s')",
                             ((Producto_Decoracion) producto).getDecoracionMaterial());
                     stmt.executeUpdate(insertarDecoracion);
                 }
