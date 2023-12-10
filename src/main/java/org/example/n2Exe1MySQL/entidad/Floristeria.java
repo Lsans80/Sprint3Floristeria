@@ -47,6 +47,10 @@ public class Floristeria {
 	public void addProducto(Producto producto) {
 		baseDeDatos.agregarProducto(producto);
 	}
+
+	public void agregarCantidadProducto (int id, int nuevaCantidad){
+		baseDeDatos.setCantidadProducto(id, nuevaCantidad);
+	}
 	public void addTicket(Ticket ticket) {
 		baseDeDatos.agregarTicket(ticket);
 	}

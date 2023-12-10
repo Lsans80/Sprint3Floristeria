@@ -93,7 +93,8 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         }
     }
 
-    private void setCantidadProducto(int id, int nuevaCantidad) {
+    @Override
+    public void setCantidadProducto(int id, int nuevaCantidad) {
         try (Connection conn = DriverManager.getConnection(CONNECTION_URL)) {
             Statement stmt = conn.createStatement();
             stmt.executeUpdate("UPDATE producto SET cantidad = " + nuevaCantidad + " WHERE producto.id = " + id);

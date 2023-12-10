@@ -66,17 +66,30 @@ public class AplicacionFloristeria {
     }
 
     public static void crearProducto(){
-        int opcion = Input.inputInt("Dime que producto deseas crear: \n1.Arbol.\n2.Flor.\n3.Decoración.");
+        int opcion = Input.inputInt("1.Añadir cantidad a un producto existente.\n2.Crear un producto.");
         switch (opcion){
+
             case 1:
-                floristeria.addProducto(crearArbol());
+                int idProducto = Input.inputInt("Id del producto:");
+                int cantidad = Input.inputInt("Cantidad a añadir:");
+                Producto producto = floristeria.buscarProducto(idProducto);
+                System.out.println(floristeria.buscarProducto(idProducto));
+                floristeria.agregarCantidadProducto(idProducto, producto.getProductoCantidad() + cantidad);
                 break;
+
             case 2:
-                floristeria.addProducto(crearFlor());
-                break;
-            case 3:
-                floristeria.addProducto(crearDecoracion());
-                break;
+                int opcion2 = Input.inputInt("Dime que producto deseas crear: \n1.Arbol.\n2.Flor.\n3.Decoración.");
+                switch (opcion2){
+                    case 1:
+                        floristeria.addProducto(crearArbol());
+                        break;
+                    case 2:
+                        floristeria.addProducto(crearFlor());
+                        break;
+                    case 3:
+                        floristeria.addProducto(crearDecoracion());
+                        break;
+                }
         }
     }
 
