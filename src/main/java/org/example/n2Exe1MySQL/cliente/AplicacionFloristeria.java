@@ -182,7 +182,6 @@ public class AplicacionFloristeria {
                 productoAAgregar.setProductoCantidad(cantidadProductoEnTicket);
                 ticket.agregarProductoAlTicket(productoAAgregar);
                 floristeria.eliminarProducto(productoID, cantidadProductoEnTicket);
-                //floristeria.addTicket(ticket);
             } else {
                 System.err.println("No existe el producto, o no hay suficiente en stock.");
             }

@@ -27,7 +27,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         }
         return instancia;
     }
-
+    @Override
     public HashMap<Integer, Producto> getProductos() {
         HashMap<Integer, Producto> productos = new HashMap<>();
         try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
@@ -43,11 +43,8 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         return productos;
     }
 
-
     @Override
     public void agregarProducto(Producto producto) {
-    //TODO Habria que añadir una comprobacion: si producto no existe en la base de datos, crear; si el producto ya existe, sumar cantidades;
-    // Para hacer update de la cantidad una vez sumada, se puede usar el metodo privado private void setCantidadProducto(int id, int nuevaCantidad)
         try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
             Statement stmt = conn.createStatement();
 
