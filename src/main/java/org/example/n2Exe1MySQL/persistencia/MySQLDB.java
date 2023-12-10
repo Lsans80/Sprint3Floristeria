@@ -43,10 +43,6 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         return productos;
     }
 
-    @Override
-    public HashMap<Integer, Ticket> getTickets() {
-        return null;
-    }
 
     @Override
     public void agregarProducto(Producto producto) {
@@ -72,17 +68,20 @@ public class MySQLDB implements InterfaceBaseDeDatos{
                 stmt.executeUpdate(insertarProducto);
 
                 if (producto instanceof Producto_Arbol) {
-                    String insertarArbol = String.format("INSERT INTO arbol VALUES (%f)",
+                    String insertarArbol = String.format(Locale.US, "INSERT INTO arbol VALUES (%d, %f)",
+                            producto.getProductoID(),
                             ((Producto_Arbol) producto).getArbolAltura());
                     stmt.executeUpdate(insertarArbol);
 
                 } else if (producto instanceof Producto_Flor) {
-                    String insertarFlor = String.format("INSERT INTO flor VALUES ('%s')",
+                    String insertarFlor = String.format(Locale.US, "INSERT INTO flor VALUES (%d, '%s')",
+                            producto.getProductoID(),
                             ((Producto_Flor) producto).getFlorColor());
                     stmt.executeUpdate(insertarFlor);
 
                 } else {
-                    String insertarDecoracion = String.format("INSERT INTO decoracion VALUES ('%s')",
+                    String insertarDecoracion = String.format("INSERT INTO decoracion VALUES (%d,'%s')",
+                            producto.getProductoID(),
                             ((Producto_Decoracion) producto).getDecoracionMaterial());
                     stmt.executeUpdate(insertarDecoracion);
                 }
@@ -126,7 +125,6 @@ public class MySQLDB implements InterfaceBaseDeDatos{
 
     private void agregarProductoAlTicket(Producto producto, int ticketID, Connection conn) {
         PreparedStatement insertProductOnProductTicketDB;
-
         try {
             insertProductOnProductTicketDB = conn.prepareStatement(QueriesSQL.AGREGAR_PRODUCTO_TICKET);
             insertProductOnProductTicketDB.setInt(1, ticketID);
@@ -184,8 +182,84 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     }
 
     @Override
+    public HashMap<Integer, Ticket> getTickets() {
+        HashMap<Integer, Ticket> tickets = new HashMap<>();
+        Ticket ticket;
+        int id;
+        try (Connection conn = DriverManager.getConnection(CONNECTION_URL)) {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM ticket");
+            while (rs.next()) {
+                id = rs.getInt("id");
+                ticket = new Ticket(id);
+                ticket.setTicketDate(rs.getDate("fecha").toLocalDate());
+                agregarProductosTicket(ticket, conn);
+                tickets.put(id, ticket);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tickets;
+    }
+    @Override
     public Ticket leerTicket(int id) {
-        return null;
+        Ticket ticket = null;
+        try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM ticket " +
+                    "WHERE ticket.id = " + id);
+            if(rs.next()) {
+                ticket = new Ticket(id);
+                ticket.setTicketDate(rs.getDate("fecha").toLocalDate());
+                agregarProductosTicket(ticket, conn);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ticket;
+    }
+
+    private void agregarProductosTicket (Ticket ticket, Connection conn) {
+        int id = ticket.getTicketID();
+        try {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM producto_ticket " +
+                    "INNER JOIN producto ON producto_ticket.productoId = producto.id " +
+                    "LEFT JOIN arbol ON producto.id = arbol.id " +
+                    "LEFT JOIN flor ON producto.id = flor.id " +
+                    "LEFT JOIN decoracion ON producto.id = decoracion.id " +
+                    "WHERE producto_ticket.ticketId = " + id);
+            while (rs.next()) {
+                switch (rs.getString("tipo").toLowerCase()) {
+                    case "arbol":
+                        ticket.agregarProductoAlTicket(new Producto_Arbol(
+                                rs.getInt("id"),
+                                rs.getString("nombre"),
+                                rs.getFloat("precio"),
+                                rs.getFloat("altura"),
+                                rs.getInt("producto_ticket.cantidad")));
+                        break;
+                    case "flor":
+                        ticket.agregarProductoAlTicket(new Producto_Flor(
+                                rs.getInt("id"),
+                                rs.getString("nombre"),
+                                rs.getFloat("precio"),
+                                rs.getString("color"),
+                                rs.getInt("producto_ticket.cantidad")));
+                        break;
+                    case "decoracion":
+                        ticket.agregarProductoAlTicket(new Producto_Decoracion(
+                                rs.getInt("id"),
+                                rs.getString("nombre"),
+                                rs.getFloat("precio"),
+                                Material.valueOf(rs.getString("material")),
+                                rs.getInt("producto_ticket.cantidad")));
+                        break;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -247,7 +321,21 @@ public class MySQLDB implements InterfaceBaseDeDatos{
 
     @Override
     public float getValorTotalTickets() {
-        return 0;
+        float valorTotal = 0;
+        try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT SUM(precio * producto_ticket.cantidad) AS sumaTotal FROM producto_ticket " +
+                    "INNER JOIN producto ON producto_ticket.productoId = producto.id " +
+                    "LEFT JOIN arbol ON producto.id = arbol.id " +
+                    "LEFT JOIN flor ON producto.id = flor.id " +
+                    "LEFT JOIN decoracion ON producto.id = decoracion.id ");
+            if (rs.next()) {
+                valorTotal = rs.getFloat("sumaTotal");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return valorTotal;
     }
 
     @Override
