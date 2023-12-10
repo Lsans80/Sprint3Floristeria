@@ -6,5 +6,7 @@ public class QueriesSQL {
         public static final String AGREGAR_PRODUCTO_TICKET = "INSERT INTO producto_ticket (ticketId, productoId, cantidad) VALUES(?,?,?)";
         public static final String LISTAR_TICKETS = "";
 
+        public static final String DELETE_PRODUCTO = "DELETE FROM producto WHERE id = (?)";
+
 
 }

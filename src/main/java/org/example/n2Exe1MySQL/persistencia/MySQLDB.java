@@ -201,6 +201,17 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         return producto;
     }
 
+    public void eliminarProductoDefinitivo (int id){
+
+        try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
+            PreparedStatement preparedStatement = conn.prepareStatement(QueriesSQL.DELETE_PRODUCTO);
+            preparedStatement.setInt(1, id);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public HashMap<Integer, Producto> listarProductosFiltrando(String tipo) {
         HashMap<Integer, Producto> productos = new HashMap<>();
