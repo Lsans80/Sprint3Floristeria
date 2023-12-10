@@ -1,6 +1,6 @@
 package org.example.n2Exe1MySQL.persistencia;
 
-import org.example.n1Exe1Txt.herramienta.Input;
+import org.example.n2Exe1MySQL.herramienta.Input;
 import org.example.n2Exe1MySQL.entidad.*;
 import org.example.n2Exe1MySQL.herramienta.Material;
 
