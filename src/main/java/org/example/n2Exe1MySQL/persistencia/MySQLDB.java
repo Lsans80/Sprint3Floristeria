@@ -35,12 +35,14 @@ public class MySQLDB implements InterfaceBaseDeDatos{
             usuario = Input.inputString("Dime tu usuario MySQL:");
             password = Input.inputString("Dime tu password MySQL:");
             connection = "jdbc:mysql://localhost/t3n2floristeria?user="+usuario+"&password="+password;
+
             try (Connection conn = DriverManager.getConnection(connection)) {
                 System.out.println("La conexión se ha establecido.");
                 salir = true;
 
             } catch (SQLException e){
                 System.err.println("Usuario y/o contraseña no válidos.");
+                e.getMessage();
             }
 
         } while (!salir);
@@ -85,21 +87,26 @@ public class MySQLDB implements InterfaceBaseDeDatos{
                         producto.getProductoCantidad());
                 stmt.executeUpdate(insertarProducto);
 
-                if (producto instanceof Producto_Arbol) {
-                    String insertarArbol = String.format(Locale.US, "INSERT INTO arbol VALUES (%d, %f)",
-                            producto.getProductoID(), ((Producto_Arbol) producto).getArbolAltura());
-                    stmt.executeUpdate(insertarArbol);
+                String tipo = producto.getProductoTipo().toLowerCase();
 
-                } else if (producto instanceof Producto_Flor) {
-                    String insertarFlor = String.format(Locale.US, "INSERT INTO flor VALUES (%d, '%s')",
-                            producto.getProductoID(), ((Producto_Flor) producto).getFlorColor());
-                    stmt.executeUpdate(insertarFlor);
-
-                } else {
-                    String insertarDecoracion = String.format("INSERT INTO decoracion VALUES (%d,'%s')",
-                            producto.getProductoID(), ((Producto_Decoracion) producto).getDecoracionMaterial());
-                    stmt.executeUpdate(insertarDecoracion);
+                switch(tipo){
+                    case "arbol":
+                        String insertarArbol = String.format(Locale.US, "INSERT INTO arbol VALUES (%d, %f)",
+                                producto.getProductoID(), ((Producto_Arbol) producto).getArbolAltura());
+                        stmt.executeUpdate(insertarArbol);
+                        break;
+                    case "flor":
+                        String insertarFlor = String.format(Locale.US, "INSERT INTO flor VALUES (%d, '%s')",
+                                producto.getProductoID(), ((Producto_Flor) producto).getFlorColor());
+                        stmt.executeUpdate(insertarFlor);
+                        break;
+                    case "decoracion":
+                        String insertarDecoracion = String.format("INSERT INTO decoracion VALUES (%d,'%s')",
+                                producto.getProductoID(), ((Producto_Decoracion) producto).getDecoracionMaterial());
+                        stmt.executeUpdate(insertarDecoracion);
+                        break;
                 }
+
             }
 
         } catch (SQLException e) {

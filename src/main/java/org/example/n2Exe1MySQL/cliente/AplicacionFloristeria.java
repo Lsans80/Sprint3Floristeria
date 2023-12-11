@@ -93,7 +93,12 @@ public class AplicacionFloristeria {
         int idProducto = Input.inputInt("Id del producto:");
         int cantidad = Input.inputInt("Cantidad a añadir:");
         Producto producto = floristeria.buscarProducto(idProducto);
-        floristeria.addCantidadProducto(idProducto, producto.getProductoCantidad() + cantidad);
+
+        if(producto == null){
+            System.out.println("El producto no existe.");
+        } else {
+            floristeria.addCantidadProducto(idProducto, producto.getProductoCantidad() + cantidad);
+        }
     }
 
     public static Producto_Arbol crearArbol() {
