@@ -70,10 +70,7 @@ public class AplicacionFloristeria {
         switch (opcion){
 
             case 1:
-                int idProducto = Input.inputInt("Id del producto:");
-                int cantidad = Input.inputInt("Cantidad a añadir:");
-                Producto producto = floristeria.buscarProducto(idProducto);
-                floristeria.agregarCantidadProducto(idProducto, producto.getProductoCantidad() + cantidad);
+                agregarCantidadProducto();
                 break;
 
             case 2:
@@ -90,6 +87,13 @@ public class AplicacionFloristeria {
                         break;
                 }
         }
+    }
+
+    public static void agregarCantidadProducto (){
+        int idProducto = Input.inputInt("Id del producto:");
+        int cantidad = Input.inputInt("Cantidad a añadir:");
+        Producto producto = floristeria.buscarProducto(idProducto);
+        floristeria.agregarCantidadProducto(idProducto, producto.getProductoCantidad() + cantidad);
     }
 
     public static Producto_Arbol crearArbol() {
