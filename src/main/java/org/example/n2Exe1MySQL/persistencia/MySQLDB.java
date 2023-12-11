@@ -47,6 +47,28 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     public HashMap<Integer, Ticket> getTickets() {
         return null;
     }
+    
+    public String getTicketsDB() {
+    	Statement getTicketsResultSet;
+    	ResultSet ticketsResultSet = null;
+    	String result = "";
+    	try (Connection conn = DriverManager.getConnection(CONNECTION_URL)) {
+    		getTicketsResultSet = conn.createStatement();
+    		ticketsResultSet = getTicketsResultSet.executeQuery(QueriesSQL.LISTAR_TICKETS);
+    		while (ticketsResultSet.next()) {
+				result += ticketsResultSet.getString("Id") + " | " 
+						+ "Fecha: " + ticketsResultSet.getString("Fecha") + " | "
+						+ "Nombre: " + ticketsResultSet.getString("Nombre") + " | "
+						+ "Cantidad: " + ticketsResultSet.getString("Cantidad") + " | ";
+			}
+			ticketsResultSet.close();
+		} catch (Exception ex) {
+			System.err.println("There is no connection");
+			ex.printStackTrace();
+		}
+    	
+    	return result;
+    }
 
     @Override
     public void agregarProducto(Producto producto) {

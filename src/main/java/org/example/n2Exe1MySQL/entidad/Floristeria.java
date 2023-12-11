@@ -135,8 +135,12 @@ public class Floristeria {
 		baseDeDatos.eliminarProducto(productoID, cantidad);
 	}
  */
-	public HashMap<Integer, Ticket> getListaTickets() {
+	/*public HashMap<Integer, Ticket> getListaTickets() {
 		return baseDeDatos.getTickets();
+	}*/
+	
+	public String getListaTickets() {
+		return baseDeDatos.getTicketsDB();
 	}
 
 	public float valorTotal() {

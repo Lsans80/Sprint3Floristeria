@@ -179,7 +179,8 @@ public class AplicacionFloristeria {
     }
     
     public static void listarHistorialTickets () {
-    	floristeria.getListaTickets().entrySet().forEach(System.out::println);
+    	
+    	System.out.println(floristeria.getListaTickets());
     }
     
     public static void imprimirValorTotalDeVentas() {
