@@ -9,15 +9,13 @@ import java.util.HashMap;
 import java.util.Locale;
 
 public class MySQLDB implements InterfaceBaseDeDatos{
-    private final String CONNECTION_URL;
+    private static String CONNECTION_URL;
     private static MySQLDB instancia;
     private int nextProductoId;
     private int nextTicketId;
 
     private MySQLDB() {
-        String usuario = Input.inputString("Dime tu usuario MySQL:");
-        String password = Input.inputString("Dime tu password MySQL:");
-        CONNECTION_URL = "jdbc:mysql://localhost/t3n2floristeria?user="+usuario+"&password="+password;
+        getConnection();
         nextProductoId = generateNextID("producto");
         nextTicketId = generateNextID("ticket");
     }
@@ -27,6 +25,19 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         }
         return instancia;
     }
+    public static void getConnection (){
+        String usuario = Input.inputString("Dime tu usuario MySQL:");
+        String password = Input.inputString("Dime tu password MySQL:");
+        CONNECTION_URL = "jdbc:mysql://localhost/t3n2floristeria?user="+usuario+"&password="+password;
+
+        try (Connection conn = DriverManager.getConnection(CONNECTION_URL)) {
+            System.out.println("La conexión se ha establecido.");
+        } catch (SQLException e){
+            System.err.println("Usuario y/o contraseña no válidos.");
+            getConnection();
+        }
+    }
+
     @Override
     public HashMap<Integer, Producto> getProductos() {
         HashMap<Integer, Producto> productos = new HashMap<>();
@@ -66,20 +77,17 @@ public class MySQLDB implements InterfaceBaseDeDatos{
 
                 if (producto instanceof Producto_Arbol) {
                     String insertarArbol = String.format(Locale.US, "INSERT INTO arbol VALUES (%d, %f)",
-                            producto.getProductoID(),
-                            ((Producto_Arbol) producto).getArbolAltura());
+                            producto.getProductoID(), ((Producto_Arbol) producto).getArbolAltura());
                     stmt.executeUpdate(insertarArbol);
 
                 } else if (producto instanceof Producto_Flor) {
                     String insertarFlor = String.format(Locale.US, "INSERT INTO flor VALUES (%d, '%s')",
-                            producto.getProductoID(),
-                            ((Producto_Flor) producto).getFlorColor());
+                            producto.getProductoID(), ((Producto_Flor) producto).getFlorColor());
                     stmt.executeUpdate(insertarFlor);
 
                 } else {
                     String insertarDecoracion = String.format("INSERT INTO decoracion VALUES (%d,'%s')",
-                            producto.getProductoID(),
-                            ((Producto_Decoracion) producto).getDecoracionMaterial());
+                            producto.getProductoID(), ((Producto_Decoracion) producto).getDecoracionMaterial());
                     stmt.executeUpdate(insertarDecoracion);
                 }
             }
