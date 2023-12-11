@@ -72,20 +72,9 @@ public class AplicacionFloristeria {
             case 1:
                 agregarCantidadProducto();
                 break;
-
             case 2:
-                int opcion2 = Input.inputInt("Dime que producto deseas crear: \n1.Arbol.\n2.Flor.\n3.Decoración.");
-                switch (opcion2){
-                    case 1:
-                        floristeria.addProducto(crearArbol());
-                        break;
-                    case 2:
-                        floristeria.addProducto(crearFlor());
-                        break;
-                    case 3:
-                        floristeria.addProducto(crearDecoracion());
-                        break;
-                }
+                agregarProducto();
+                break;
         }
     }
 
@@ -98,6 +87,22 @@ public class AplicacionFloristeria {
             System.out.println("El producto no existe.");
         } else {
             floristeria.addCantidadProducto(idProducto, producto.getProductoCantidad() + cantidad);
+        }
+    }
+
+    public static void agregarProducto (){
+        int opcion2 = Input.inputInt("Dime que producto deseas crear: \n1.Arbol.\n2.Flor.\n3.Decoración.");
+
+        switch (opcion2){
+            case 1:
+                floristeria.addProducto(crearArbol());
+                break;
+            case 2:
+                floristeria.addProducto(crearFlor());
+                break;
+            case 3:
+                floristeria.addProducto(crearDecoracion());
+                break;
         }
     }
 

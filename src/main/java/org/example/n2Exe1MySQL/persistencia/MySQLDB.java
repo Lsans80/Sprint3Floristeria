@@ -26,14 +26,12 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         return instancia;
     }
     public String getConnection (){
-        String usuario;
-        String password;
         String connection;
         boolean salir = false;
 
         do {
-            usuario = Input.inputString("Dime tu usuario MySQL:");
-            password = Input.inputString("Dime tu password MySQL:");
+            String usuario = Input.inputString("Dime tu usuario MySQL:");
+            String password = Input.inputString("Dime tu password MySQL:");
             connection = "jdbc:mysql://localhost/t3n2floristeria?user="+usuario+"&password="+password;
 
             try (Connection conn = DriverManager.getConnection(connection)) {
@@ -106,9 +104,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
                         stmt.executeUpdate(insertarDecoracion);
                         break;
                 }
-
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
