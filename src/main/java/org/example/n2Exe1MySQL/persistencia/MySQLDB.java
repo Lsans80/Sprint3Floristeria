@@ -15,7 +15,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     private int nextTicketId;
 
     private MySQLDB() {
-        getConnection();
+        CONNECTION_URL = getConnection();
         nextProductoId = generateNextID("producto");
         nextTicketId = generateNextID("ticket");
     }
@@ -25,17 +25,27 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         }
         return instancia;
     }
-    public static void getConnection (){
-        String usuario = Input.inputString("Dime tu usuario MySQL:");
-        String password = Input.inputString("Dime tu password MySQL:");
-        CONNECTION_URL = "jdbc:mysql://localhost/t3n2floristeria?user="+usuario+"&password="+password;
+    public String getConnection (){
+        String usuario;
+        String password;
+        String connection;
+        boolean salir = false;
 
-        try (Connection conn = DriverManager.getConnection(CONNECTION_URL)) {
-            System.out.println("La conexión se ha establecido.");
-        } catch (SQLException e){
-            System.err.println("Usuario y/o contraseña no válidos.");
-            getConnection();
-        }
+        do {
+            usuario = Input.inputString("Dime tu usuario MySQL:");
+            password = Input.inputString("Dime tu password MySQL:");
+            connection = "jdbc:mysql://localhost/t3n2floristeria?user="+usuario+"&password="+password;
+            try (Connection conn = DriverManager.getConnection(connection)) {
+                System.out.println("La conexión se ha establecido.");
+                salir = true;
+
+            } catch (SQLException e){
+                System.err.println("Usuario y/o contraseña no válidos.");
+            }
+
+        } while (!salir);
+
+        return connection;
     }
 
     @Override
