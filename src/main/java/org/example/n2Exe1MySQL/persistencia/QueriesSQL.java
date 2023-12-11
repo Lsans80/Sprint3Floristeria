@@ -7,6 +7,12 @@ public class QueriesSQL {
         public static final String LISTAR_TICKETS = "";
 
         public static final String DELETE_PRODUCTO = "DELETE FROM producto WHERE id = (?)";
+        public static final String GET_PRODUCTOS = "SELECT * FROM producto " +
+                "LEFT JOIN arbol ON producto.id = arbol.id " +
+                "LEFT JOIN flor ON producto.id = flor.id " +
+                "LEFT JOIN decoracion ON producto.id = decoracion.id ";
+
+
 
 
 }

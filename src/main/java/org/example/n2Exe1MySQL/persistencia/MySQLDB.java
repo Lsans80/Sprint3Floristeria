@@ -53,10 +53,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         HashMap<Integer, Producto> productos = new HashMap<>();
         try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM producto " +
-                    "LEFT JOIN arbol ON producto.id = arbol.id " +
-                    "LEFT JOIN flor ON producto.id = flor.id " +
-                    "LEFT JOIN decoracion ON producto.id = decoracion.id");
+            ResultSet rs = stmt.executeQuery(QueriesSQL.GET_PRODUCTOS);
             productos = generaMapaProducto(rs);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -158,12 +155,9 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     @Override
     public Producto leerProducto(int id) {
         Producto producto = null;
-        try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
+        try (Connection conn = DriverManager.getConnection(CONNECTION_URL)) {
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM producto " +
-                    "LEFT JOIN arbol ON producto.id = arbol.id " +
-                    "LEFT JOIN flor ON producto.id = flor.id " +
-                    "LEFT JOIN decoracion ON producto.id = decoracion.id " +
+            ResultSet rs = stmt.executeQuery(QueriesSQL.GET_PRODUCTOS +
                     "WHERE producto.id = " + id);
             if (rs.next()) {
                 switch (rs.getString("tipo").toLowerCase()) {
@@ -310,10 +304,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         HashMap<Integer, Producto> productos = new HashMap<>();
         try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM producto " +
-                    "LEFT JOIN arbol ON producto.id = arbol.id " +
-                    "LEFT JOIN flor ON producto.id = flor.id " +
-                    "LEFT JOIN decoracion ON producto.id = decoracion.id " +
+            ResultSet rs = stmt.executeQuery(QueriesSQL.GET_PRODUCTOS +
                     "WHERE producto.tipo = \"" + tipo + "\"");
             productos = generaMapaProducto(rs);
         } catch (SQLException e) {
