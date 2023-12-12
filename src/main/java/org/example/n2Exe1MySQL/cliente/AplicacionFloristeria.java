@@ -21,7 +21,6 @@ public class AplicacionFloristeria {
     public static void crearProducto(){
         int opcion = Input.inputInt("1.Añadir cantidad a un producto existente.\n2.Crear un producto.");
         switch (opcion){
-
             case 1:
                 agregarCantidadProducto();
                 break;
@@ -44,6 +43,7 @@ public class AplicacionFloristeria {
     }
 
     public static void agregarProducto (){
+
         int opcion2 = Input.inputInt("Dime que producto deseas crear: \n1.Arbol.\n2.Flor.\n3.Decoración.");
 
         switch (opcion2){
@@ -57,6 +57,7 @@ public class AplicacionFloristeria {
                 floristeria.addProducto(crearDecoracion());
                 break;
         }
+
     }
 
     public static Producto_Arbol crearArbol() {
@@ -141,6 +142,11 @@ public class AplicacionFloristeria {
 
     public static void crearTicket() {
         Ticket ticket = new Ticket(floristeria.nextTicketID());
+        agregarProductosTicket(ticket);
+        floristeria.addTicket(ticket);
+    }
+
+    private static void agregarProductosTicket(Ticket ticket) {
         int productoID;
         int cantidadProductoEnTicket;
         boolean si;
@@ -161,7 +167,6 @@ public class AplicacionFloristeria {
             }
             si = Input.inputSiNo("Deseas agregar otro producto/ o cambiar cantidad? s/n");
         } while (si);
-        floristeria.addTicket(ticket);
     }
     
     public static void listarHistorialTickets () {
