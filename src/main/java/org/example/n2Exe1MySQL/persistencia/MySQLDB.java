@@ -205,9 +205,14 @@ public class MySQLDB implements InterfaceBaseDeDatos{
             while (rs.next()) {
                 id = rs.getInt("id");
                 ticket = new Ticket(id);
-                ticket.setTicketDate(rs.getDate("fecha").toLocalDate());
-                agregarProductosTicket(ticket, conn);
-                tickets.put(id, ticket);
+                if (rs.getDate("fecha") != null){
+                    ticket.setTicketDate(rs.getDate("fecha").toLocalDate());
+
+                } else {
+                    agregarProductosTicket(ticket, conn);
+                    tickets.put(id, ticket);
+                }
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
