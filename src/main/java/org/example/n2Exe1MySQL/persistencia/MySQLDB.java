@@ -16,9 +16,9 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     private int nextTicketId;
 
     private MySQLDB() {
-        CONNECTION_URL = getConnection();
-        nextProductoId = generateNextID("producto");
-        nextTicketId = generateNextID("ticket");
+        CONNECTION_URL = obtenerConexion();
+        nextProductoId = generarSiguienteId("producto");
+        nextTicketId = generarSiguienteId("ticket");
     }
     public static MySQLDB instanciar() {
         if (instancia == null) {
@@ -26,7 +26,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         }
         return instancia;
     }
-    public String getConnection (){
+    public String obtenerConexion(){
         String connection;
         boolean salir = false;
 
@@ -50,7 +50,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     }
 
     @Override
-    public HashMap<Integer, Producto> getProductos() {
+    public HashMap<Integer, Producto> consultarProductos() {
         HashMap<Integer, Producto> productos = new HashMap<>();
         try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
             Statement stmt = conn.createStatement();
@@ -72,7 +72,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
 
             if (rs.next()) {
                 int nuevaCantidad = producto.getProductoCantidad() + rs.getInt("cantidad");
-                setCantidadProducto(producto.getProductoID(), nuevaCantidad);
+                actualizarCantidadProducto(producto.getProductoID(), nuevaCantidad);
 
             } else {
 
@@ -109,7 +109,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     }
 
     @Override
-    public void setCantidadProducto(int id, int nuevaCantidad) {
+    public void actualizarCantidadProducto(int id, int nuevaCantidad) {
         try (Connection conn = DriverManager.getConnection(CONNECTION_URL)) {
             Statement stmt = conn.createStatement();
             stmt.executeUpdate("UPDATE producto SET cantidad = " + nuevaCantidad + " WHERE producto.id = " + id);
@@ -154,7 +154,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     }
 
     @Override
-    public Producto leerProducto(int id) {
+    public Producto consultarProducto(int id) {
         Producto producto = null;
         try (Connection conn = DriverManager.getConnection(CONNECTION_URL)) {
             Statement stmt = conn.createStatement();
@@ -195,7 +195,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     }
 
     @Override
-    public HashMap<Integer, Ticket> getTickets() {
+    public HashMap<Integer, Ticket> consultarTickets() {
         HashMap<Integer, Ticket> tickets = new HashMap<>();
         Ticket ticket;
         int id;
@@ -215,7 +215,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         return tickets;
     }
     @Override
-    public Ticket leerTicket(int id) {
+    public Ticket consultarTicket(int id) {
         Ticket ticket = null;
         try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
             Statement stmt = conn.createStatement();
@@ -277,11 +277,11 @@ public class MySQLDB implements InterfaceBaseDeDatos{
 
     @Override
     public Producto eliminarProducto(int id, int cantidadEliminar) throws CantidadExcedida {
-        Producto producto = leerProducto(id);
+        Producto producto = consultarProducto(id);
         int cantidadActual = producto.getProductoCantidad();
 
         if (cantidadActual >= cantidadEliminar) {
-            setCantidadProducto(id, cantidadActual - cantidadEliminar);
+            actualizarCantidadProducto(id, cantidadActual - cantidadEliminar);
             producto.reducirProductoCantidad(cantidadEliminar);
         } else {
             throw new CantidadExcedida("La cantidad indicada excede la cantidad en stock.");
@@ -301,7 +301,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     }
 
     @Override
-    public HashMap<Integer, Producto> listarProductosFiltrando(String tipo) {
+    public HashMap<Integer, Producto> consultarProductosFiltrando(String tipo) {
         HashMap<Integer, Producto> productos = new HashMap<>();
         try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
             Statement stmt = conn.createStatement();
@@ -315,7 +315,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     }
 
     @Override
-    public float getValorTotalStock() {
+    public float consultarValorTotalStock() {
         float valorTotal = 0;
         try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
             Statement stmt = conn.createStatement();
@@ -330,7 +330,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     }
 
     @Override
-    public float getValorTotalTickets() {
+    public float consultarValorTotalTickets() {
         float valorTotal = 0;
         try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
             Statement stmt = conn.createStatement();
@@ -349,18 +349,18 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     }
 
     @Override
-    public int getNextProductoId() {
+    public int obtenerSiguienteProductoId() {
         nextProductoId++;
         return nextProductoId;
     }
 
     @Override
-    public int getNextTicketId() {
+    public int obtenerSiguienteTicketId() {
         nextTicketId++;
         return nextTicketId;
     }
 
-    private int generateNextID(String table) {
+    private int generarSiguienteId(String table) {
         int id = 1;
         try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
             Statement stmt = conn.createStatement();

@@ -29,10 +29,10 @@ public class BaseDeDatos implements InterfaceBaseDeDatos{
         }
         return instancia;
     }
-	public HashMap<Integer, Producto> getProductos() {
+	public HashMap<Integer, Producto> consultarProductos() {
 		return productos;
 	}
-    public HashMap<Integer, Ticket> getTickets() {
+    public HashMap<Integer, Ticket> consultarTickets() {
         return tickets;
     }
 
@@ -46,21 +46,21 @@ public class BaseDeDatos implements InterfaceBaseDeDatos{
     }
 
     @Override
-    public void setCantidadProducto(int id, int nuevaCantidad) {
+    public void actualizarCantidadProducto(int id, int nuevaCantidad) {
         productos.get(id).setProductoCantidad(nuevaCantidad);
     }
 
     public Ticket agregarTicket(Ticket ticket) {
        return tickets.put(ticket.getTicketID(), ticket);
     }
-    public Producto leerProducto(int id) {
+    public Producto consultarProducto(int id) {
         return productos.get(id);
     }
-    public Ticket leerTicket(int id) {
+    public Ticket consultarTicket(int id) {
         return tickets.get(id);
     }
     public Producto eliminarProducto(int id, int cantidad) {
-    	Producto p = leerProducto(id);
+    	Producto p = consultarProducto(id);
     	if (p.getProductoCantidad() <= cantidad) {
     		p.resetProductoCantidad();
     		productos.remove(id);
@@ -71,7 +71,7 @@ public class BaseDeDatos implements InterfaceBaseDeDatos{
     }
 
     @Override
-    public HashMap<Integer, Producto> listarProductosFiltrando(String tipo) {
+    public HashMap<Integer, Producto> consultarProductosFiltrando(String tipo) {
         return (HashMap<Integer, Producto>) productos.entrySet().stream().filter(entry -> entry.getValue().getProductoTipo().equals(tipo)).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 
@@ -96,20 +96,20 @@ public class BaseDeDatos implements InterfaceBaseDeDatos{
     public HashMap<Integer, Producto> listarProductosFiltrando(Predicate<Producto> predicate) {
         return (HashMap<Integer, Producto>) productos.entrySet().stream().filter(entry -> predicate.test(entry.getValue())).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
-    public float getValorTotalStock() {
+    public float consultarValorTotalStock() {
         return (float) productos.values().stream().mapToDouble(producto -> producto.getProductoPrecio() * producto.getProductoCantidad()).sum();
     }
     public int getTotalCantidadStock() {
         return productos.values().stream().mapToInt(Producto::getProductoCantidad).sum();
     }
-    public float getValorTotalTickets() {
+    public float consultarValorTotalTickets() {
         return (float) tickets.values().stream().mapToDouble(Ticket::calcularValorTotalDelTicket).sum();
     }
-    public int getNextProductoId() {
+    public int obtenerSiguienteProductoId() {
         nextProductoId++;
 		return nextProductoId;
 	}
-	public int getNextTicketId() {
+	public int obtenerSiguienteTicketId() {
 		nextTicketId++;
 		return nextTicketId;
 	}

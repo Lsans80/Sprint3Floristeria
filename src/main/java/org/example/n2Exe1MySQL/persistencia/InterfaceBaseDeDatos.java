@@ -8,19 +8,19 @@ import java.util.HashMap;
 
 public interface InterfaceBaseDeDatos {
 
-    HashMap<Integer, Producto> getProductos();
-    HashMap<Integer, Ticket> getTickets();
+    HashMap<Integer, Producto> consultarProductos();
+    HashMap<Integer, Ticket> consultarTickets();
     void agregarProducto(Producto producto);
-    void setCantidadProducto(int id, int nuevaCantidad);
+    void actualizarCantidadProducto(int id, int nuevaCantidad);
     Ticket agregarTicket(Ticket ticket);
-    Producto leerProducto(int id);
-    Ticket leerTicket(int id);
+    Producto consultarProducto(int id);
+    Ticket consultarTicket(int id);
     Producto eliminarProducto(int id, int cantidad) throws CantidadExcedida;
-    HashMap<Integer, Producto> listarProductosFiltrando(String tipo);
+    HashMap<Integer, Producto> consultarProductosFiltrando(String tipo);
 
-    float getValorTotalStock();
-    float getValorTotalTickets();
-    int getNextProductoId();
-    int getNextTicketId();
+    float consultarValorTotalStock();
+    float consultarValorTotalTickets();
+    int obtenerSiguienteProductoId();
+    int obtenerSiguienteTicketId();
 
 }

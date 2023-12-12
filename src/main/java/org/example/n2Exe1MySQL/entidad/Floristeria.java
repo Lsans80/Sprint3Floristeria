@@ -50,21 +50,21 @@ public class Floristeria {
 	}
 
 	public void agregarCantidadProducto(int id, int nuevaCantidad){
-		baseDeDatos.setCantidadProducto(id, nuevaCantidad);
+		baseDeDatos.actualizarCantidadProducto(id, nuevaCantidad);
 	}
 	public void agregarTicket(Ticket ticket) {
 		baseDeDatos.agregarTicket(ticket);
 	}
 
 	public Producto consultarProducto(int productoId) {
-		return baseDeDatos.leerProducto(productoId);
+		return baseDeDatos.consultarProducto(productoId);
 	}
 	
 	public int consultarSiguienteProductoID() {
-		return baseDeDatos.getNextProductoId();
+		return baseDeDatos.obtenerSiguienteProductoId();
 	}
 	public int consultarSiguienteTicketID() {
-		return baseDeDatos.getNextTicketId();
+		return baseDeDatos.obtenerSiguienteTicketId();
 	}
 
 	public String eliminarProducto(int productoID, int cantidad) throws CantidadExcedida {
@@ -78,20 +78,20 @@ public class Floristeria {
 		return response;
 	}
 	public HashMap<Integer, Producto> consultarListaProductosPorTipo(String tipo){
-		return baseDeDatos.listarProductosFiltrando(tipo);
+		return baseDeDatos.consultarProductosFiltrando(tipo);
 	}
 	public HashMap<Integer, Ticket> consultarListaTickets() {
-		return baseDeDatos.getTickets();
+		return baseDeDatos.consultarTickets();
 	}
 	public float consultarValorTotalInventario() {
-		return baseDeDatos.getValorTotalStock();
+		return baseDeDatos.consultarValorTotalStock();
 	}
 	public float consultarValorTotalVentas() {
-		return baseDeDatos.getValorTotalTickets();
+		return baseDeDatos.consultarValorTotalTickets();
 	}
 	public boolean existeProducto(int productoID, int cantidadMinima) {
 		Boolean returnValue = false;
-		Producto producto = baseDeDatos.leerProducto(productoID);
+		Producto producto = baseDeDatos.consultarProducto(productoID);
 		if (producto != null) {
 			returnValue = producto.getProductoCantidad() > cantidadMinima;
 		}
