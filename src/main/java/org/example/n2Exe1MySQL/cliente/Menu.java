@@ -14,13 +14,13 @@ public class Menu {
                     break;
                 case 2: eliminarProducto();
                     break;
-                case 3: listarProductos();
+                case 3: consultarProductos();
                     break;
-                case 4: valorTotalStock();
+                case 4: consultarValorTotalStock();
                     break;
                 case 5: crearTicket();
                     break;
-                case 6: listarHistorialTickets();
+                case 6: consultarHistorialTickets();
                     break;
                 case 7: imprimirValorTotalDeVentas();
                     break;

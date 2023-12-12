@@ -93,7 +93,7 @@ public class AplicacionFloristeria {
 			System.out.println(e.getMessage());
 		}
     }
-    public static void listarProductos(){
+    public static void consultarProductos(){
         System.out.println("\nStock por tipo de producto:");
         consultarArbol(floristeria.getListaProductosPorTipo("arbol"));
         consultarFlor(floristeria.getListaProductosPorTipo("flor"));
@@ -134,7 +134,7 @@ public class AplicacionFloristeria {
 
         });
     }
-    public static void valorTotalStock (){
+    public static void consultarValorTotalStock(){
         float valorTotal = floristeria.valorTotal();
         String formattedValue = String.format("%.2f", valorTotal);
         System.out.println("El valor total del stock es de " + formattedValue + " Euros.");
@@ -169,7 +169,7 @@ public class AplicacionFloristeria {
         } while (si);
     }
     
-    public static void listarHistorialTickets () {
+    public static void consultarHistorialTickets() {
     	floristeria.getListaTickets().entrySet().forEach(System.out::println);
     }
     
