@@ -2,6 +2,7 @@ package org.example.n2Exe1MySQL.entidad;
 
 
 import org.example.n2Exe1MySQL.excepcion.CantidadExcedida;
+import org.example.n2Exe1MySQL.excepcion.ProductoNoExiste;
 import org.example.n2Exe1MySQL.persistencia.InterfaceBaseDeDatos;
 import org.example.n2Exe1MySQL.persistencia.MySQLDB;
 
@@ -67,13 +68,13 @@ public class Floristeria {
 		return baseDeDatos.obtenerSiguienteTicketId();
 	}
 
-	public String eliminarProducto(int productoID, int cantidad) throws CantidadExcedida {
+	public String eliminarProducto(int productoID, int cantidad) throws CantidadExcedida, ProductoNoExiste {
 		String response;
 		if (existeProducto(productoID, 0)){
 		Producto productoEliminado = baseDeDatos.eliminarProducto(productoID, cantidad);
 			response = productoEliminado + " ha sido eliminado.";
 		} else {
-			response = "El producto no se ha encontrado.";
+			throw new ProductoNoExiste("El id de producto no existe en inventario. Consulta la lista de productos disponibles.");
 		}
 		return response;
 	}
@@ -89,11 +90,13 @@ public class Floristeria {
 	public float consultarValorTotalVentas() {
 		return baseDeDatos.consultarValorTotalTickets();
 	}
-	public boolean existeProducto(int productoID, int cantidadMinima) {
+	public boolean existeProducto(int productoID, int cantidadMinima) throws ProductoNoExiste {
 		Boolean returnValue = false;
 		Producto producto = baseDeDatos.consultarProducto(productoID);
 		if (producto != null) {
 			returnValue = producto.getProductoCantidad() > cantidadMinima;
+		} else {
+			throw new ProductoNoExiste("El id de producto no existe en inventario. Consulta la lista de productos disponibles.");
 		}
 		return returnValue;
 	}
