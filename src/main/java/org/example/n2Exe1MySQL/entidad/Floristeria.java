@@ -45,25 +45,25 @@ public class Floristeria {
 
 	// Métodos propios.
 
-	public void addProducto(Producto producto) {
+	public void agregarProducto(Producto producto) {
 		baseDeDatos.agregarProducto(producto);
 	}
 
-	public void addCantidadProducto (int id, int nuevaCantidad){
+	public void agregarCantidadProducto(int id, int nuevaCantidad){
 		baseDeDatos.setCantidadProducto(id, nuevaCantidad);
 	}
-	public void addTicket(Ticket ticket) {
+	public void agregarTicket(Ticket ticket) {
 		baseDeDatos.agregarTicket(ticket);
 	}
 
-	public Producto buscarProducto(int productoId) {
+	public Producto consultarProducto(int productoId) {
 		return baseDeDatos.leerProducto(productoId);
 	}
 	
-	public int nextProductoID () {
+	public int consultarSiguienteProductoID() {
 		return baseDeDatos.getNextProductoId();
 	}
-	public int nextTicketID () {
+	public int consultarSiguienteTicketID() {
 		return baseDeDatos.getNextTicketId();
 	}
 
@@ -77,16 +77,16 @@ public class Floristeria {
 		}
 		return response;
 	}
-	public HashMap<Integer, Producto> getListaProductosPorTipo (String tipo){
+	public HashMap<Integer, Producto> consultarListaProductosPorTipo(String tipo){
 		return baseDeDatos.listarProductosFiltrando(tipo);
 	}
-	public HashMap<Integer, Ticket> getListaTickets() {
+	public HashMap<Integer, Ticket> consultarListaTickets() {
 		return baseDeDatos.getTickets();
 	}
-	public float valorTotal() {
+	public float consultarValorTotalInventario() {
 		return baseDeDatos.getValorTotalStock();
 	}
-	public float valorVentas() {
+	public float consultarValorTotalVentas() {
 		return baseDeDatos.getValorTotalTickets();
 	}
 	public boolean existeProducto(int productoID, int cantidadMinima) {
