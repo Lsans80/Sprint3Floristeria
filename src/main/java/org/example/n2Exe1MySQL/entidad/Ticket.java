@@ -25,6 +25,10 @@ public class Ticket implements Serializable {
 		return ticketDate;
 	}
 
+	public void setTicketDate(LocalDate ticketDate) {
+		this.ticketDate = ticketDate;
+	}
+
 	public HashMap<Integer, Producto> getProductosVendidos() {
 		return productosVendidos;
 	}

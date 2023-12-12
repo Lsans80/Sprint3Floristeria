@@ -10,6 +10,7 @@ public interface InterfaceBaseDeDatos {
     HashMap<Integer, Producto> getProductos();
     HashMap<Integer, Ticket> getTickets();
     void agregarProducto(Producto producto);
+    void setCantidadProducto(int id, int nuevaCantidad);
     Ticket agregarTicket(Ticket ticket);
     Producto leerProducto(int id);
     Ticket leerTicket(int id);

@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class BaseDeDatos {
+public class BaseDeDatos implements InterfaceBaseDeDatos{
     private HashMap<Integer, Producto> productos;
     private HashMap<Integer, Ticket> tickets;
     private static BaseDeDatos instancia;
@@ -44,6 +44,12 @@ public class BaseDeDatos {
             return producto;
         });
     }
+
+    @Override
+    public void setCantidadProducto(int id, int nuevaCantidad) {
+        productos.get(id).setProductoCantidad(nuevaCantidad);
+    }
+
     public Ticket agregarTicket(Ticket ticket) {
        return tickets.put(ticket.getTicketID(), ticket);
     }
@@ -63,6 +69,12 @@ public class BaseDeDatos {
     	}
         return p;
     }
+
+    @Override
+    public HashMap<Integer, Producto> listarProductosFiltrando(String tipo) {
+        return (HashMap<Integer, Producto>) productos.entrySet().stream().filter(entry -> entry.getValue().getProductoTipo().equals(tipo)).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+    }
+
     private int maximoIDProductos () {
     	Integer maxKey = 0;
         for (Integer key : productos.keySet()) {

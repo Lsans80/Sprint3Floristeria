@@ -47,6 +47,10 @@ public class Floristeria {
 	public void addProducto(Producto producto) {
 		baseDeDatos.agregarProducto(producto);
 	}
+
+	public void addCantidadProducto (int id, int nuevaCantidad){
+		baseDeDatos.setCantidadProducto(id, nuevaCantidad);
+	}
 	public void addTicket(Ticket ticket) {
 		baseDeDatos.agregarTicket(ticket);
 	}
@@ -64,7 +68,7 @@ public class Floristeria {
 
 	public String eliminarProducto(int productoID, int cantidad) {
 		String response;
-		if (existeProducto(productoID)){
+		if (existeProducto(productoID, 0)){
 		Producto productoEliminado = baseDeDatos.eliminarProducto(productoID, cantidad);
 			response = productoEliminado + " ha sido eliminado.";
 		} else {
@@ -145,14 +149,15 @@ public class Floristeria {
 	public float valorVentas() {
 		return baseDeDatos.getValorTotalTickets();
 	}
-	public boolean existeProducto(int productoID) {
-		return baseDeDatos.getProductos().containsKey(productoID) &&
-				baseDeDatos.getProductos().get(productoID).getProductoCantidad() > 0;
+	public boolean existeProducto(int productoID, int cantidadMinima) {
+		Boolean returnValue = false;
+		Producto producto = baseDeDatos.leerProducto(productoID);
+		if (producto != null) {
+			returnValue = producto.getProductoCantidad() > cantidadMinima;
+		}
+		return returnValue;
 	}
-	public boolean existeProducto(int productoID, int cantidad) {
-		return baseDeDatos.getProductos().containsKey(productoID) &&
-				baseDeDatos.getProductos().get(productoID).getProductoCantidad() > cantidad;
-	}
+
 	/*
 	public boolean existeProductoCantidad(int productoID) {
 		return baseDeDatos.existeProductoCantidad(productoID);
