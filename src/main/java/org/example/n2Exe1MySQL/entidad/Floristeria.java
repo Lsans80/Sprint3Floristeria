@@ -1,6 +1,7 @@
 package org.example.n2Exe1MySQL.entidad;
 
 
+import org.example.n2Exe1MySQL.excepcion.CantidadExcedida;
 import org.example.n2Exe1MySQL.persistencia.InterfaceBaseDeDatos;
 import org.example.n2Exe1MySQL.persistencia.MySQLDB;
 
@@ -66,7 +67,7 @@ public class Floristeria {
 		return baseDeDatos.getNextTicketId();
 	}
 
-	public String eliminarProducto(int productoID, int cantidad) {
+	public String eliminarProducto(int productoID, int cantidad) throws CantidadExcedida {
 		String response;
 		if (existeProducto(productoID, 0)){
 		Producto productoEliminado = baseDeDatos.eliminarProducto(productoID, cantidad);

@@ -1,6 +1,7 @@
 package org.example.n2Exe1MySQL.cliente;
 
 import org.example.n2Exe1MySQL.entidad.*;
+import org.example.n2Exe1MySQL.excepcion.CantidadExcedida;
 import org.example.n2Exe1MySQL.herramienta.Input;
 import org.example.n2Exe1MySQL.herramienta.Material;
 
@@ -85,7 +86,11 @@ public class AplicacionFloristeria {
     public static void eliminarProducto (){
         int id = Input.inputInt("ID de producto: ");
         int cantidad = Input.inputInt("Cantidad a retirar: ");
-        floristeria.eliminarProducto(id, cantidad);
+        try {
+			floristeria.eliminarProducto(id, cantidad);
+		} catch (CantidadExcedida e) {
+			System.out.println(e.getMessage());
+		}
     }
     public static void listarProductos(){
         System.out.println("\nStock por tipo de producto:");
@@ -146,7 +151,11 @@ public class AplicacionFloristeria {
                 Producto productoAAgregar = floristeria.buscarProducto(productoID).clonar();
                 productoAAgregar.setProductoCantidad(cantidadProductoEnTicket);
                 ticket.agregarProductoAlTicket(productoAAgregar);
-                floristeria.eliminarProducto(productoID, cantidadProductoEnTicket);
+                try {
+					floristeria.eliminarProducto(productoID, cantidadProductoEnTicket);
+				} catch (CantidadExcedida e) {
+					e.getMessage();
+				}
             } else {
                 System.err.println("No existe el producto, o no hay suficiente en stock.");
             }

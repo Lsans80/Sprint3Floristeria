@@ -2,6 +2,7 @@ package org.example.n2Exe1MySQL.persistencia;
 
 import org.example.n2Exe1MySQL.herramienta.Input;
 import org.example.n2Exe1MySQL.entidad.*;
+import org.example.n2Exe1MySQL.excepcion.CantidadExcedida;
 import org.example.n2Exe1MySQL.herramienta.Material;
 
 import java.sql.*;
@@ -275,7 +276,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     }
 
     @Override
-    public Producto eliminarProducto(int id, int cantidadEliminar) {
+    public Producto eliminarProducto(int id, int cantidadEliminar) throws CantidadExcedida {
         Producto producto = leerProducto(id);
         int cantidadActual = producto.getProductoCantidad();
 
@@ -283,7 +284,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
             setCantidadProducto(id, cantidadActual - cantidadEliminar);
             producto.reducirProductoCantidad(cantidadEliminar);
         } else {
-            //TODO Gestionar excepcion?
+            throw new CantidadExcedida("La cantidad indicada excede la cantidad en stock.");
         }
         return producto;
     }
