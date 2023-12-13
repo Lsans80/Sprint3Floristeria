@@ -59,4 +59,31 @@ public class Menu {
 
         return opcion;
     }
+
+    public static void crearProducto(){
+        int opcion = Input.inputInt("1.Añadir cantidad a un producto existente.\n2.Crear un producto.");
+        switch (opcion){
+            case 1:
+                agregarCantidadProducto();
+                break;
+            case 2:
+                agregarProducto();
+                break;
+        }
+    }
+    public static void agregarProducto (){
+        int opcion2 = Input.inputInt("Dime que producto deseas crear: \n1.Arbol.\n2.Flor.\n3.Decoración.");
+
+        switch (opcion2){
+            case 1:
+                floristeria.agregarProducto(crearArbol());
+                break;
+            case 2:
+                floristeria.agregarProducto(crearFlor());
+                break;
+            case 3:
+                floristeria.agregarProducto(crearDecoracion());
+                break;
+        }
+    }
 }

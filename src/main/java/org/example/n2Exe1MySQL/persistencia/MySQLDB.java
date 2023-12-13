@@ -29,10 +29,12 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     public String obtenerConexion(){
         String connection;
         boolean salir = false;
+        String usuario;
+        String password;
 
         do {
-            String usuario = Input.inputString("Dime tu usuario MySQL:");
-            String password = Input.inputString("Dime tu password MySQL:");
+            usuario = Input.inputString("Dime tu usuario MySQL:");
+            password = Input.inputString("Dime tu password MySQL:");
             connection = "jdbc:mysql://localhost/t3n2floristeria?user="+usuario+"&password="+password;
 
             try (Connection conn = DriverManager.getConnection(connection)) {
@@ -214,7 +216,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
                     ticket.setTicketDate(rs.getDate("fecha").toLocalDate());
 
                 } else {
-                    agregarProductosTicket(ticket, conn);
+                    (ticket, conn);
                     tickets.put(id, ticket);
                 }
 
@@ -225,6 +227,8 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         }
         return tickets;
     }
+
+    //TODO es una copia de consultarTickets()??? Se puede borrar??
     @Override
     public Ticket consultarTicket(int id) {
         Ticket ticket = null;
@@ -248,12 +252,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         int id = ticket.getTicketID();
         try {
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM producto_ticket " +
-                    "INNER JOIN producto ON producto_ticket.productoId = producto.id " +
-                    "LEFT JOIN arbol ON producto.id = arbol.id " +
-                    "LEFT JOIN flor ON producto.id = flor.id " +
-                    "LEFT JOIN decoracion ON producto.id = decoracion.id " +
-                    "WHERE producto_ticket.ticketId = " + id);
+            ResultSet rs = stmt.executeQuery( QueriesSQL.AGREGAR_PRODUCTOS_TICKET_PARA_CONSULTA + id);
             while (rs.next()) {
                 switch (rs.getString("tipo").toLowerCase()) {
                     case "arbol":
@@ -302,6 +301,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         return producto;
     }
 
+    //Para borrar definitivamente el producto en base de datos y que no quede a 0.
     public void eliminarProductoDefinitivo (int id){
 
         try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
@@ -350,11 +350,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         float valorTotal = 0;
         try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT SUM(precio * producto_ticket.cantidad) AS sumaTotal FROM producto_ticket " +
-                    "INNER JOIN producto ON producto_ticket.productoId = producto.id " +
-                    "LEFT JOIN arbol ON producto.id = arbol.id " +
-                    "LEFT JOIN flor ON producto.id = flor.id " +
-                    "LEFT JOIN decoracion ON producto.id = decoracion.id ");
+            ResultSet rs = stmt.executeQuery(QueriesSQL.CONSULTAR_VALOR_TOTAL_TICKETS);
             if (rs.next()) {
                 valorTotal = rs.getFloat("sumaTotal");
             }
