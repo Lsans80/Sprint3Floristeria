@@ -216,7 +216,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
                     ticket.setTicketDate(rs.getDate("fecha").toLocalDate());
 
                 } else {
-                    agregarProductosTicket(ticket, conn);
+                    consultarProductosTicket(ticket, conn);
                     tickets.put(id, ticket);
                 }
 
@@ -239,7 +239,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
             if(rs.next()) {
                 ticket = new Ticket(id);
                 ticket.setTicketDate(rs.getDate("fecha").toLocalDate());
-                agregarProductosTicket(ticket, conn);
+                consultarProductosTicket(ticket, conn);
             }
         } catch (SQLException e) {
             System.err.println("Hubo un error al acceder a los datos. Intenta nuevamente.");
@@ -248,11 +248,11 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         return ticket;
     }
 
-    private void agregarProductosTicket (Ticket ticket, Connection conn) {
+    private void consultarProductosTicket(Ticket ticket, Connection conn) {
         int id = ticket.getTicketID();
         try {
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery( QueriesSQL.AGREGAR_PRODUCTOS_TICKET_PARA_CONSULTA + id);
+            ResultSet rs = stmt.executeQuery( QueriesSQL.CONSULTAR_PRODUCTOS_TICKET + id);
             while (rs.next()) {
                 switch (rs.getString("tipo").toLowerCase()) {
                     case "arbol":
@@ -332,7 +332,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     @Override
     public float consultarValorTotalStock() {
         float valorTotal = 0;
-        try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
+        try (Connection conn = DriverManager.getConnection(CONNECTION_URL)) {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT SUM(precio * cantidad) AS sumaTotal FROM producto");
             if (rs.next()) {
@@ -348,7 +348,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
     @Override
     public float consultarValorTotalTickets() {
         float valorTotal = 0;
-        try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
+        try (Connection conn = DriverManager.getConnection(CONNECTION_URL)) {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(QueriesSQL.CONSULTAR_VALOR_TOTAL_TICKETS);
             if (rs.next()) {

@@ -6,7 +6,7 @@ public class QueriesSQL {
         public static final String AGREGAR_PRODUCTO_TICKET =
                 "INSERT INTO producto_ticket (ticketId, productoId, cantidad) VALUES(?,?,?)";
 
-        public static final String AGREGAR_PRODUCTOS_TICKET_PARA_CONSULTA =
+        public static final String CONSULTAR_PRODUCTOS_TICKET =
                 "SELECT * FROM producto_ticket " +
                 "INNER JOIN producto ON producto_ticket.productoId = producto.id " +
                 "LEFT JOIN arbol ON producto.id = arbol.id " +
