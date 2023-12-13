@@ -216,7 +216,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
                     ticket.setTicketDate(rs.getDate("fecha").toLocalDate());
 
                 } else {
-                    (ticket, conn);
+                    agregarProductosTicket(ticket, conn);
                     tickets.put(id, ticket);
                 }
 
