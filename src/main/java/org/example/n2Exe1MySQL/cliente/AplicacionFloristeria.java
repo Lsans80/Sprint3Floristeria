@@ -10,11 +10,11 @@ import java.util.HashMap;
 
 public class AplicacionFloristeria {
 
-    public static Floristeria floristeria;
+    private static Floristeria floristeria;
     public static void start (){
 
         floristeria = Floristeria.getInstancia();
-        floristeria.setNombre("Landful");
+        //floristeria.setNombre("Landful");
         //load();
         Menu.ejecutarMenu();
     }

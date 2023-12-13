@@ -1,11 +1,13 @@
 package org.example.n2Exe1MySQL.cliente;
 
+import org.example.n2Exe1MySQL.entidad.Floristeria;
 import org.example.n2Exe1MySQL.herramienta.Input;
 
 import static org.example.n2Exe1MySQL.cliente.AplicacionFloristeria.*;
 
 public class Menu {
 
+    private static Floristeria floristeria = Floristeria.getInstancia();
     public static void ejecutarMenu(){
 
         boolean salir = false;
