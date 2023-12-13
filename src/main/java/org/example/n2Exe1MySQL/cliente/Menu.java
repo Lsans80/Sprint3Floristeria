@@ -1,11 +1,15 @@
 package org.example.n2Exe1MySQL.cliente;
 
+import org.example.n2Exe1MySQL.entidad.Floristeria;
 import org.example.n2Exe1MySQL.herramienta.Input;
 
 import static org.example.n2Exe1MySQL.cliente.AplicacionFloristeria.*;
 
 public class Menu {
+
+    private static Floristeria floristeria = Floristeria.getInstancia();
     public static void ejecutarMenu(){
+
         boolean salir = false;
 
         do{
@@ -54,5 +58,32 @@ public class Menu {
         }while(opcion < MINIMO || opcion > MAXIMO);
 
         return opcion;
+    }
+
+    public static void crearProducto(){
+        int opcion = Input.inputInt("1.Añadir cantidad a un producto existente.\n2.Crear un producto.");
+        switch (opcion){
+            case 1:
+                agregarCantidadProducto();
+                break;
+            case 2:
+                agregarProducto();
+                break;
+        }
+    }
+    public static void agregarProducto (){
+        int opcion2 = Input.inputInt("Dime que producto deseas crear: \n1.Arbol.\n2.Flor.\n3.Decoración.");
+
+        switch (opcion2){
+            case 1:
+                floristeria.agregarProducto(crearArbol());
+                break;
+            case 2:
+                floristeria.agregarProducto(crearFlor());
+                break;
+            case 3:
+                floristeria.agregarProducto(crearDecoracion());
+                break;
+        }
     }
 }

@@ -15,6 +15,7 @@ public class Floristeria {
 
 	private Floristeria() {
 		this.baseDeDatos = MySQLDB.instanciar();
+		nombre = "Landful";
 	}
 
 	public static Floristeria getInstancia() {

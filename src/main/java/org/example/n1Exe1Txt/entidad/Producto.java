@@ -1,26 +1,24 @@
 package org.example.n1Exe1Txt.entidad;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public abstract class Producto implements Serializable, Cloneable {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 	private int productoID;
 	private String productoNombre;
 	private float productoPrecio;
 	private String productoTipo;
-	//private static BaseDeDatos baseDeDatos = BaseDeDatos.instanciar();
-	//protected static int proximoID = baseDeDatos.maximoIDStock()+1;
-
 	private int productoCantidad;
-
 	
 	public Producto(int productoID, String productoNombre, float productoPrecio, int cantidad) {
 		this.productoID = productoID;
 		this.productoNombre = productoNombre;
 		this.productoPrecio = productoPrecio;
 		this.productoCantidad = cantidad;
-		//proximoID++;
+
 	}
 	
 	public int getProductoID() {

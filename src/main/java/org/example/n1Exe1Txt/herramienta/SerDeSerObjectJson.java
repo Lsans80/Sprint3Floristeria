@@ -7,8 +7,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 public class SerDeSerObjectJson {
-	
-	
 
     private static ObjectMapper mapper = new ObjectMapper();
     private static Logger logger = LoggerFactory.getLogger(SerDeSerObjectJson.class);

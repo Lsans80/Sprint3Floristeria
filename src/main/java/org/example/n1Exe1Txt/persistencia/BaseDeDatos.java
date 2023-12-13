@@ -16,23 +16,26 @@ public class BaseDeDatos {
     private static BaseDeDatos instancia;
     private int nextProductoId;
     private int nextTicketId;
-	//private final String FILE_NOT_FOUND_MSG = "File not found";
+    //private final String FILE_NOT_FOUND_MSG = "File not found";
 
-    private BaseDeDatos () {
+    private BaseDeDatos() {
         productos = new HashMap<>();
         tickets = new HashMap<>();
         load();
         //loadJsonFileToStock();
     }
+
     public static BaseDeDatos instanciar() {
         if (instancia == null) {
             instancia = new BaseDeDatos();
         }
         return instancia;
     }
-	public HashMap<Integer, Producto> getProductos() {
-		return productos;
-	}
+
+    public HashMap<Integer, Producto> getProductos() {
+        return productos;
+    }
+
     public HashMap<Integer, Ticket> getTickets() {
         return tickets;
     }
@@ -49,32 +52,37 @@ public class BaseDeDatos {
             return producto;
         });
     }
+
     public Ticket agregarTicket(Ticket ticket) {
-       return tickets.put(ticket.getTicketID(), ticket);
+        return tickets.put(ticket.getTicketID(), ticket);
     }
 
     public void agregarProductoTicket(int productoID, int ticketID) {
-    	Producto p = this.leerProducto(productoID);
-    	tickets.get(ticketID).agregarProductoAlTicket(p.clonar());
+        Producto p = this.leerProducto(productoID);
+        tickets.get(ticketID).agregarProductoAlTicket(p.clonar());
     }
+
     public Producto leerProducto(int id) {
         return productos.get(id);
     }
+
     public Ticket leerTicket(int id) {
         return tickets.get(id);
     }
+
     public Producto eliminarProducto(int id, int cantidad) {
-    	Producto p = leerProducto(id);
-    	if (p.getProductoCantidad() <= cantidad) {
-    		p.resetProductoCantidad();
-    		productos.remove(id);
-    	} else {
+        Producto p = leerProducto(id);
+        if (p.getProductoCantidad() <= cantidad) {
+            p.resetProductoCantidad();
+            productos.remove(id);
+        } else {
             p.reducirProductoCantidad(cantidad);
-    	}
+        }
         return p;
     }
+
     public void setCantidadProductoTicket(int productoID, int ticketID, int cantidad) {
-    	leerTicket(ticketID).getProductosVendidos().get(productoID).setProductoCantidad(cantidad);
+        leerTicket(ticketID).getProductosVendidos().get(productoID).setProductoCantidad(cantidad);
 /*
         Producto producto = tickets.get(ticketID).getProductosVendidos().get(productoID);
         int cantidadActual = producto.getProductoCantidad();
@@ -82,13 +90,15 @@ public class BaseDeDatos {
 
  */
     }
+
     public Ticket eliminarTicket(int id) {
         Ticket t = leerTicket(id);
         tickets.remove(id);
         return t;
     }
-    public int maximoIDProductos () {
-    	Integer maxKey = 0;
+
+    public int maximoIDProductos() {
+        Integer maxKey = 0;
         for (Integer key : productos.keySet()) {
             if (maxKey == 0 || productos.get(key).getProductoID() > productos.get(maxKey).getProductoID()) {
                 maxKey = key;
@@ -96,8 +106,9 @@ public class BaseDeDatos {
         }
         return maxKey;
     }
-    public int maximoIDTickets () {
-    	Integer maxKey = 0;
+
+    public int maximoIDTickets() {
+        Integer maxKey = 0;
         for (Integer key : tickets.keySet()) {
             if (maxKey == 0 || tickets.get(key).getTicketID() > tickets.get(maxKey).getTicketID()) {
                 maxKey = key;
@@ -107,36 +118,45 @@ public class BaseDeDatos {
     }
 
     public HashMap<Integer, Producto> listarProductosFiltrando(Predicate<Producto> predicate) {
-        return (HashMap<Integer, Producto>) productos.entrySet().stream().filter(entry -> predicate.test(entry.getValue())).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+        return (HashMap<Integer, Producto>) productos.entrySet().stream().
+                filter(entry -> predicate.test(entry.getValue())).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
 
     }
+
     public float getValorTotalStock() {
-        return (float) productos.values().stream().mapToDouble(producto -> producto.getProductoPrecio() * producto.getProductoCantidad()).sum();
+        return (float) productos.values().stream()
+                .mapToDouble(producto -> producto.getProductoPrecio() * producto.getProductoCantidad()).sum();
     }
+
     public int getTotalCantidadStock() {
         return productos.values().stream().mapToInt(Producto::getProductoCantidad).sum();
     }
+
     public float getValorTotalTickets() {
         return (float) tickets.values().stream().mapToDouble(Ticket::calcularValorTotalDelTicket).sum();
     }
+
     public boolean existeProducto(int productoID) {
-    	return productos.containsKey(productoID);
+        return productos.containsKey(productoID);
     }
+
     public boolean existeProductoCantidad(int productoID) {
-		return productos.get(productoID).getProductoCantidad() > 0;
-	}
-	public boolean existeProductoCantidadVsCantidadEnTicket(int productoID, int cantidadProductoEnTicket) {
-		return productos.get(productoID).getProductoCantidad() >= cantidadProductoEnTicket;
-	}
-    //TODO Pulir excepciones, casteo, etc.
+        return productos.get(productoID).getProductoCantidad() > 0;
+    }
+
+    public boolean existeProductoCantidadVsCantidadEnTicket(int productoID, int cantidadProductoEnTicket) {
+        return productos.get(productoID).getProductoCantidad() >= cantidadProductoEnTicket;
+    }
+    
     public int getNextProductoId() {
         nextProductoId++;
-		return nextProductoId;
-	}
-	public int getNextTicketId() {
-		nextTicketId++;
-		return nextTicketId;
-	}
+        return nextProductoId;
+    }
+
+    public int getNextTicketId() {
+        nextTicketId++;
+        return nextTicketId;
+    }
 
     public void load() {
         loadProductos();
@@ -144,9 +164,10 @@ public class BaseDeDatos {
         nextProductoId = maximoIDProductos();
         nextTicketId = maximoIDTickets();
     }
+
     @SuppressWarnings("unchecked")
     private void loadTickets() {
-        File database = new File ("ticketsDB.txt");
+        File database = new File("ticketsDB.txt");
         if (database.exists()) {
             try (FileInputStream fis = new FileInputStream(database);
                  ObjectInputStream ois = new ObjectInputStream(fis)) {
@@ -160,9 +181,10 @@ public class BaseDeDatos {
             }
         }
     }
+
     @SuppressWarnings("unchecked")
-	private void loadProductos() {
-        File database = new File ("productosDB.txt");
+    private void loadProductos() {
+        File database = new File("productosDB.txt");
         if (database.exists()) {
             try (FileInputStream fis = new FileInputStream(database);
                  ObjectInputStream ois = new ObjectInputStream(fis)) {
@@ -176,22 +198,22 @@ public class BaseDeDatos {
             }
         }
     }
-    //TODO Pulir excepciones
+
     public void save() {
         try (FileOutputStream fos = new FileOutputStream("productosDB.txt");
-             ObjectOutputStream oos = new ObjectOutputStream(fos)){
+             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             oos.writeObject(productos);
         } catch (FileNotFoundException x) {
             System.err.format("FileNotFoundException: %s%n", x);
-        } catch (IOException x){
+        } catch (IOException x) {
             System.err.format("IOException: %s%n", x);
         }
         try (FileOutputStream fos = new FileOutputStream("ticketsDB.txt");
-             ObjectOutputStream oos = new ObjectOutputStream(fos)){
+             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             oos.writeObject(tickets);
         } catch (FileNotFoundException x) {
             System.err.format("FileNotFoundException: %s%n", x);
-        } catch (IOException x){
+        } catch (IOException x) {
             System.err.format("IOException: %s%n", x);
         }
     }
