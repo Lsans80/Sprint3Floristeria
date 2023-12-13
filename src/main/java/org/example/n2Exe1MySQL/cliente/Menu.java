@@ -5,7 +5,9 @@ import org.example.n2Exe1MySQL.herramienta.Input;
 import static org.example.n2Exe1MySQL.cliente.AplicacionFloristeria.*;
 
 public class Menu {
+
     public static void ejecutarMenu(){
+
         boolean salir = false;
 
         do{
