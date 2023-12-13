@@ -2,6 +2,7 @@ package org.example.n2Exe1MySQL.cliente;
 
 import org.example.n2Exe1MySQL.entidad.*;
 import org.example.n2Exe1MySQL.excepcion.CantidadExcedida;
+import org.example.n2Exe1MySQL.excepcion.ProductoNoExiste;
 import org.example.n2Exe1MySQL.herramienta.Input;
 import org.example.n2Exe1MySQL.herramienta.Material;
 
@@ -89,7 +90,7 @@ public class AplicacionFloristeria {
         int cantidad = Input.inputInt("Cantidad a retirar: ");
         try {
 			floristeria.eliminarProducto(id, cantidad);
-		} catch (CantidadExcedida e) {
+		} catch (CantidadExcedida | ProductoNoExiste e) {
 			System.out.println(e.getMessage());
 		}
     }
@@ -153,18 +154,22 @@ public class AplicacionFloristeria {
         do {
             productoID = Input.inputInt("Id Producto para agregar: ");
             cantidadProductoEnTicket = Input.inputInt("Cantidad: ");
-            if (floristeria.existeProducto(productoID, cantidadProductoEnTicket)) {
-                Producto productoAAgregar = floristeria.consultarProducto(productoID).clonar();
-                productoAAgregar.setProductoCantidad(cantidadProductoEnTicket);
-                ticket.agregarProductoAlTicket(productoAAgregar);
-                try {
-					floristeria.eliminarProducto(productoID, cantidadProductoEnTicket);
-				} catch (CantidadExcedida e) {
-					e.getMessage();
+            try {
+				if (floristeria.existeProducto(productoID, cantidadProductoEnTicket)) {
+				    Producto productoAAgregar = floristeria.consultarProducto(productoID).clonar();
+				    productoAAgregar.setProductoCantidad(cantidadProductoEnTicket);
+				    ticket.agregarProductoAlTicket(productoAAgregar);
+				    try {
+						floristeria.eliminarProducto(productoID, cantidadProductoEnTicket);
+					} catch (CantidadExcedida e) {
+						System.out.println(e.getMessage());
+					}
+				} else {
+				    System.err.println("No existe el producto, o no hay suficiente en stock.");
 				}
-            } else {
-                System.err.println("No existe el producto, o no hay suficiente en stock.");
-            }
+			} catch (ProductoNoExiste e) {
+				System.out.println(e.getMessage());
+			}
             si = Input.inputSiNo("Deseas agregar otro producto/ o cambiar cantidad? s/n");
         } while (si);
     }
