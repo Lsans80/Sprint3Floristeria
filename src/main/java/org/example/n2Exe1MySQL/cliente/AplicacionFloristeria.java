@@ -14,8 +14,6 @@ public class AplicacionFloristeria {
     public static void start (){
 
         floristeria = Floristeria.getInstancia();
-        //floristeria.setNombre("Landful");
-        //load();
         Menu.ejecutarMenu();
     }
 
@@ -181,13 +179,5 @@ public class AplicacionFloristeria {
     public static void imprimirValorTotalDeVentas() {
     	System.out.println("El valor total del ventas es de " + floristeria.consultarValorTotalVentas());
     }
-
-    /*public static void finalizar(){
-        Floristeria.getInstancia().finalizar();
-    }
-    
-    public static void load(){
-        Floristeria.getInstancia().load();
-    }*/
 
 }

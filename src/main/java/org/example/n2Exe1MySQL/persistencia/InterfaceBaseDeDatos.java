@@ -17,7 +17,6 @@ public interface InterfaceBaseDeDatos {
     Ticket consultarTicket(int id);
     Producto eliminarProducto(int id, int cantidad) throws CantidadExcedida;
     HashMap<Integer, Producto> consultarProductosFiltrando(String tipo);
-
     float consultarValorTotalStock();
     float consultarValorTotalTickets();
     int obtenerSiguienteProductoId();
