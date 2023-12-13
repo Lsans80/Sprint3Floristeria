@@ -4,6 +4,7 @@ package org.example.n2Exe1MySQL.entidad;
 import org.example.n2Exe1MySQL.excepcion.CantidadExcedida;
 import org.example.n2Exe1MySQL.excepcion.ProductoNoExiste;
 import org.example.n2Exe1MySQL.persistencia.InterfaceBaseDeDatos;
+import org.example.n2Exe1MySQL.persistencia.MongoDB;
 import org.example.n2Exe1MySQL.persistencia.MySQLDB;
 
 import java.util.HashMap;
@@ -14,7 +15,7 @@ public class Floristeria {
 	private InterfaceBaseDeDatos baseDeDatos;
 
 	private Floristeria() {
-		this.baseDeDatos = MySQLDB.instanciar();
+		this.baseDeDatos = MongoDB.instanciar();
 		nombre = "Landful";
 	}
 
@@ -92,7 +93,7 @@ public class Floristeria {
 		return baseDeDatos.consultarValorTotalTickets();
 	}
 	public boolean existeProducto(int productoID, int cantidadMinima) throws ProductoNoExiste {
-		Boolean returnValue = false;
+		boolean returnValue;
 		Producto producto = baseDeDatos.consultarProducto(productoID);
 		if (producto != null) {
 			returnValue = producto.getProductoCantidad() > cantidadMinima;
