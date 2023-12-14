@@ -15,7 +15,7 @@ public class Floristeria {
 	private InterfaceBaseDeDatos baseDeDatos;
 
 	private Floristeria() {
-		this.baseDeDatos = MongoDB.instanciar();
+		this.baseDeDatos = MySQLDB.instanciar();
 		nombre = "Landful";
 	}
 
