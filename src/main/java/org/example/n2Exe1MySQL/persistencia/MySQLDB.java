@@ -212,14 +212,9 @@ public class MySQLDB implements InterfaceBaseDeDatos{
             while (rs.next()) {
                 id = rs.getInt("id");
                 ticket = new Ticket(id);
-                if (rs.getDate("fecha") != null){
-                    ticket.setTicketDate(rs.getDate("fecha").toLocalDate());
-
-                } else {
-                    consultarProductosTicket(ticket, conn);
-                    tickets.put(id, ticket);
-                }
-
+                ticket.setTicketDate(rs.getDate("fecha").toLocalDate());
+                consultarProductosTicket(ticket, conn);
+                tickets.put(id, ticket);
             }
         } catch (SQLException e) {
             System.err.println("Hubo un error al acceder a los datos. Intenta nuevamente.");
@@ -228,7 +223,15 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         return tickets;
     }
 
-    //TODO es una copia de consultarTickets()??? Se puede borrar??
+    /*if (rs.getDate("fecha") != null){
+        ticket.setTicketDate(rs.getDate("fecha").toLocalDate());
+
+    } else {
+        consultarProductosTicket(ticket, conn);
+        tickets.put(id, ticket);
+    }*/
+
+    //Para consultar solo un ticket.
     @Override
     public Ticket consultarTicket(int id) {
         Ticket ticket = null;
