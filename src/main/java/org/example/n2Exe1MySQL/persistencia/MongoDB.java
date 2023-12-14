@@ -20,16 +20,15 @@ import java.util.List;
 
 public class MongoDB implements InterfaceBaseDeDatos{
 
-    private static final String CONNECTION_URL = "mongodb://localhost:27017";
+    private final String CONNECTION_URL;
     private static MongoDB instancia;
     private static MongoDatabase database;
-
     private int nextProductoId;
     private int nextTicketId;
 
     private MongoDB() {
-        //CONNECTION_URL = "mongodb://localhost:27017";
-        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+        CONNECTION_URL = "mongodb://localhost:27017";
+        MongoClient mongoClient = MongoClients.create(CONNECTION_URL);
         database = mongoClient.getDatabase("floristeria");
         nextProductoId = generarSiguienteId("producto");
         nextTicketId = generarSiguienteId("ticket");
@@ -41,6 +40,37 @@ public class MongoDB implements InterfaceBaseDeDatos{
         return instancia;
     }
     @Override
+    public void agregarProducto(Producto producto) {
+        int id = producto.getProductoID();
+        MongoCollection<Document> productos = database.getCollection("productos");
+        Producto productoExistente = consultarProducto(id);
+
+        if (productoExistente == null) {
+            Document doc = mapearProductoADocumento(producto);
+            productos.insertOne(doc);
+        }
+        else {
+            actualizarCantidadProducto(id, producto.getProductoCantidad() + productoExistente.getProductoCantidad());
+        }
+    }
+    @Override
+    public Ticket agregarTicket(Ticket ticket) {
+        MongoCollection<Document> tickets = database.getCollection("tickets");
+        Document doc = mapearTicketADocumento(ticket);
+
+        tickets.insertOne(doc);
+        return ticket;
+    }
+    @Override
+    public void actualizarCantidadProducto(int id, int nuevaCantidad) {
+        MongoCollection<Document> productos = database.getCollection("productos");
+
+        productos.updateOne(
+                Filters.eq("_id", id),
+                Updates.set("cantidad", nuevaCantidad)
+        );
+    }
+    @Override
     public HashMap<Integer, Producto> consultarProductos() {
         HashMap<Integer, Producto> productosMap = new HashMap<>();
         MongoCollection<Document> productosCollection = database.getCollection("productos");
@@ -49,7 +79,6 @@ public class MongoDB implements InterfaceBaseDeDatos{
                 productoDoc -> productosMap.put(productoDoc.getInteger("_id"), mapearDocumentoAProducto(productoDoc)));
         return productosMap;
     }
-
     private Producto mapearDocumentoAProducto(Document doc) {
         Producto producto = null;
 
@@ -90,7 +119,6 @@ public class MongoDB implements InterfaceBaseDeDatos{
                 ticketDoc -> ticketsMap.put(ticketDoc.getInteger("_id"), mapearDocumentoATicket(ticketDoc)));
         return ticketsMap;
     }
-
     private Ticket mapearDocumentoATicket(Document doc) {
         int id = doc.getInteger("_id");
         Ticket ticket = new Ticket(id);
@@ -99,20 +127,25 @@ public class MongoDB implements InterfaceBaseDeDatos{
                 productoDoc -> ticket.agregarProductoAlTicket(mapearDocumentoAProducto(productoDoc)));
         return ticket;
     }
-
     @Override
-    public void agregarProducto(Producto producto) {
-        int id = producto.getProductoID();
-        MongoCollection<Document> productos = database.getCollection("productos");
-        Producto productoExistente = consultarProducto(id);
-
-        if (productoExistente == null) {
-            Document doc = mapearProductoADocumento(producto);
-            productos.insertOne(doc);
+    public Producto consultarProducto(int id) {
+        Producto producto = null;
+        MongoCollection<Document> productosCollection = database.getCollection("productos");
+        Document productoDoc = productosCollection.find(Filters.eq("_id", id)).first();
+        if (productoDoc != null) {
+            producto = mapearDocumentoAProducto(productoDoc);
         }
-        else {
-            actualizarCantidadProducto(id, producto.getProductoCantidad() + productoExistente.getProductoCantidad());
+        return producto;
+    }
+    @Override
+    public Ticket consultarTicket(int id) {
+        Ticket ticket = null;
+        MongoCollection<Document> ticketsCollection = database.getCollection("tickets");
+        Document ticketDoc = ticketsCollection.find(Filters.eq("_id", id)).first();
+        if (ticketDoc != null) {
+            ticket = mapearDocumentoATicket(ticketDoc);
         }
+        return ticket;
     }
     private Document mapearProductoADocumento(Producto producto) {
         Document doc = new Document("_id", producto.getProductoID()).
@@ -133,25 +166,6 @@ public class MongoDB implements InterfaceBaseDeDatos{
         }
         return doc;
     }
-
-    @Override
-    public void actualizarCantidadProducto(int id, int nuevaCantidad) {
-        MongoCollection<Document> productos = database.getCollection("productos");
-
-        productos.updateOne(
-                Filters.eq("_id", id),
-                Updates.set("cantidad", nuevaCantidad)
-        );
-    }
-    @Override
-    public Ticket agregarTicket(Ticket ticket) {
-        MongoCollection<Document> tickets = database.getCollection("tickets");
-        Document doc = mapearTicketADocumento(ticket);
-
-        tickets.insertOne(doc);
-        return ticket;
-    }
-
     private Document mapearTicketADocumento(Ticket ticket) {
         Document doc;
         List<Document> productos = new ArrayList<>();
@@ -162,43 +176,6 @@ public class MongoDB implements InterfaceBaseDeDatos{
                 append("productos", productos);
         return doc;
     }
-
-    @Override
-    public Producto consultarProducto(int id) {
-        Producto producto = null;
-        MongoCollection<Document> productosCollection = database.getCollection("productos");
-        Document productoDoc = productosCollection.find(Filters.eq("_id", id)).first();
-        if (productoDoc != null) {
-            producto = mapearDocumentoAProducto(productoDoc);
-        }
-        return producto;
-    }
-
-    @Override
-    public Ticket consultarTicket(int id) {
-        Ticket ticket = null;
-        MongoCollection<Document> ticketsCollection = database.getCollection("tickets");
-        Document ticketDoc = ticketsCollection.find(Filters.eq("_id", id)).first();
-        if (ticketDoc != null) {
-            ticket = mapearDocumentoATicket(ticketDoc);
-        }
-        return ticket;
-    }
-
-    @Override
-    public Producto eliminarProducto(int id, int cantidadEliminar) throws CantidadExcedida {
-        Producto producto = consultarProducto(id);
-        int cantidadActual = producto.getProductoCantidad();
-
-        if (cantidadActual >= cantidadEliminar) {
-            actualizarCantidadProducto(id, cantidadActual - cantidadEliminar);
-            producto.reducirProductoCantidad(cantidadEliminar);
-        } else {
-            throw new CantidadExcedida("La cantidad indicada excede la cantidad en stock.");
-        }
-        return producto;
-    }
-
     @Override
     public HashMap<Integer, Producto> consultarProductosFiltrando(String tipo) {
         HashMap<Integer, Producto> productosMap = new HashMap<>();
@@ -207,7 +184,6 @@ public class MongoDB implements InterfaceBaseDeDatos{
                 productoDoc -> productosMap.put(productoDoc.getInteger("_id"), mapearDocumentoAProducto(productoDoc)));
         return productosMap;
     }
-
     @Override
     public float consultarValorTotalStock() {
         float valorTotal = 0;
@@ -223,7 +199,6 @@ public class MongoDB implements InterfaceBaseDeDatos{
         }
         return valorTotal;
     }
-
     @Override
     public float consultarValorTotalTickets() {
         float valorTotal = 0;
@@ -241,19 +216,29 @@ public class MongoDB implements InterfaceBaseDeDatos{
         }
         return valorTotal;
     }
+    @Override
+    public Producto eliminarProducto(int id, int cantidadEliminar) throws CantidadExcedida {
+        Producto producto = consultarProducto(id);
+        int cantidadActual = producto.getProductoCantidad();
 
+        if (cantidadActual >= cantidadEliminar) {
+            actualizarCantidadProducto(id, cantidadActual - cantidadEliminar);
+            producto.reducirProductoCantidad(cantidadEliminar);
+        } else {
+            throw new CantidadExcedida("La cantidad indicada excede la cantidad en stock.");
+        }
+        return producto;
+    }
     @Override
     public int obtenerSiguienteProductoId() {
         nextProductoId++;
         return nextProductoId;
     }
-
     @Override
     public int obtenerSiguienteTicketId() {
         nextTicketId++;
         return nextTicketId;
     }
-
     public int generarSiguienteId(String tipo) {
         int id = 1;
 
