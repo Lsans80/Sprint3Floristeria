@@ -43,7 +43,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
 
             } catch (SQLException e){
                 System.err.println("Usuario y/o contraseña no válidos.");
-                e.getMessage();
+                System.err.println(e.getMessage());
             }
 
         } while (!salir);
@@ -60,7 +60,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
             productos = generaMapaProducto(rs);
         } catch (SQLException e) {
             System.err.println("Hubo un error al acceder a los datos. Intenta nuevamente.");
-        	e.getMessage();
+            System.err.println(e.getMessage());
         }
         return productos;
     }
@@ -108,7 +108,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
             }
         } catch (SQLException e) {
             System.err.println("Hubo un error al acceder a los datos. Intenta nuevamente.");
-            e.getMessage();
+            System.err.println(e.getMessage());
         }
     }
 
@@ -119,7 +119,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
             stmt.executeUpdate("UPDATE producto SET cantidad = " + nuevaCantidad + " WHERE producto.id = " + id);
         } catch (SQLException e) {
             System.err.println("Hubo un error al acceder a los datos. Intenta nuevamente.");
-            e.getMessage();
+            System.err.println(e.getMessage());
         }
     }
 
@@ -138,7 +138,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
 
         } catch (SQLException e) {
             System.err.println("Hubo un error al acceder a los datos. Intenta nuevamente.");
-            e.getMessage();
+            System.err.println(e.getMessage());
         }
 
         return ticket;
@@ -155,7 +155,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
 
         } catch (SQLException e){
             System.err.println("Hubo un error al acceder a los datos. Intenta nuevamente.");
-            e.getMessage();
+            System.err.println(e.getMessage());
         }
     }
 
@@ -167,36 +167,31 @@ public class MySQLDB implements InterfaceBaseDeDatos{
             ResultSet rs = stmt.executeQuery(QueriesSQL.GET_PRODUCTOS +
                     "WHERE producto.id = " + id);
             if (rs.next()) {
-                switch (rs.getString("tipo").toLowerCase()) {
-                    case "arbol":
-                        producto = new Producto_Arbol(
-                                rs.getInt("id"),
-                                rs.getString("nombre"),
-                                rs.getFloat("precio"),
-                                rs.getFloat("altura"),
-                                rs.getInt("cantidad"));
-                        break;
-                    case "flor":
-                        producto = new Producto_Flor(
-                                rs.getInt("id"),
-                                rs.getString("nombre"),
-                                rs.getFloat("precio"),
-                                rs.getString("color"),
-                                rs.getInt("cantidad"));
-                        break;
-                    case "decoracion":
-                        producto = new Producto_Decoracion(
-                                rs.getInt("id"),
-                                rs.getString("nombre"),
-                                rs.getFloat("precio"),
-                                Material.valueOf(rs.getString("material")),
-                                rs.getInt("cantidad"));
-                        break;
-                }
+                producto = switch (rs.getString("tipo").toLowerCase()) {
+                    case "arbol" -> new Producto_Arbol(
+                            rs.getInt("id"),
+                            rs.getString("nombre"),
+                            rs.getFloat("precio"),
+                            rs.getFloat("altura"),
+                            rs.getInt("cantidad"));
+                    case "flor" -> new Producto_Flor(
+                            rs.getInt("id"),
+                            rs.getString("nombre"),
+                            rs.getFloat("precio"),
+                            rs.getString("color"),
+                            rs.getInt("cantidad"));
+                    case "decoracion" -> new Producto_Decoracion(
+                            rs.getInt("id"),
+                            rs.getString("nombre"),
+                            rs.getFloat("precio"),
+                            Material.valueOf(rs.getString("material")),
+                            rs.getInt("cantidad"));
+                    default -> producto;
+                };
             }
         } catch (SQLException e) {
             System.err.println("Hubo un error al acceder a los datos. Intenta nuevamente.");
-            e.getMessage();
+            System.err.println(e.getMessage());
         }
         return producto;
     }
@@ -218,7 +213,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
             }
         } catch (SQLException e) {
             System.err.println("Hubo un error al acceder a los datos. Intenta nuevamente.");
-            e.getMessage();
+            System.err.println(e.getMessage());
         }
         return tickets;
     }
@@ -238,7 +233,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
             }
         } catch (SQLException e) {
             System.err.println("Hubo un error al acceder a los datos. Intenta nuevamente.");
-            e.getMessage();
+            System.err.println(e.getMessage());
         }
         return ticket;
     }
@@ -278,7 +273,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
             }
         } catch (SQLException e) {
             System.err.println("Hubo un error al acceder a los datos. Intenta nuevamente.");
-            e.getMessage();
+            System.err.println(e.getMessage());
         }
     }
 
@@ -305,7 +300,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
 
         } catch (SQLException e) {
             System.err.println("Hubo un error al acceder a los datos. Intenta nuevamente.");
-            e.getMessage();
+            System.err.println(e.getMessage());
         }
     }
 
@@ -319,7 +314,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
             productos = generaMapaProducto(rs);
         } catch (SQLException e) {
             System.err.println("Hubo un error al acceder a los datos. Intenta nuevamente.");
-            e.getMessage();
+            System.err.println(e.getMessage());
         }
         return productos;
     }
@@ -335,7 +330,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
             }
         } catch (SQLException e) {
             System.err.println("Hubo un error al acceder a los datos. Intenta nuevamente.");
-            e.getMessage();
+            System.err.println(e.getMessage());
         }
         return valorTotal;
     }
@@ -351,7 +346,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
             }
         } catch (SQLException e) {
             System.err.println("Hubo un error al acceder a los datos. Intenta nuevamente.");
-            e.getMessage();
+            System.err.println(e.getMessage());
         }
         return valorTotal;
     }
@@ -378,7 +373,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
             }
         } catch (SQLException e) {
             System.err.println("Hubo un error al acceder a los datos. Intenta nuevamente.");
-            e.getMessage();
+            System.err.println(e.getMessage());
         }
         return id;
     }
@@ -416,7 +411,7 @@ public class MySQLDB implements InterfaceBaseDeDatos{
             }
         } catch (SQLException e) {
             System.err.println("Hubo un error al acceder a los datos. Intenta nuevamente.");
-            e.getMessage();
+            System.err.println(e.getMessage());
         }
         return productos;
     }
