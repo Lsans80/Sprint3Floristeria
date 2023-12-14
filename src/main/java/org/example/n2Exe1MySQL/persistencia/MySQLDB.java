@@ -223,14 +223,6 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         return tickets;
     }
 
-    /*if (rs.getDate("fecha") != null){
-        ticket.setTicketDate(rs.getDate("fecha").toLocalDate());
-
-    } else {
-        consultarProductosTicket(ticket, conn);
-        tickets.put(id, ticket);
-    }*/
-
     //Para consultar solo un ticket.
     @Override
     public Ticket consultarTicket(int id) {
