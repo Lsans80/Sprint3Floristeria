@@ -50,21 +50,6 @@ public class MySQLDB implements InterfaceBaseDeDatos{
 
         return connection;
     }
-
-    @Override
-    public HashMap<Integer, Producto> consultarProductos() {
-        HashMap<Integer, Producto> productos = new HashMap<>();
-        try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(QueriesSQL.GET_PRODUCTOS);
-            productos = generaMapaProducto(rs);
-        } catch (SQLException e) {
-            System.err.println("Hubo un error al acceder a los datos. Intenta nuevamente.");
-            System.err.println(e.getMessage());
-        }
-        return productos;
-    }
-
     @Override
     public void agregarProducto(Producto producto) {
         try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
@@ -111,18 +96,6 @@ public class MySQLDB implements InterfaceBaseDeDatos{
             System.err.println(e.getMessage());
         }
     }
-
-    @Override
-    public void actualizarCantidadProducto(int id, int nuevaCantidad) {
-        try (Connection conn = DriverManager.getConnection(CONNECTION_URL)) {
-            Statement stmt = conn.createStatement();
-            stmt.executeUpdate("UPDATE producto SET cantidad = " + nuevaCantidad + " WHERE producto.id = " + id);
-        } catch (SQLException e) {
-            System.err.println("Hubo un error al acceder a los datos. Intenta nuevamente.");
-            System.err.println(e.getMessage());
-        }
-    }
-
     @Override
     public Ticket agregarTicket(Ticket ticket) {
         PreparedStatement insertTicketOnTicketDB;
@@ -143,7 +116,16 @@ public class MySQLDB implements InterfaceBaseDeDatos{
 
         return ticket;
     }
-
+    @Override
+    public void actualizarCantidadProducto(int id, int nuevaCantidad) {
+        try (Connection conn = DriverManager.getConnection(CONNECTION_URL)) {
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("UPDATE producto SET cantidad = " + nuevaCantidad + " WHERE producto.id = " + id);
+        } catch (SQLException e) {
+            System.err.println("Hubo un error al acceder a los datos. Intenta nuevamente.");
+            System.err.println(e.getMessage());
+        }
+    }
     private void agregarProductoAlTicket(Producto producto, int ticketID, Connection conn) {
         PreparedStatement insertProductOnProductTicketDB;
         try {
@@ -158,7 +140,19 @@ public class MySQLDB implements InterfaceBaseDeDatos{
             System.err.println(e.getMessage());
         }
     }
-
+    @Override
+    public HashMap<Integer, Producto> consultarProductos() {
+        HashMap<Integer, Producto> productos = new HashMap<>();
+        try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(QueriesSQL.GET_PRODUCTOS);
+            productos = generaMapaProducto(rs);
+        } catch (SQLException e) {
+            System.err.println("Hubo un error al acceder a los datos. Intenta nuevamente.");
+            System.err.println(e.getMessage());
+        }
+        return productos;
+    }
     @Override
     public Producto consultarProducto(int id) {
         Producto producto = null;
@@ -195,7 +189,6 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         }
         return producto;
     }
-
     @Override
     public HashMap<Integer, Ticket> consultarTickets() {
         HashMap<Integer, Ticket> tickets = new HashMap<>();
@@ -217,8 +210,6 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         }
         return tickets;
     }
-
-    //TODO es una copia de consultarTickets()??? Se puede borrar??
     @Override
     public Ticket consultarTicket(int id) {
         Ticket ticket = null;
@@ -237,7 +228,6 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         }
         return ticket;
     }
-
     private void consultarProductosTicket(Ticket ticket, Connection conn) {
         int id = ticket.getTicketID();
         try {
@@ -276,34 +266,6 @@ public class MySQLDB implements InterfaceBaseDeDatos{
             System.err.println(e.getMessage());
         }
     }
-
-    @Override
-    public Producto eliminarProducto(int id, int cantidadEliminar) throws CantidadExcedida {
-        Producto producto = consultarProducto(id);
-        int cantidadActual = producto.getProductoCantidad();
-
-        if (cantidadActual >= cantidadEliminar) {
-            actualizarCantidadProducto(id, cantidadActual - cantidadEliminar);
-            producto.reducirProductoCantidad(cantidadEliminar);
-        } else {
-            throw new CantidadExcedida("La cantidad indicada excede la cantidad en stock.");
-        }
-        return producto;
-    }
-
-    //Para borrar definitivamente el producto en base de datos y que no quede a 0.
-    public void eliminarProductoDefinitivo (int id){
-
-        try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
-            PreparedStatement preparedStatement = conn.prepareStatement(QueriesSQL.DELETE_PRODUCTO);
-            preparedStatement.setInt(1, id);
-
-        } catch (SQLException e) {
-            System.err.println("Hubo un error al acceder a los datos. Intenta nuevamente.");
-            System.err.println(e.getMessage());
-        }
-    }
-
     @Override
     public HashMap<Integer, Producto> consultarProductosFiltrando(String tipo) {
         HashMap<Integer, Producto> productos = new HashMap<>();
@@ -318,7 +280,6 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         }
         return productos;
     }
-
     @Override
     public float consultarValorTotalStock() {
         float valorTotal = 0;
@@ -334,7 +295,6 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         }
         return valorTotal;
     }
-
     @Override
     public float consultarValorTotalTickets() {
         float valorTotal = 0;
@@ -350,19 +310,41 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         }
         return valorTotal;
     }
+    @Override
+    public Producto eliminarProducto(int id, int cantidadEliminar) throws CantidadExcedida {
+        Producto producto = consultarProducto(id);
+        int cantidadActual = producto.getProductoCantidad();
 
+        if (cantidadActual >= cantidadEliminar) {
+            actualizarCantidadProducto(id, cantidadActual - cantidadEliminar);
+            producto.reducirProductoCantidad(cantidadEliminar);
+        } else {
+            throw new CantidadExcedida("La cantidad indicada excede la cantidad en stock.");
+        }
+        return producto;
+    }
+    //Para borrar definitivamente el producto en base de datos y que no quede a 0.
+    public void eliminarProductoDefinitivo (int id){
+
+        try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
+            PreparedStatement preparedStatement = conn.prepareStatement(QueriesSQL.DELETE_PRODUCTO);
+            preparedStatement.setInt(1, id);
+
+        } catch (SQLException e) {
+            System.err.println("Hubo un error al acceder a los datos. Intenta nuevamente.");
+            System.err.println(e.getMessage());
+        }
+    }
     @Override
     public int obtenerSiguienteProductoId() {
         nextProductoId++;
         return nextProductoId;
     }
-
     @Override
     public int obtenerSiguienteTicketId() {
         nextTicketId++;
         return nextTicketId;
     }
-
     private int generarSiguienteId(String table) {
         int id = 1;
         try (Connection conn = DriverManager.getConnection(CONNECTION_URL) ) {
@@ -377,7 +359,6 @@ public class MySQLDB implements InterfaceBaseDeDatos{
         }
         return id;
     }
-
     private HashMap<Integer, Producto> generaMapaProducto(ResultSet rs) {
         HashMap<Integer, Producto> productos = new HashMap<>();
         try {
