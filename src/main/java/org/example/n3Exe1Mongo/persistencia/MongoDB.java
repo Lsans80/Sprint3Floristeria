@@ -1,4 +1,4 @@
-package org.example.n2Exe1MySQL.persistencia;
+package org.example.n3Exe1Mongo.persistencia;
 
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
@@ -6,19 +6,18 @@ import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.Updates;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.example.n2Exe1MySQL.entidad.*;
-import org.example.n2Exe1MySQL.excepcion.CantidadExcedida;
-import org.example.n2Exe1MySQL.herramienta.Material;
-
-import static com.mongodb.client.model.Sorts.descending;
-
+import org.example.n3Exe1Mongo.entidad.*;
+import org.example.n3Exe1Mongo.excepcion.CantidadExcedida;
+import org.example.n3Exe1Mongo.herramienta.Material;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MongoDB implements InterfaceBaseDeDatos{
+import static com.mongodb.client.model.Sorts.descending;
+
+public class MongoDB implements InterfaceBaseDeDatos {
 
     private final String CONNECTION_URL;
     private static MongoDB instancia;
